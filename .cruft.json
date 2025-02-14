@@ -1,0 +1,20 @@
+{
+  "template": "https://github.com/shifqu/cookiecutter-python/",
+  "commit": "d42786ea9e053931815f3286378a6979e99c3663",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "I Do Accountancy",
+      "package_slug": "ida",
+      "package_slug_kebab": "ida",
+      "project_description": "A python app that takes care of your accountancy.",
+      "project_version": "0.0.1",
+      "python_version": "3.12",
+      "author_name": "Sonny Valkeneers",
+      "author_email": "sonny@softllama.net",
+      "github_username": "shifqu",
+      "_template": "https://github.com/shifqu/cookiecutter-python/"
+    }
+  },
+  "directory": null
+}

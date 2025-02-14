@@ -1,0 +1,6 @@
+services:
+  ida:
+    build: .
+    restart: unless-stopped
+    environment:
+      - DEBUG=${IDA_DEBUG:?Please export IDA_DEBUG as an environment variable}

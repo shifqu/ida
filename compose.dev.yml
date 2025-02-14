@@ -1,0 +1,6 @@
+services:
+  ida:
+    build:
+      target: development
+    volumes:
+      - ./:/app
