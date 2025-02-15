@@ -90,6 +90,42 @@ docker compose logs -f
 docker compose exec ida bash
 ```
 
+### Django
+#### Make migrations
+```
+manage makemigrations
+```
+
+#### Migrate
+```
+manage migrate
+```
+
+#### Collect static files (not required when using runserver)
+```
+manage collectstatic
+```
+
+#### Add super-user
+```
+manage createsuperuser
+```
+
+#### Create app in the apps folder (update myapp as APPNAME)
+##### Bash
+```
+APPNAME="myapp" bash -c 'mkdir -p src/apps/$APPNAME && manage startapp $APPNAME src/apps/$APPNAME'
+```
+##### Powershell
+```
+$env:APPNAME="myapp"; $ErrorActionPreference="Stop"; mkdir src\apps\$env:APPNAME; manage startapp $env:APPNAME src\apps\$env:APPNAME
+```
+
+#### Run the development server (using 0.0.0.0 to be available to any device on the network)
+```
+manage runserver 0.0.0.0:38080
+```
+
 ## Contributing / Developing
 ### Update/Add/Compile requirements
 Core dependencies should be added to `requirements/main.in` and development dependencies to `requirements/dev.in`.

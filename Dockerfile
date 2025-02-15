@@ -34,7 +34,7 @@ COPY . .
 RUN pip install --editable .[dev]
 
 # Run the application
-CMD ["python", "-m", "ida"]
+CMD ["manage", "runserver"]
 
 # Stage 3: Production stage
 FROM python:3.12-slim
@@ -60,8 +60,12 @@ RUN pip install .
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1 
 
+# Create a directory for the SQLite database and staticfiles
+RUN mkdir /dbdata && chown -R appuser:appuser /dbdata
+RUN mkdir /staticdata && chown -R appuser:appuser /staticdata
+
 # Switch to non-root user
 USER appuser
 
-# Run the application
-CMD ["python", "-m", "ida"]
+# Run the application with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:38080", "--workers", "4", "ida.wsgi:application"]
