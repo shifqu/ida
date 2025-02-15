@@ -3,4 +3,4 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      - DEBUG=${IDA_DEBUG:?Please export IDA_DEBUG as an environment variable}
+      - IDA_DEBUG=${IDA_DEBUG:?Please export IDA_DEBUG as an environment variable}

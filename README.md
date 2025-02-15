@@ -66,6 +66,14 @@ pyright src/
 pytest -s --cov=src/ --cov-report=term-missing --cov-report html tests/
 ```
 
+### Combined commands for linting, formatting and type-checking
+```
+ruff check --fix src/
+pylint src/
+ruff format src/ tests/
+pyright src/
+```
+
 ### Docker
 #### Rebuild, recreate the application and run it in the background
 ```
