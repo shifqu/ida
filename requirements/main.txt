@@ -4,3 +4,13 @@
 #
 #    pip-compile --output-file=requirements/main.txt pyproject.toml
 #
+asgiref==3.8.1
+    # via django
+django==5.1.6
+    # via ida (pyproject.toml)
+gunicorn==23.0.0
+    # via ida (pyproject.toml)
+packaging==24.2
+    # via gunicorn
+sqlparse==0.5.3
+    # via django
