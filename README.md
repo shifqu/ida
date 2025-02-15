@@ -20,7 +20,10 @@ The builtin module [venv](https://docs.python.org/3/library/venv.html) is used t
 ### Create a virtual environment
 `python -m venv .venv/`
 ### Activate the virtual environment
+#### UNIX
 `source .venv/bin/activate`
+#### WINDOWS
+`.\.venv\Scripts\activate`
 ### Ensure pip is updated and pip-tools is installed
 `pip install --upgrade pip pip-tools`
 
