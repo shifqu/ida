@@ -2,8 +2,10 @@
 A python app that takes care of your accountancy.
 
 ---
-[![Code style: Ruff](https://img.shields.io/badge/style-ruff-41B5BE)](https://github.com/astral-sh/ruff)
-[![Typing: Pyright](https://img.shields.io/badge/typing-pyright-%236a5acd
+[![Code style: Ruff](https://img.shields.io/badge/style-ruff-8b5000)](https://github.com/astral-sh/ruff)
+[![Typing: Pyright](https://img.shields.io/badge/typing-pyright-725a42
+)](https://github.com/RobertCraigie/pyright-python)
+[![Dependencies: Pip-tools](https://img.shields.io/badge/dependencies-pip--tools-58633a
 )](https://github.com/RobertCraigie/pyright-python)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/license/mit)
 
