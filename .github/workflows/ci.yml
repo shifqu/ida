@@ -1,4 +1,4 @@
-name: "Python application: I Do Accountancy"
+name: "CI Validation"
 
 on: [push, pull_request]
 
