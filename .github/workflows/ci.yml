@@ -29,4 +29,4 @@ jobs:
 
       - name: Test
         run: |
-          manage test apps
+          manage test apps --settings=ida.settings
