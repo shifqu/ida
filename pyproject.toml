@@ -23,6 +23,7 @@ optional-dependencies.dev = { file = ["requirements/requirements-dev.in"] }
 [tool.ruff]
 line-length = 120
 target-version = "py312"
+extend-exclude = ["**/migrations"]
 
 [tool.ruff.lint]
 select = ["B", "C901", "D", "E4", "E7", "E9", "F", "I", "W", "ARG", "FIX", "A"]
@@ -30,11 +31,15 @@ select = ["B", "C901", "D", "E4", "E7", "E9", "F", "I", "W", "ARG", "FIX", "A"]
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
+[tool.pylint.MASTER]
+ignore = [ 'migrations' ]
+
 [tool.pylint."MESSAGES CONTROL"]
 disable = "all"
 enable = "C1805,E1120,R1705,W0107,W0221,W0223,W0613,W0632,W0719,W2301,W3101"
 
 [tool.pyright]
+exclude = [ "**/migrations" ]
 typeCheckingMode = "standard"
 deprecateTypingAliases = true
 pythonVersion = "3.12"
