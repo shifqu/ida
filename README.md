@@ -66,9 +66,9 @@ pylint src/
 pyright src/
 ```
 
-### Test the source code and generating an html report
+### Test the source code
 ```
-pytest -s --cov=src/ --cov-report=term-missing --cov-report html tests/
+manage test apps
 ```
 
 ### Combined commands for linting, formatting and type-checking

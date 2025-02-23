@@ -8,16 +8,14 @@ asgiref==3.8.1
     # via django
 astroid==3.3.8
     # via pylint
-coverage[toml]==7.6.12
-    # via pytest-cov
 dill==0.3.9
     # via pylint
 django==5.1.6
     # via ida (pyproject.toml)
+django-types==0.20.0
+    # via ida (pyproject.toml)
 gunicorn==23.0.0
     # via ida (pyproject.toml)
-iniconfig==2.0.0
-    # via pytest
 isort==5.13.2
     # via pylint
 mccabe==0.7.0
@@ -25,22 +23,12 @@ mccabe==0.7.0
 nodeenv==1.9.1
     # via pyright
 packaging==24.2
-    # via
-    #   gunicorn
-    #   pytest
+    # via gunicorn
 platformdirs==4.3.6
     # via pylint
-pluggy==1.5.0
-    # via pytest
 pylint==3.3.3
     # via ida (pyproject.toml)
 pyright==1.1.394
-    # via ida (pyproject.toml)
-pytest==8.3.4
-    # via
-    #   ida (pyproject.toml)
-    #   pytest-cov
-pytest-cov==6.0.0
     # via ida (pyproject.toml)
 ruff==0.9.3
     # via ida (pyproject.toml)
@@ -48,5 +36,7 @@ sqlparse==0.5.3
     # via django
 tomlkit==0.13.2
     # via pylint
+types-psycopg2==2.9.21.20250121
+    # via django-types
 typing-extensions==4.12.2
     # via pyright

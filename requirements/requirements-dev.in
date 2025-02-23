@@ -1,5 +1,4 @@
 ruff
 pylint
 pyright
-pytest
-pytest-cov
+django-types
