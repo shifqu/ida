@@ -13,8 +13,10 @@ class Company(models.Model):
     )
     email = models.EmailField(max_length=255, blank=True, default="")
     website = models.URLField(max_length=255, blank=True, default="")
-    vat_number = models.CharField(max_length=255, blank=True, help_text=_("VAT number"))
-    business_court = models.CharField(max_length=255, help_text=_("Business court (eg. Antwerpen, afd. Hasselt)"))
+    vat_number = models.CharField(max_length=255, blank=True, default="", help_text=_("VAT number"))
+    business_court = models.CharField(
+        max_length=255, blank=True, default="", help_text=_("Business court (eg. Antwerpen, afd. Hasselt)")
+    )
 
     def __str__(self):
         """Return the string representation of the company."""
