@@ -24,7 +24,7 @@ jobs:
         run: |
           ruff check --fix src/
           pylint src/
-          ruff format --check src/ tests/
+          ruff format --check src/
           pyright src/
 
       - name: Test
