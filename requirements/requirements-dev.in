@@ -1,4 +1,4 @@
 ruff
 pylint
 pyright
-django-types
+django-stubs
