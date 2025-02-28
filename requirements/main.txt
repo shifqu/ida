@@ -6,11 +6,17 @@
 #
 asgiref==3.8.1
     # via django
+chardet==5.2.0
+    # via reportlab
 django==5.1.6
     # via ida (pyproject.toml)
 gunicorn==23.0.0
     # via ida (pyproject.toml)
 packaging==24.2
     # via gunicorn
+pillow==11.1.0
+    # via reportlab
+reportlab==4.3.1
+    # via ida (pyproject.toml)
 sqlparse==0.5.3
     # via django
