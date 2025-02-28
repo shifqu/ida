@@ -51,7 +51,7 @@ pip install .
 ### Format the source code and the tests
 Formatting should likely be done as a last step as some auto-fixed linting issues can result in wrongly formatted code.
 ```
-ruff format src/ tests/
+ruff format src/
 ```
 
 ### Lint the source code (and auto-fix what can be fixed)
@@ -76,7 +76,7 @@ manage test apps
 ```
 ruff check --fix src/
 pylint src/
-ruff format src/ tests/
+ruff format src/
 pyright src/
 ```
 
