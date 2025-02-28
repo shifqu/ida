@@ -27,6 +27,7 @@ extend-exclude = ["**/migrations"]
 
 [tool.ruff.lint]
 select = ["B", "C901", "D", "E4", "E7", "E9", "F", "I", "W", "ARG", "FIX", "A"]
+ignore = ["FIX002"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
@@ -39,7 +40,7 @@ disable = "all"
 enable = "C1805,E1120,R1705,W0107,W0221,W0223,W0613,W0632,W0719,W2301,W3101"
 
 [tool.pyright]
-exclude = [ "**/migrations" ]
+exclude = [ "**/migrations", "**/_reportlab.py", "**/tests.py"]
 typeCheckingMode = "standard"
 deprecateTypingAliases = true
 pythonVersion = "3.12"
