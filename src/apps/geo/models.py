@@ -60,7 +60,7 @@ class Address(models.Model):
         verbose_name_plural = _("Addresses")
         constraints = [
             models.CheckConstraint(
-                condition=(
+                condition=(  # type: ignore[reportCallIssue]
                     (models.Q(relation__isnull=False) & models.Q(company__isnull=True))
                     | (models.Q(relation__isnull=True) & models.Q(company__isnull=False))
                 ),
