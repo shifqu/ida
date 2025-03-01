@@ -161,7 +161,7 @@ class InvoiceItem(models.Model):
     unit_price = models.DecimalField(verbose_name=_("unit price"), max_digits=10, decimal_places=2)
     quantity = models.DecimalField(verbose_name=_("quantity"), max_digits=10, decimal_places=2)
     vat_percentage = models.DecimalField(
-        verbose_name=_("VAT"), max_digits=5, decimal_places=2, help_text=_("VAT Percentage")
+        verbose_name=_("VAT"), max_digits=5, decimal_places=2, help_text=_("VAT percentage")
     )
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE, verbose_name=_("invoice"))
 
