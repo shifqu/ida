@@ -117,6 +117,21 @@ manage collectstatic
 manage createsuperuser
 ```
 
+#### Make translations
+The following commands should be ran from the `apps` directory to avoid django attempting to create translations for non django apps.
+```
+cd src/apps
+```
+
+```
+manage maketranslations --locale de --locale fr --locale nl
+```
+
+The following command should be ran on fresh installs as the MO files are not included in version control.
+```
+manage compilemessages
+```
+
 #### Create app in the apps folder (update myapp as APPNAME)
 ##### Bash
 ```
