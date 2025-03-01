@@ -53,8 +53,8 @@ class Company(models.Model):
 class BankAccount(models.Model):
     """Represent a bank account."""
 
-    iban = models.CharField(verbose_name=_("iban"), max_length=34)
-    bic = models.CharField(verbose_name=_("bic"), max_length=11, blank=True, default="")
+    iban = models.CharField(verbose_name=_("IBAN"), max_length=34)
+    bic = models.CharField(verbose_name=_("BIC"), max_length=11, blank=True, default="")
     name = models.CharField(verbose_name=_("name"), max_length=255, blank=True, default="")
     company = models.ForeignKey(Company, on_delete=models.CASCADE, verbose_name=_("company"))
 
