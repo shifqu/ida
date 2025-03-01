@@ -33,6 +33,10 @@ class Company(models.Model):
         default="",
         help_text=_("Example: Antwerpen, afd. Hasselt"),
     )
+    logo = models.ImageField(verbose_name=_("logo"), upload_to="companies/logos/", blank=True, null=True)
+    graphic_element = models.ImageField(
+        verbose_name=_("graphic element"), upload_to="companies/graphic_elements/", blank=True, null=True
+    )
 
     def __str__(self):
         """Return the string representation of the company."""
