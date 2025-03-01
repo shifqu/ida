@@ -56,8 +56,8 @@ class Address(models.Model):
     class Meta:
         """Add a correct plural name and a constraint to ensure either a Relation or Company is linked."""
 
-        verbose_name = _("Addresses")
-        verbose_name_plural = _("Addresses")
+        verbose_name = _("addresses")
+        verbose_name_plural = _("addresses")
         constraints = [
             models.CheckConstraint(
                 condition=(  # type: ignore[reportCallIssue]
