@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from django.conf.global_settings import LANGUAGES
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -23,7 +23,7 @@ class Relation(models.Model):
 
     name = models.CharField(verbose_name=_("name"), max_length=255)
     category = models.CharField(verbose_name=_("category"), max_length=50, choices=Category.choices)
-    language = models.CharField(verbose_name=_("language"), max_length=10, default="en", choices=LANGUAGES)
+    language = models.CharField(verbose_name=_("language"), max_length=10, default="en", choices=settings.LANGUAGES)
     phone = models.CharField(
         verbose_name=_("phone"),
         max_length=255,

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 
+from django.utils.translation import gettext_noop
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -108,6 +110,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
+
+# Languages we provide translations for, out of the box.
+# Full list of language codes supported by Django can be found here:
+# https://docs.djangoproject.com/en/5.1/ref/settings/#languages
+LANGUAGES = [
+    ("de", gettext_noop("German")),
+    ("en", gettext_noop("English")),
+    ("fr", gettext_noop("French")),
+    ("nl", gettext_noop("Dutch")),
+]
 
 TIME_ZONE = "UTC"
 
