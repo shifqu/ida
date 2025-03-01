@@ -32,7 +32,7 @@ msgstr "vervaldatum"
 
 #: invoices/models.py:28
 msgid "payment communication"
-msgstr "betalingscommunicatie"
+msgstr "betalings mededeling"
 
 #: invoices/models.py:29
 msgid "company"
@@ -44,11 +44,11 @@ msgstr "relatie"
 
 #: invoices/models.py:112
 msgid "ATTN."
-msgstr "T.a.v."
+msgstr "T.A.V."
 
 #: invoices/models.py:125 invoices/models.py:190
 msgid "subtotal"
-msgstr "tussentotaal"
+msgstr "subtotaal"
 
 #: invoices/models.py:126 invoices/models.py:164
 msgid "VAT"

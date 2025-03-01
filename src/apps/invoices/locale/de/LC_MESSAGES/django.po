@@ -48,7 +48,7 @@ msgstr "Z. Hd."
 
 #: invoices/models.py:125 invoices/models.py:190
 msgid "subtotal"
-msgstr "Zwischensumme"
+msgstr "Teilsumme"
 
 #: invoices/models.py:126 invoices/models.py:164
 msgid "VAT"
