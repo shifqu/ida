@@ -138,6 +138,8 @@ Core dependencies should be added to `requirements/main.in` and development depe
 
 Once this is done, `pip-compile` is used to generate the effective `requirements` files.
 
+###### Note: To upgrade the dependencies, add `--upgrade` to the following commands
+
 #### Development dependencies
 ```
 pip-compile --extra dev -o requirements/dev.txt pyproject.toml

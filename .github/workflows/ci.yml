@@ -1,4 +1,4 @@
-name: "CI Validation"
+name: "CI Validation: I Do Accountancy"
 
 on: [push, pull_request]
 

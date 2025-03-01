@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/shifqu/cookiecutter-python/",
-  "commit": "2762f54c0faaaa6fc03c3bfa97b194ddbb1e2618",
+  "commit": "7fc5cd2ebc353e07dc15ab2bb389829985279d06",
   "checkout": null,
   "context": {
     "cookiecutter": {
