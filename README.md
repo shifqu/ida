@@ -7,6 +7,7 @@ A python app that takes care of your accountancy.
 )](https://github.com/RobertCraigie/pyright-python)
 [![Dependencies: Pip-tools](https://img.shields.io/badge/dependencies-pip--tools-58633a
 )](https://github.com/RobertCraigie/pyright-python)
+[![Framework: Django](https://img.shields.io/badge/framework-django-727242)](https://docs.djangoproject.com/en/5.1/)
 [![CI Validation](https://github.com/shifqu/ida/actions/workflows/ci.yml/badge.svg)](https://github.com/shifqu/ida/actions/workflows/ci.yml)
 [![License](https://img.shields.io/github/license/mashape/apistatus.svg)](https://opensource.org/license/mit)
 
