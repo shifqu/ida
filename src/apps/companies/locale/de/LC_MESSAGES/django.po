@@ -11,68 +11,69 @@ msgstr ""
 "POT-Creation-Date: 2025-03-01 15:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language-Team: German <LL@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: companies/models.py:18 companies/models.py:58
 msgid "name"
-msgstr ""
+msgstr "Name"
 
 #: companies/models.py:20
 msgid "phone"
-msgstr ""
+msgstr "Telefon"
 
 #: companies/models.py:24
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
-msgstr ""
+msgstr "Telefonnummer mit Ländervorwahl (z. B. +32 490 12 34 56)"
 
 #: companies/models.py:26
 msgid "email"
-msgstr ""
+msgstr "E-Mail"
 
 #: companies/models.py:27
 msgid "website"
-msgstr ""
+msgstr "Webseite"
 
 #: companies/models.py:28
 msgid "VAT number"
-msgstr ""
+msgstr "Umsatzsteuer-Identifikationsnummer"
 
 #: companies/models.py:30
 msgid "business court"
-msgstr ""
+msgstr "Handelsgericht"
 
 #: companies/models.py:34
 msgid "Example: Antwerpen, afd. Hasselt"
-msgstr ""
+msgstr "Beispiel: Antwerpen, Abt. Hasselt"
 
 #: companies/models.py:43
 msgid "VAT"
-msgstr ""
+msgstr "MwSt."
 
 #: companies/models.py:49 companies/models.py:59
 msgid "company"
-msgstr ""
+msgstr "Unternehmen"
 
 #: companies/models.py:50
 msgid "companies"
-msgstr ""
+msgstr "Unternehmen"
 
 #: companies/models.py:56
-msgid "iban"
-msgstr ""
+msgid "IBAN"
+msgstr "IBAN"
 
 #: companies/models.py:57
-msgid "bic"
-msgstr ""
+msgid "BIC"
+msgstr "BIC"
 
 #: companies/models.py:68
 msgid "bank account"
-msgstr ""
+msgstr "Bankkonto"
 
 #: companies/models.py:69
 msgid "bank accounts"
-msgstr ""
+msgstr "Bankkonten"

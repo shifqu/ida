@@ -11,68 +11,69 @@ msgstr ""
 "POT-Creation-Date: 2025-03-01 15:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language-Team: French <LL@li.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
 #: geo/models.py:13
 msgid "Belgium"
-msgstr ""
+msgstr "Belgique"
 
 #: geo/models.py:14
 msgid "Netherlands"
-msgstr ""
+msgstr "Pays-Bas"
 
 #: geo/models.py:15
 msgid "United Kingdom"
-msgstr ""
+msgstr "Royaume-Uni"
 
 #: geo/models.py:17
 msgid "line1"
-msgstr ""
+msgstr "ligne1"
 
 #: geo/models.py:17
 msgid "Example: dummystreet 42a"
-msgstr ""
+msgstr "Exemple : rue fictive 42a"
 
 #: geo/models.py:18
 msgid "line2"
-msgstr ""
+msgstr "ligne2"
 
 #: geo/models.py:19
 msgid "line3"
-msgstr ""
+msgstr "ligne3"
 
 #: geo/models.py:20
 msgid "line4"
-msgstr ""
+msgstr "ligne4"
 
 #: geo/models.py:21
 msgid "postal code"
-msgstr ""
+msgstr "code postal"
 
 #: geo/models.py:22
 msgid "city"
-msgstr ""
+msgstr "ville"
 
 #: geo/models.py:24
 msgid "state province region"
-msgstr ""
+msgstr "état/province/région"
 
 #: geo/models.py:27
 msgid "country"
-msgstr ""
+msgstr "pays"
 
 #: geo/models.py:30
 msgid "relation"
-msgstr ""
+msgstr "relation"
 
 #: geo/models.py:33
 msgid "company"
-msgstr ""
+msgstr "entreprise"
 
 #: geo/models.py:59 geo/models.py:60
-msgid "Addresses"
-msgstr ""
+msgid "addresses"
+msgstr "adresses"

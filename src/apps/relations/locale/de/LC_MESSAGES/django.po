@@ -11,64 +11,65 @@ msgstr ""
 "POT-Creation-Date: 2025-03-01 15:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language-Team: German <LL@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: relations/models.py:21
 msgid "Customer"
-msgstr ""
+msgstr "Kunde"
 
 #: relations/models.py:22
 msgid "Supplier"
-msgstr ""
+msgstr "Lieferant"
 
 #: relations/models.py:24
 msgid "name"
-msgstr ""
+msgstr "Name"
 
 #: relations/models.py:25
 msgid "category"
-msgstr ""
+msgstr "Kategorie"
 
 #: relations/models.py:26
 msgid "language"
-msgstr ""
+msgstr "Sprache"
 
 #: relations/models.py:28
 msgid "phone"
-msgstr ""
+msgstr "Telefon"
 
 #: relations/models.py:32
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
-msgstr ""
+msgstr "Telefonnummer mit Ländervorwahl (z.B. +49 490 12 34 56)"
 
 #: relations/models.py:34
 msgid "email"
-msgstr ""
+msgstr "E-Mail"
 
 #: relations/models.py:35
 msgid "website"
-msgstr ""
+msgstr "Website"
 
 #: relations/models.py:37
 msgid "VAT number"
-msgstr ""
+msgstr "USt-IdNr."
 
 #: relations/models.py:40
 msgid "bank account number"
-msgstr ""
+msgstr "Bankkontonummer"
 
 #: relations/models.py:49
 msgid "VAT"
-msgstr ""
+msgstr "USt."
 
 #: relations/models.py:55
 msgid "relation"
-msgstr ""
+msgstr "Beziehung"
 
 #: relations/models.py:56
 msgid "relations"
-msgstr ""
+msgstr "Beziehungen"

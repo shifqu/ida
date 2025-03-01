@@ -11,64 +11,65 @@ msgstr ""
 "POT-Creation-Date: 2025-03-01 15:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language-Team: Dutch <LL@li.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: relations/models.py:21
 msgid "Customer"
-msgstr ""
+msgstr "Klant"
 
 #: relations/models.py:22
 msgid "Supplier"
-msgstr ""
+msgstr "Leverancier"
 
 #: relations/models.py:24
 msgid "name"
-msgstr ""
+msgstr "naam"
 
 #: relations/models.py:25
 msgid "category"
-msgstr ""
+msgstr "categorie"
 
 #: relations/models.py:26
 msgid "language"
-msgstr ""
+msgstr "taal"
 
 #: relations/models.py:28
 msgid "phone"
-msgstr ""
+msgstr "telefoon"
 
 #: relations/models.py:32
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
-msgstr ""
+msgstr "Telefoonnummer met landcode (bijv. +32 490 12 34 56)"
 
 #: relations/models.py:34
 msgid "email"
-msgstr ""
+msgstr "e-mail"
 
 #: relations/models.py:35
 msgid "website"
-msgstr ""
+msgstr "website"
 
 #: relations/models.py:37
 msgid "VAT number"
-msgstr ""
+msgstr "BTW-nummer"
 
 #: relations/models.py:40
 msgid "bank account number"
-msgstr ""
+msgstr "bankrekeningnummer"
 
 #: relations/models.py:49
 msgid "VAT"
-msgstr ""
+msgstr "BTW"
 
 #: relations/models.py:55
 msgid "relation"
-msgstr ""
+msgstr "relatie"
 
 #: relations/models.py:56
 msgid "relations"
-msgstr ""
+msgstr "relaties"

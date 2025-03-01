@@ -11,80 +11,81 @@ msgstr ""
 "POT-Creation-Date: 2025-03-01 15:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language-Team: French <LL@li.org>\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
 #: invoices/models.py:25
 msgid "number"
-msgstr ""
+msgstr "numéro"
 
 #: invoices/models.py:26
 msgid "date"
-msgstr ""
+msgstr "date"
 
 #: invoices/models.py:27
 msgid "date due"
-msgstr ""
+msgstr "date d'échéance"
 
 #: invoices/models.py:28
 msgid "payment communication"
-msgstr ""
+msgstr "communication de paiement"
 
 #: invoices/models.py:29
 msgid "company"
-msgstr ""
+msgstr "entreprise"
 
 #: invoices/models.py:30
 msgid "relation"
-msgstr ""
+msgstr "relation"
 
 #: invoices/models.py:112
 msgid "ATTN."
-msgstr ""
+msgstr "À l'attention de"
 
 #: invoices/models.py:125 invoices/models.py:190
 msgid "subtotal"
-msgstr ""
+msgstr "sous-total"
 
 #: invoices/models.py:126 invoices/models.py:164
 msgid "VAT"
-msgstr ""
+msgstr "TVA"
 
 #: invoices/models.py:127
 msgid "total"
-msgstr ""
+msgstr "total"
 
 #: invoices/models.py:153 invoices/models.py:166
 msgid "invoice"
-msgstr ""
+msgstr "facture"
 
 #: invoices/models.py:154
 msgid "invoices"
-msgstr ""
+msgstr "factures"
 
 #: invoices/models.py:160
 msgid "description"
-msgstr ""
+msgstr "description"
 
 #: invoices/models.py:161
 msgid "unit price"
-msgstr ""
+msgstr "prix unitaire"
 
 #: invoices/models.py:162
 msgid "quantity"
-msgstr ""
+msgstr "quantité"
 
 #: invoices/models.py:164
-msgid "VAT Percentage"
-msgstr ""
+msgid "VAT percentage"
+msgstr "pourcentage de TVA"
 
 #: invoices/models.py:200
 msgid "invoice item"
-msgstr ""
+msgstr "postes de facture"
 
 #: invoices/models.py:201
 msgid "invoice items"
-msgstr ""
+msgstr "articles de facture"
