@@ -87,8 +87,8 @@ class InvoiceDetails:
     payment_communication: dict[str, str]
     lines: list[dict[str, str]]
     summary: dict[str, str]
-    graphic_element = str(IMAGES_FOLDER / "softllama-graphic-element-orange.png")
-    logo = str(IMAGES_FOLDER / "softllama-logo-orange.png")
+    graphic_element: str = field(default=str(IMAGES_FOLDER / "softllama-graphic-element-orange.png"))
+    logo: str = field(default=str(IMAGES_FOLDER / "softllama-logo-orange.png"))
 
 
 @dataclass

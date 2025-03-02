@@ -140,6 +140,10 @@ class Invoice(models.Model):
                 lines=lines,
                 summary=summary,
             )
+            if self.company.logo:
+                invoice_details.logo = self.company.logo.path
+            if self.company.graphic_element:
+                invoice_details.graphic_element = self.company.graphic_element.path
             name = f"{self.company.name.replace(' ', '_').lower()}_invoice_{self.date.year}_{invoice_number}.pdf"
             invoice_pdf = pdf.invoice.InvoicePDF(
                 invoice_details,
