@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class Company(models.Model):
-    """Represents a company."""
+    """Represent a company."""
 
     if TYPE_CHECKING:
         from apps.geo.models import Address
