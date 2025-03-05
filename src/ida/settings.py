@@ -13,6 +13,8 @@ from pathlib import Path
 
 from django.utils.translation import gettext_noop
 
+from ida import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-k($ig_9wkf+7i62iy45rojt*9rzlx#+ft!=d)vbaa8-!$tqhv1"
+SECRET_KEY = environ.from_env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = environ.from_env("DJANGO_DEBUG", "0", astype=environ.strtobool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = environ.from_env("DJANGO_ALLOWED_HOSTS", "[]", astype=list)
 
 
 # Application definition
@@ -137,3 +139,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+ADMIN = {
+    "SITE_HEADER": environ.from_env("ADMIN_SITE_HEADER", "IDA Administration"),
+    "ROOT_URL": environ.from_env("ADMIN_ROOT_URL", "admin/"),
+}

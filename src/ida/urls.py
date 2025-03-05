@@ -15,12 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path
 from django.utils.translation import gettext as _
 
-admin.site.site_header = _("IDA Administration")
+admin.site.site_header = _(settings.ADMIN["SITE_HEADER"])
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
+    path(settings.ADMIN["ROOT_URL"], admin.site.urls),
 ]

@@ -32,7 +32,9 @@ platformdirs==4.3.6
     # via pylint
 pylint==3.3.4
     # via ida (pyproject.toml)
-pyright==1.1.395
+pyright==1.1.396
+    # via ida (pyproject.toml)
+python-dotenv==1.0.1
     # via ida (pyproject.toml)
 reportlab==4.3.1
     # via ida (pyproject.toml)
