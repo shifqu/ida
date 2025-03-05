@@ -143,6 +143,17 @@ APPNAME="myapp" bash -c 'mkdir -p src/apps/$APPNAME && manage startapp $APPNAME 
 $env:APPNAME="myapp"; $ErrorActionPreference="Stop"; mkdir src\apps\$env:APPNAME; manage startapp $env:APPNAME src\apps\$env:APPNAME
 ```
 
+#### Generate a secret key
+##### Bash
+```
+openssl rand -base64 40
+```
+##### Powershell
+```
+Add-Type -AssemblyName System.Web
+[System.Web.Security.Membership]::GeneratePassword(81,0)
+```
+
 #### Run the development server (using 0.0.0.0 to be available to any device on the network)
 ```
 manage runserver 0.0.0.0:38080
