@@ -9,6 +9,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import json
 from pathlib import Path
 
 from django.utils.translation import gettext_noop
@@ -28,7 +29,7 @@ SECRET_KEY = environ.from_env("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = environ.from_env("DJANGO_DEBUG", "0", astype=environ.strtobool)
 
-ALLOWED_HOSTS = environ.from_env("DJANGO_ALLOWED_HOSTS", "[]", astype=list)
+ALLOWED_HOSTS = environ.from_env("DJANGO_ALLOWED_HOSTS", "[]", astype=json.loads)
 
 
 # Application definition
