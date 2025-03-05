@@ -36,11 +36,15 @@ def from_env(name: str, default: str | None = None, astype: Callable[..., T] = s
 def strtobool(value: str) -> bool:
     """Convert a string to a boolean.
 
+    The provided value is converted to lowercase before comparing.
+
     The following values are considered True:
         - "true"
         - "1"
         - "t"
         - "y"
         - "yes"
+
+    All other values are considered False.
     """
     return value.lower() in ("true", "1", "t", "y", "yes")
