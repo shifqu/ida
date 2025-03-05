@@ -6,17 +6,27 @@
 #
 asgiref==3.8.1
     # via django
+certifi==2025.1.31
+    # via requests
 chardet==5.2.0
     # via reportlab
+charset-normalizer==3.4.1
+    # via requests
 django==5.1.6
     # via ida (pyproject.toml)
 gunicorn==23.0.0
     # via ida (pyproject.toml)
+idna==3.10
+    # via requests
 packaging==24.2
     # via gunicorn
 pillow==11.1.0
     # via reportlab
 reportlab==4.3.1
     # via ida (pyproject.toml)
+requests==2.32.3
+    # via ida (pyproject.toml)
 sqlparse==0.5.3
     # via django
+urllib3==2.3.0
+    # via requests

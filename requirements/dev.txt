@@ -8,8 +8,12 @@ asgiref==3.8.1
     # via django
 astroid==3.3.8
     # via pylint
+certifi==2025.1.31
+    # via requests
 chardet==5.2.0
     # via reportlab
+charset-normalizer==3.4.1
+    # via requests
 dill==0.3.9
     # via pylint
 django==5.1.6
@@ -18,6 +22,8 @@ django-types==0.20.0
     # via ida (pyproject.toml)
 gunicorn==23.0.0
     # via ida (pyproject.toml)
+idna==3.10
+    # via requests
 isort==6.0.1
     # via pylint
 mccabe==0.7.0
@@ -38,6 +44,8 @@ python-dotenv==1.0.1
     # via ida (pyproject.toml)
 reportlab==4.3.1
     # via ida (pyproject.toml)
+requests==2.32.3
+    # via ida (pyproject.toml)
 ruff==0.9.9
     # via ida (pyproject.toml)
 sqlparse==0.5.3
@@ -48,3 +56,5 @@ types-psycopg2==2.9.21.20250121
     # via django-types
 typing-extensions==4.12.2
     # via pyright
+urllib3==2.3.0
+    # via requests
