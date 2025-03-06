@@ -191,4 +191,8 @@ docker compose up -d --build
 
 A compose file and Dockerfile are provided to deploy consistently. The files can be included in central compose files using the `include` directive in the central file. This is useful when deploying multiple services on a single server behind an nginx proxy. The central file would define the nginx config and just include this service.
 
+## FAQ
+Q: After forking the repository, the workflows fail with the error `ida.environ.MissingEnvironmentVariableError: Environment variable DJANGO_SECRET_KEY is not set.`.
+A: This is because IDA requires a secret to be set on the repository and secrets are not passed along to forks. Refer to [this URL](https://docs.github.com/en/actions/security-for-github-actions/security-guides/using-secrets-in-github-actions?tool=webui#creating-secrets-for-a-repository) to learn how to create secrets for your repository.
+
 ---

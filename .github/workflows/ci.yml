@@ -28,5 +28,7 @@ jobs:
           pyright src/
 
       - name: Test
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
         run: |
           manage test src/apps
