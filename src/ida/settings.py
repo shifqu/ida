@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.from_env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = environ.from_env("DJANGO_DEBUG", "0", astype=environ.strtobool)
+DEBUG = environ.from_env("DJANGO_DEBUG", "1", astype=environ.strtobool)
 
 ALLOWED_HOSTS = environ.from_env("DJANGO_ALLOWED_HOSTS", "[]", astype=json.loads)
 
