@@ -26,7 +26,7 @@ class InvoicesTest(TestCase):
         cls.relation = Relation.objects.create(name="John Doe", category=Relation.Category.CUSTOMER)
         cls.invoice = Invoice.objects.create(date="2025-01-01", company=cls.company, relation=cls.relation)
         cls.invoice_item = InvoiceItem.objects.create(
-            invoice=cls.invoice, description="Test", quantity=1, unit_price=100, vat_percentage=21
+            invoice=cls.invoice, description="Test", quantity=2, unit_price=100, vat_percentage=21
         )
         cls.invoice_2 = Invoice.objects.create(date="2025-12-01", company=cls.company, relation=cls.relation)
 
@@ -40,28 +40,28 @@ class InvoicesTest(TestCase):
         self.assertEqual(self.invoice.company, self.company)
         self.assertEqual(self.invoice.relation, self.relation)
         # Calculated fields
-        self.assertEqual(self.invoice.subtotal, 100)
-        self.assertEqual(self.invoice.vat_amount, 21)
-        self.assertEqual(self.invoice.total, 121)
+        self.assertEqual(self.invoice.subtotal, 200)
+        self.assertEqual(self.invoice.vat_amount, 42)
+        self.assertEqual(self.invoice.total, 242)
 
         # Persisted fields
         self.assertEqual(self.invoice_item.description, "Test")
         self.assertEqual(self.invoice_item.unit_price, 100)
-        self.assertEqual(self.invoice_item.quantity, 1)
+        self.assertEqual(self.invoice_item.quantity, 2)
         self.assertEqual(self.invoice_item.invoice, self.invoice)
         self.assertEqual(self.invoice_item.vat_percentage, 21)
         # Calculated fields
-        self.assertEqual(self.invoice_item.subtotal, 100)
-        self.assertEqual(self.invoice_item.vat_amount, 21)
-        self.assertEqual(self.invoice_item.total, 121)
+        self.assertEqual(self.invoice_item.subtotal, 200)
+        self.assertEqual(self.invoice_item.vat_amount, 42)
+        self.assertEqual(self.invoice_item.total, 242)
 
     def test_invoice_str(self):
         """Test the invoice string representation."""
-        self.assertEqual(str(self.invoice), "2025/0001: 121.00 (IDA Inc.->John Doe) Due: 2025-02-28")
+        self.assertEqual(str(self.invoice), "2025/0001: 242.00 (IDA Inc.->John Doe) Due: 2025-02-28")
 
     def test_invoice_item_str(self):
         """Test the invoice item string representation."""
-        self.assertEqual(str(self.invoice_item), "Test 1x100 (21%) = 121.00")
+        self.assertEqual(str(self.invoice_item), "Test 2x100 (21%) = 242.00")
 
     def test_invoice_date_due(self):
         """Test the invoice date due."""
@@ -87,9 +87,9 @@ class InvoicesTest(TestCase):
             self.invoice_item.to_dict(),
             {
                 "Description": "Test",
-                "Quantity": 1,
+                "Quantity": 2,
                 "Unit price": 100,
                 "VAT": "21%",
-                "Subtotal": "100.00",
+                "Subtotal": "200.00",
             },
         )

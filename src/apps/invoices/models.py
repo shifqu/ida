@@ -196,7 +196,7 @@ class InvoiceItem(models.Model):
 
     def __str__(self):
         """Return the string representation of the invoice item."""
-        return f"{self.description} {self.quantity}x{self.unit_price} ({int(self.vat_amount)}%) = {self.total:.2f}"
+        return f"{self.description} {self.quantity}x{self.unit_price} ({int(self.vat_percentage)}%) = {self.total:.2f}"
 
     class Meta:
         """Set meta options."""
