@@ -3,4 +3,9 @@ services:
     build: .
     restart: unless-stopped
     environment:
-      - IDA_DEBUG=${IDA_DEBUG:?Please export IDA_DEBUG as an environment variable}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:?Please export DJANGO_SECRET_KEY as an environment variable}
+      - DJANGO_DEBUG=${DJANGO_DEBUG:?Please export DJANGO_DEBUG as an environment variable}
+      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS:?Please export DJANGO_ALLOWED_HOSTS as an environment variable}
+      - DJANGO_DOMAIN_NAME=${DJANGO_DOMAIN_NAME:?Please export DJANGO_DOMAIN_NAME as an environment variable}
+      - ADMIN_SITE_HEADER=${ADMIN_SITE_HEADER:?Please export ADMIN_SITE_HEADER as an environment variable}
+      - ADMIN_ROOT_URL=${ADMIN_ROOT_URL:?Please export ADMIN_ROOT_URL as an environment variable}
