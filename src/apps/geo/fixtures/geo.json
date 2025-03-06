@@ -1,0 +1,14 @@
+[
+    {
+        "model": "geo.address",
+        "pk": 1,
+        "fields": {
+            "line1": "Koning Albert I-laan 123",
+            "postal_code": "1000",
+            "city": "Brussels",
+            "country": "BE",
+            "relation": null,
+            "company": 1
+        }
+    }
+]

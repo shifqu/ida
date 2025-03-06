@@ -11,25 +11,14 @@ from apps.relations.models import Relation
 class GeoTests(TestCase):
     """Geo model tests."""
 
+    fixtures = ["companies", "relations", "geo"]
+
     @classmethod
     def setUpTestData(cls):
         """Set up the test data."""
-        cls.company = Company.objects.create(
-            name="IDA Inc.",
-            phone="+32 490 12 34 56",
-            email="info@ida.com",
-            website="https://ida.com",
-            vat_number="BE0123456789",
-            business_court="Antwerpen, afd. Tongeren",
-        )
-        cls.address = Address.objects.create(
-            line1="Koning Albert I-laan 123",
-            postal_code="1234",
-            city="Brussels",
-            country="BE",
-            company=cls.company,
-        )
-        cls.relation = Relation.objects.create(name="John Doe", category=Relation.Category.CUSTOMER)
+        cls.company = Company.objects.get(pk=1)
+        cls.address = Address.objects.get(pk=1)
+        cls.relation = Relation.objects.get(pk=1)
 
     def test_model_content(self):
         """Test the model content."""
@@ -37,7 +26,7 @@ class GeoTests(TestCase):
         self.assertEqual(self.address.line2, "")
         self.assertEqual(self.address.line3, "")
         self.assertEqual(self.address.line4, "")
-        self.assertEqual(self.address.postal_code, "1234")
+        self.assertEqual(self.address.postal_code, "1000")
         self.assertEqual(self.address.city, "Brussels")
         self.assertEqual(self.address.state_province_region, "")
         self.assertEqual(self.address.country, "BE")
@@ -46,19 +35,11 @@ class GeoTests(TestCase):
 
     def test_str(self):
         """Test the string representation."""
-        self.assertEqual(
-            str(self.address),
-            "Koning Albert I-laan 123\n1234 Brussels\nBelgium",
-        )
+        self.assertEqual(str(self.address), "Koning Albert I-laan 123\n1000 Brussels\nBelgium")
 
     def test_constraints(self):
         """Test the constraints."""
-        address = Address(
-            line1="Koning Albert I-laan 123",
-            postal_code="1234",
-            city="Brussels",
-            country="BE",
-        )
+        address = Address(line1="Koning Albert I-laan 123", postal_code="1000", city="Brussels", country="BE")
 
         # Test case 1: no relation or company
         with transaction.atomic():
