@@ -28,7 +28,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     readonly_fields = ("number", "date_due", "payment_communication", "subtotal", "vat_amount", "total")
     actions = [create_pdf]
 
-    def has_delete_permission(self, request, obj=...):  # noqa: ARG002  # pylint: disable=unused-argument
+    def has_delete_permission(self, request, obj=None):  # noqa: ARG002  # pylint: disable=unused-argument
         """Do not allow to delete invoices."""
         return False
 
