@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-01 15:15+0000\n"
+"POT-Creation-Date: 2025-03-24 12:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <LL@li.org>\n"
@@ -18,74 +18,142 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: invoices/models.py:25
+#: models.py:32
+msgid "Draft"
+msgstr "Entwurf"
+
+#: models.py:33
+msgid "Confirmed"
+msgstr "Bestätigt"
+
+#: models.py:34
+msgid "Sent"
+msgstr "Gesendet"
+
+#: models.py:35
+msgid "Paid"
+msgstr "Bezahlt"
+
+#: models.py:37
 msgid "number"
 msgstr "Nummer"
 
-#: invoices/models.py:26
+#: models.py:38
 msgid "date"
 msgstr "Datum"
 
-#: invoices/models.py:27
-msgid "date due"
-msgstr "Fälligkeitsdatum"
-
-#: invoices/models.py:28
-msgid "payment communication"
-msgstr "Zahlungskommunikation"
-
-#: invoices/models.py:29
+#: models.py:39
 msgid "company"
 msgstr "Firma"
 
-#: invoices/models.py:30
+#: models.py:40
 msgid "relation"
 msgstr "Beziehung"
 
-#: invoices/models.py:112
-msgid "ATTN."
-msgstr "Z. Hd."
+#: models.py:42
+msgid "status"
+msgstr "Status"
 
-#: invoices/models.py:125 invoices/models.py:190
+#: models.py:44
+msgid "PDF file"
+msgstr "PDF-Datei"
+
+#: models.py:116
+msgid "An invoice without invoice items cannot be confirmed"
+msgstr "Eine Rechnung ohne Rechnungspositionen kann nicht bestätigt werden"
+
+#: models.py:122
+#, python-format
+msgid ""
+"A non-draft invoice (date: %(last_date)s) exists after %(self_date)s. Update "
+"the date to at least %(last_date)s."
+msgstr ""
+"Eine nicht-Entwurfsrechnung (Datum: %(last_date)s) existiert nach %(self_date)s. "
+"Aktualisieren Sie das Datum auf mindestens %(last_date)s."
+
+#: models.py:136
+msgid "Only confirmed invoices can have their PDF generated"
+msgstr "Nur bestätigte Rechnungen können als PDF erstellt werden"
+
+#: models.py:172
+msgid "Draft invoices can not be sent by email"
+msgstr "Entwurfsrechnungen können nicht per E-Mail versendet werden"
+
+#: models.py:174
+msgid "Invoice has already been sent"
+msgstr "Rechnung wurde bereits gesendet"
+
+#: models.py:177
+#, python-format
+msgid "Relation (%(relation)s) has no email address"
+msgstr "Beziehung (%(relation)s) hat keine E-Mail-Adresse"
+
+#: models.py:210
+#, fuzzy
+#| msgid "date due"
+msgid "date_due"
+msgstr "Fälligkeitsdatum"
+
+#: models.py:211
+msgid "payment communication"
+msgstr "Zahlungskommunikation"
+
+#: models.py:219 models.py:308
 msgid "subtotal"
 msgstr "Teilsumme"
 
-#: invoices/models.py:126 invoices/models.py:164
+#: models.py:220 models.py:282
 msgid "VAT"
 msgstr "MwSt."
 
-#: invoices/models.py:127
+#: models.py:221
 msgid "total"
 msgstr "Gesamt"
 
-#: invoices/models.py:153 invoices/models.py:166
+#: models.py:227
+msgid "ATTN."
+msgstr "Z. Hd."
+
+#: models.py:253
+msgid "Relation has no address"
+msgstr "Beziehung hat keine Adresse"
+
+#: models.py:259
+msgid "Company has no bank account"
+msgstr "Unternehmen hat kein Bankkonto"
+
+#: models.py:265
+msgid "Company has no address"
+msgstr "Unternehmen hat keine Adresse"
+
+#: models.py:271 models.py:284
 msgid "invoice"
 msgstr "Rechnung"
 
-#: invoices/models.py:154
+#: models.py:272
 msgid "invoices"
 msgstr "Rechnungen"
 
-#: invoices/models.py:160
+#: models.py:278
 msgid "description"
 msgstr "Beschreibung"
 
-#: invoices/models.py:161
+#: models.py:279
 msgid "unit price"
 msgstr "Stückpreis"
 
-#: invoices/models.py:162
+#: models.py:280
 msgid "quantity"
 msgstr "Menge"
 
-#: invoices/models.py:164
+#: models.py:282
 msgid "VAT percentage"
 msgstr "MwSt.-Prozentsatz"
 
-#: invoices/models.py:200
+#: models.py:318
 msgid "invoice item"
 msgstr "Rechnungsposition"
 
-#: invoices/models.py:201
+#: models.py:319
 msgid "invoice items"
 msgstr "Rechnungspositionen"
