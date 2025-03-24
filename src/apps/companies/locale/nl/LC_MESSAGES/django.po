@@ -18,70 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:19 models.py:75
+#: companies/models.py:19 companies/models.py:75
 msgid "name"
 msgstr "naam"
 
-#: models.py:21
+#: companies/models.py:21
 msgid "phone"
 msgstr "telefoon"
 
-#: models.py:25
+#: companies/models.py:25
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
 msgstr "Telefoonnummer met landcode (bijv. +32 490 12 34 56)"
 
-#: models.py:27
+#: companies/models.py:27
 msgid "email"
 msgstr "e-mail"
 
-#: models.py:28
+#: companies/models.py:28
 msgid "website"
 msgstr "website"
 
-#: models.py:29
+#: companies/models.py:29
 msgid "VAT number"
 msgstr "BTW-nummer"
 
-#: models.py:31
+#: companies/models.py:31
 msgid "business court"
 msgstr "ondernemingsrechtbank"
 
-#: models.py:35
+#: companies/models.py:35
 msgid "Example: Antwerpen, afd. Hasselt"
 msgstr "Voorbeeld: Antwerpen, afd. Hasselt"
 
-#: models.py:37
+#: companies/models.py:37
 msgid "logo"
 msgstr "logo"
 
-#: models.py:39
+#: companies/models.py:39
 msgid "graphic element"
 msgstr "grafisch element"
 
-#: models.py:48
+#: companies/models.py:48
 msgid "VAT"
 msgstr "BTW"
 
-#: models.py:66 models.py:76
+#: companies/models.py:66 companies/models.py:76
 msgid "company"
 msgstr "bedrijf"
 
-#: models.py:67
+#: companies/models.py:67
 msgid "companies"
 msgstr "bedrijven"
 
-#: models.py:73
+#: companies/models.py:73
 msgid "IBAN"
 msgstr "IBAN"
 
-#: models.py:74
+#: companies/models.py:74
 msgid "BIC"
 msgstr "BIC"
 
-#: models.py:85
+#: companies/models.py:85
 msgid "bank account"
 msgstr "bankrekening"
 
-#: models.py:86
+#: companies/models.py:86
 msgid "bank accounts"
 msgstr "bankrekeningen"
