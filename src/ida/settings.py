@@ -151,11 +151,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # https://docs.djangoproject.com/en/5.1/topics/email/#module-django.core.mail
 
 EMAIL_BACKEND = environ.from_env("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
-EMAIL_HOST = environ.from_env("DJANGO_EMAIL_HOST")
-EMAIL_PORT = environ.from_env("DJANGO_EMAIL_PORT")
+EMAIL_HOST = environ.from_env("DJANGO_EMAIL_HOST", default="localhost")
+EMAIL_PORT = environ.from_env("DJANGO_EMAIL_PORT", default=25, astype=int)
 EMAIL_USE_TLS = environ.from_env("DJANGO_EMAIL_USE_TLS", False, astype=environ.strtobool)
-EMAIL_HOST_USER = environ.from_env("DJANGO_EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = environ.from_env("DJANGO_EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = environ.from_env("DJANGO_EMAIL_HOST_USER", default="")
+EMAIL_HOST_PASSWORD = environ.from_env("DJANGO_EMAIL_HOST_PASSWORD", default="")
 
 
 # Custom settings
