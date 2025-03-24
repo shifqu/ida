@@ -10,5 +10,17 @@
             "relation": null,
             "company": 1
         }
+    },
+    {
+        "model": "geo.address",
+        "pk": 2,
+        "fields": {
+            "line1": "Koninging Fabiola I-laan 123",
+            "postal_code": "1000",
+            "city": "Brussels",
+            "country": "BE",
+            "relation": 1,
+            "company": null
+        }
     }
 ]

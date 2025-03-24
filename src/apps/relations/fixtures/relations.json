@@ -1,0 +1,18 @@
+[
+    {
+        "model": "relations.relation",
+        "pk": 1,
+        "fields": {
+            "name": "Dummy Customer",
+            "category": "CUSTOMER"
+        }
+    },
+    {
+        "model": "relations.relation",
+        "pk": 2,
+        "fields": {
+            "name": "Dummy Supplier",
+            "category": "SUPPLIER"
+        }
+    }
+]

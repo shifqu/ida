@@ -1,0 +1,79 @@
+[
+    {
+        "model": "invoices.invoice",
+        "pk": 1,
+        "fields": {
+            "number": "0001",
+            "date": "2025-01-1",
+            "company": 1,
+            "relation": 1,
+            "status": "confirmed"
+        }
+    },
+    {
+        "model": "invoices.invoice",
+        "pk": 2,
+        "fields": {
+            "number": "0002",
+            "date": "2025-12-01",
+            "company": 1,
+            "relation": 1,
+            "status": "confirmed"
+        }
+    },
+    {
+        "model": "invoices.invoice",
+        "pk": 3,
+        "fields": {
+            "number": "",
+            "date": "2026-01-31",
+            "company": 1,
+            "relation": 1,
+            "status": "draft"
+        }
+    },
+    {
+        "model": "invoices.invoice",
+        "pk": 4,
+        "fields": {
+            "number": "",
+            "date": "2025-02-28",
+            "company": 1,
+            "relation": 1,
+            "status": "draft"
+        }
+    },
+    {
+        "model": "invoices.invoiceitem",
+        "pk": 1,
+        "fields": {
+            "description": "[DUMMY] Service",
+            "unit_price": "100.00",
+            "quantity": "2",
+            "vat_percentage": "21.00",
+            "invoice": 1
+        }
+    },
+    {
+        "model": "invoices.invoiceitem",
+        "pk": 2,
+        "fields": {
+            "description": "[DUMMY] Product",
+            "unit_price": "100.00",
+            "quantity": "10.00",
+            "vat_percentage": "21.00",
+            "invoice": 2
+        }
+    },
+    {
+        "model": "invoices.invoiceitem",
+        "pk": 3,
+        "fields": {
+            "description": "[DUMMY] Product",
+            "unit_price": "100.00",
+            "quantity": "10.00",
+            "vat_percentage": "21.00",
+            "invoice": 3
+        }
+    }
+]
