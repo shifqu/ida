@@ -74,13 +74,9 @@ manage test apps
 ```
 
 ### Coverage report for the source code
-The following commands should be ran from the `src` directory to properly point to the manage.py script.
-```
-cd src/
-```
 #### Run with coverage
 ```
-coverage run manage.py test apps
+coverage run -m manage test src/apps
 ```
 #### Create the report
 ```
