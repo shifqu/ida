@@ -125,7 +125,7 @@ cd src/apps
 ```
 
 ```
-manage maketranslations --locale de --locale fr --locale nl
+manage makemessages --locale de --locale fr --locale nl
 ```
 
 The following command should be ran on fresh installs as the MO files are not included in version control.
