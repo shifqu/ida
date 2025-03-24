@@ -86,6 +86,9 @@ class InvoicesTest(TestCase):
         self.assertEqual(self.invoice_2.number, "0002")
         self.assertEqual(self.invoice_2.payment_communication, "+++002/0250/00288+++")
 
+        self.assertEqual(self.invoice_3.status, Invoice.Status.DRAFT)
+        self.assertEqual(self.invoice_3.payment_communication, "")
+
     def test_invoice_number_calculated_once(self):
         """Test that the invoice number is only calculated once."""
         self.assertEqual(self.invoice.number, "0001")
@@ -94,6 +97,9 @@ class InvoicesTest(TestCase):
 
     def test_invoice_confirm(self):
         """Test the invoice confirm method."""
+        self.assertEqual(self.invoice.status, Invoice.Status.CONFIRMED)
+        self.invoice.confirm()
+
         self.assertEqual(self.invoice_3.number, "")
         self.invoice_3.confirm()
         self.assertEqual(self.invoice_3.status, Invoice.Status.CONFIRMED)

@@ -1,6 +1,6 @@
 """Geo app tests."""
 
-from django.db import transaction
+from django.db import IntegrityError, transaction
 from django.test import TestCase
 
 from apps.companies.models import Company
@@ -43,17 +43,17 @@ class GeoTests(TestCase):
 
         # Test case 1: no relation or company
         with transaction.atomic():
-            with self.assertRaises(Exception) as context:
+            with self.assertRaises(IntegrityError) as context:
                 address.save()
-                self.assertTrue("address_must_have_exactly_one_relation_or_company" in str(context.exception))
+            self.assertTrue("address_must_have_exactly_one_relation_or_company" in str(context.exception))
 
         # Test case 2: relation AND company
         address.company = self.company
         address.relation = self.relation
         with transaction.atomic():
-            with self.assertRaises(Exception) as context:
+            with self.assertRaises(IntegrityError) as context:
                 address.save()
-                self.assertTrue("address_must_have_exactly_one_relation_or_company" in str(context.exception))
+            self.assertTrue("address_must_have_exactly_one_relation_or_company" in str(context.exception))
 
         # Test case 3: company only
         address.relation = None

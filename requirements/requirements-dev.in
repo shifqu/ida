@@ -3,3 +3,4 @@ pylint
 pyright
 django-types
 python-dotenv
+coverage

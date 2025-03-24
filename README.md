@@ -73,6 +73,20 @@ pyright src/
 manage test apps
 ```
 
+### Coverage report for the source code
+The following commands should be ran from the `src` directory to properly point to the manage.py script.
+```
+cd src/
+```
+#### Run with coverage
+```
+coverage run manage.py test apps
+```
+#### Create the report
+```
+coverage report -m
+```
+
 ### Combined commands for linting, formatting and type-checking
 ```
 ruff check --fix src/
