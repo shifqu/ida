@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = environ.from_env("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = environ.from_env("DJANGO_DEBUG", "1", astype=environ.strtobool)
+DEBUG = environ.from_env("DJANGO_DEBUG", True, astype=environ.strtobool)
 
-ALLOWED_HOSTS = environ.from_env("DJANGO_ALLOWED_HOSTS", "[]", astype=json.loads)
+ALLOWED_HOSTS = environ.from_env("DJANGO_ALLOWED_HOSTS", [], astype=json.loads)
 
 
 # Application definition
@@ -136,10 +136,29 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+# Media files (user-uploaded files)
+# https://docs.djangoproject.com/en/5.1/topics/files/#managing-files
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = environ.from_env("DJANGO_MEDIA_ROOT", default=BASE_DIR / "media", astype=Path)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Email settings
+# https://docs.djangoproject.com/en/5.1/topics/email/#module-django.core.mail
+
+EMAIL_BACKEND = environ.from_env("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = environ.from_env("DJANGO_EMAIL_HOST")
+EMAIL_PORT = environ.from_env("DJANGO_EMAIL_PORT")
+EMAIL_USE_TLS = environ.from_env("DJANGO_EMAIL_USE_TLS", False, astype=environ.strtobool)
+EMAIL_HOST_USER = environ.from_env("DJANGO_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = environ.from_env("DJANGO_EMAIL_HOST_PASSWORD")
+
+
+# Custom settings
 
 ADMIN = {
     "SITE_HEADER": environ.from_env("ADMIN_SITE_HEADER", "IDA Administration"),

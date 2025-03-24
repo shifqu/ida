@@ -9,3 +9,8 @@ services:
       - DJANGO_DOMAIN_NAME=${DJANGO_DOMAIN_NAME:?Please export DJANGO_DOMAIN_NAME as an environment variable}
       - ADMIN_SITE_HEADER=${ADMIN_SITE_HEADER:?Please export ADMIN_SITE_HEADER as an environment variable}
       - ADMIN_ROOT_URL=${ADMIN_ROOT_URL:?Please export ADMIN_ROOT_URL as an environment variable}
+      - DJANGO_EMAIL_HOST=${DJANGO_EMAIL_HOST:?Please export DJANGO_EMAIL_HOST as an environment variable}
+      - DJANGO_EMAIL_PORT=${DJANGO_EMAIL_PORT:?Please export DJANGO_EMAIL_PORT as an environment variable}
+      - DJANGO_EMAIL_USE_TLS=${DJANGO_EMAIL_USE_TLS:?Please export DJANGO_EMAIL_USE_TLS as an environment variable}
+      - DJANGO_EMAIL_HOST_USER=${DJANGO_EMAIL_HOST_USER:?Please export DJANGO_EMAIL_HOST_USER as an environment variable}
+      - DJANGO_EMAIL_HOST_PASSWORD=${DJANGO_EMAIL_HOST_PASSWORD:?Please export DJANGO_EMAIL_HOST_PASSWORD as an environment variable}

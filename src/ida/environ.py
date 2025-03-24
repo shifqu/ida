@@ -18,18 +18,25 @@ class MissingEnvironmentVariableError(Exception):
     """Raised when an environment variable is missing."""
 
 
-def from_env(name: str, default: str | None = None, astype: Callable[..., T] = str) -> T:
+class _Missing:
+    """Sentinel to represent a missing value."""
+
+
+_MISSING = _Missing()
+
+
+def from_env(name: str, default: T | _Missing = _MISSING, astype: Callable[..., T] = str) -> T:
     """Get a value from the environment and call astype with the value as argument.
 
-    The default will also be passed to astype if it is not None.
-    A ValueError will be raised if the environment variable is not set and no default is provided.
+    If the default is returned, it will be returned as provided.
+    A MissingEnvironmentVariableError will be raised if the environment variable is not set and no default is provided.
     """
     try:
         value = os.environ[name]
     except KeyError as exc:
-        if default is None:
+        if isinstance(default, _Missing):
             raise MissingEnvironmentVariableError(f"Environment variable {name} is not set.") from exc
-        return astype(default)
+        return default
     return astype(value)
 
 
