@@ -143,6 +143,14 @@ APPNAME="myapp" bash -c 'mkdir -p src/apps/$APPNAME && manage startapp $APPNAME 
 $env:APPNAME="myapp"; $ErrorActionPreference="Stop"; mkdir src\apps\$env:APPNAME; manage startapp $env:APPNAME src\apps\$env:APPNAME
 ```
 
+#### Dump data for specific app (update myapp as APPNAME)
+This could be useful to generate test-data
+##### Bash
+```
+APPNAME="myapp" bash -c 'mkdir -p src/apps/$APPNAME/fixtures && manage dumpdata $APPNAME >> src/apps/$APPNAME/fixtures/$APPNAME.json'
+```
+###### Note: This appends to the file and thus, could result in duplicate pks. Older records are overwritten with newer records.
+
 #### Generate a secret key
 ##### Bash
 ```
