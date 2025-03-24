@@ -8,27 +8,30 @@ from apps.relations.models import Relation
 class RelationTests(TestCase):
     """Relation model tests."""
 
+    fixtures = ["relations"]
+
     @classmethod
     def setUpTestData(cls):
         """Set up the test data."""
-        cls.relation = Relation.objects.create(
-            name="Test Relation",
-            category=Relation.Category.CUSTOMER,
-            language="en",
-            phone="+32 490 12 34 56",
-        )
+        cls.customer = Relation.objects.get(pk=1)
 
     def test_model_content(self):
         """Test the model content."""
-        self.assertEqual(self.relation.name, "Test Relation")
-        self.assertEqual(self.relation.category, Relation.Category.CUSTOMER)
-        self.assertEqual(self.relation.language, "en")
-        self.assertEqual(self.relation.phone, "+32 490 12 34 56")
-        self.assertEqual(self.relation.email, "")
-        self.assertEqual(self.relation.website, "")
-        self.assertEqual(self.relation.vat_number, "")
-        self.assertEqual(self.relation.bank_account_number, "")
+        self.assertEqual(self.customer.name, "Dummy Customer")
+        self.assertEqual(self.customer.category, Relation.Category.CUSTOMER)
+        self.assertEqual(self.customer.language, "en")
+        self.assertEqual(self.customer.phone, "")
+        self.assertEqual(self.customer.email, "")
+        self.assertEqual(self.customer.website, "")
+        self.assertEqual(self.customer.vat_number, "")
+        self.assertEqual(self.customer.bank_account_number, "")
+
+    def test_get_vat_number_display(self):
+        """Test the get_vat_number_display method."""
+        self.assertEqual(self.customer.get_vat_number_display(), "")
+        self.customer.vat_number = "BE0123456789"
+        self.assertEqual(self.customer.get_vat_number_display(), "VAT BE0123456789")
 
     def test_str(self):
         """Test the string representation."""
-        self.assertEqual(str(self.relation), "Test Relation")
+        self.assertEqual(str(self.customer), "Dummy Customer")

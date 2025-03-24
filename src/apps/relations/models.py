@@ -46,6 +46,8 @@ class Relation(models.Model):
 
     def get_vat_number_display(self):
         """Return the VAT number for display."""
+        if not self.vat_number:
+            return ""
         vat_str = _("VAT")
         return f"{vat_str} {self.vat_number}"
 
