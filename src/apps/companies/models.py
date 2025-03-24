@@ -1,5 +1,6 @@
 """Companies models."""
 
+import re
 from typing import TYPE_CHECKING
 
 from django.db import models
@@ -46,6 +47,18 @@ class Company(models.Model):
         """Return the VAT number for display."""
         vat_str = _("VAT")
         return f"{vat_str} {self.vat_number}"
+
+    def get_name_cleaned(self):
+        """Return the cleaned name.
+
+        All non-alphanumeric characters are replaced with an underscore and consecutive underscore are replaced by a
+        single underscore.
+        The final result is stripped of leading and trailing underscores and lowercased.
+        """
+        cleaned_name = re.sub(r"[^a-zA-Z0-9]", "_", self.name)
+        cleaned_name = re.sub(r"__+", "_", cleaned_name)
+        cleaned_name = cleaned_name.strip("_")
+        return cleaned_name.lower()
 
     class Meta:
         """Add a correct plural name."""

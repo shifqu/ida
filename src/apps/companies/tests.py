@@ -8,20 +8,13 @@ from apps.companies.models import BankAccount, Company
 class CompanyTests(TestCase):
     """Company model tests."""
 
+    fixtures = ["companies"]
+
     @classmethod
     def setUpTestData(cls):
         """Set up the test data."""
-        cls.company = Company.objects.create(
-            name="IDA Inc.",
-            phone="+32 490 12 34 56",
-            email="info@ida.com",
-            website="https://ida.com",
-            vat_number="BE0123456789",
-            business_court="Antwerpen, afd. Tongeren",
-        )
-        cls.bank_account = BankAccount.objects.create(
-            iban="BE68539007547034", bic="BBRUBEBB", name="ING", company=cls.company
-        )
+        cls.company = Company.objects.get(pk=1)
+        cls.bank_account = BankAccount.objects.get(pk=1)
 
     def test_model_content(self):
         """Test the model content."""
@@ -40,6 +33,10 @@ class CompanyTests(TestCase):
     def test_get_vat_number_display(self):
         """Test the get_vat_number_display method."""
         self.assertEqual(self.company.get_vat_number_display(), "VAT BE0123456789")
+
+    def test_get_name_cleaned(self):
+        """Test the get_name_cleaned method."""
+        self.assertEqual(self.company.get_name_cleaned(), "ida_inc")
 
     def test_str(self):
         """Test the string representation."""
