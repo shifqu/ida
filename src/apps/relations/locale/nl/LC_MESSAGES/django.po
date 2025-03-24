@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-01 15:15+0000\n"
+"POT-Creation-Date: 2025-03-24 12:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <LL@li.org>\n"
@@ -62,14 +62,14 @@ msgstr "BTW-nummer"
 msgid "bank account number"
 msgstr "bankrekeningnummer"
 
-#: relations/models.py:49
+#: relations/models.py:51
 msgid "VAT"
 msgstr "BTW"
 
-#: relations/models.py:55
+#: relations/models.py:57
 msgid "relation"
 msgstr "relatie"
 
-#: relations/models.py:56
+#: relations/models.py:58
 msgid "relations"
 msgstr "relaties"
