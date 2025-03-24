@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-01 15:15+0000\n"
+"POT-Creation-Date: 2025-03-24 12:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <LL@li.org>\n"
@@ -18,62 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: companies/models.py:18 companies/models.py:58
+#: models.py:19 models.py:75
 msgid "name"
 msgstr "nom"
 
-#: companies/models.py:20
+#: models.py:21
 msgid "phone"
 msgstr "téléphone"
 
-#: companies/models.py:24
+#: models.py:25
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
 msgstr "Numéro de téléphone avec code pays (ex. +32 490 12 34 56)"
 
-#: companies/models.py:26
+#: models.py:27
 msgid "email"
 msgstr "e-mail"
 
-#: companies/models.py:27
+#: models.py:28
 msgid "website"
 msgstr "site web"
 
-#: companies/models.py:28
+#: models.py:29
 msgid "VAT number"
 msgstr "numéro de TVA"
 
-#: companies/models.py:30
+#: models.py:31
 msgid "business court"
 msgstr "tribunal de commerce"
 
-#: companies/models.py:34
+#: models.py:35
 msgid "Example: Antwerpen, afd. Hasselt"
 msgstr "Exemple : Anvers, div. Hasselt"
 
-#: companies/models.py:43
+#: models.py:37
+msgid "logo"
+msgstr "logo"
+
+#: models.py:39
+msgid "graphic element"
+msgstr "élément graphique"
+
+#: models.py:48
 msgid "VAT"
 msgstr "TVA"
 
-#: companies/models.py:49 companies/models.py:59
+#: models.py:66 models.py:76
 msgid "company"
 msgstr "entreprise"
 
-#: companies/models.py:50
+#: models.py:67
 msgid "companies"
 msgstr "entreprises"
 
-#: companies/models.py:56
+#: models.py:73
 msgid "IBAN"
 msgstr "IBAN"
 
-#: companies/models.py:57
+#: models.py:74
 msgid "BIC"
 msgstr "BIC"
 
-#: companies/models.py:68
+#: models.py:85
 msgid "bank account"
 msgstr "compte bancaire"
 
-#: companies/models.py:69
+#: models.py:86
 msgid "bank accounts"
 msgstr "comptes bancaires"
