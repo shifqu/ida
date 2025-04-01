@@ -176,5 +176,5 @@ cython_debug/
 # Mac
 .DS_Store
 
-# Media files (default path is src/media)
-src/media/
+# Media files (default path is media/)
+media/
