@@ -2,5 +2,7 @@ services:
   ida:
     build:
       target: development
+    environment:
+      - DJANGO_ENVIRONMENT=development
     volumes:
       - ./:/app

@@ -33,6 +33,11 @@ COPY . .
 # Install the application in editable mode
 RUN pip install --editable .[dev]
 
+# Copy and set the entrypoint
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 # Run the application
 CMD ["manage", "runserver"]
 
@@ -66,6 +71,11 @@ RUN mkdir /staticdata && chown -R appuser:appuser /staticdata
 
 # Switch to non-root user
 USER appuser
+
+# Copy and set the entrypoint
+COPY docker/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Run the application with Gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:38080", "--workers", "4", "ida.wsgi:application"]

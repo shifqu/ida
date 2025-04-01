@@ -14,3 +14,4 @@ services:
       - DJANGO_EMAIL_USE_TLS=${DJANGO_EMAIL_USE_TLS:?Please export DJANGO_EMAIL_USE_TLS as an environment variable}
       - DJANGO_EMAIL_HOST_USER=${DJANGO_EMAIL_HOST_USER:?Please export DJANGO_EMAIL_HOST_USER as an environment variable}
       - DJANGO_EMAIL_HOST_PASSWORD=${DJANGO_EMAIL_HOST_PASSWORD:?Please export DJANGO_EMAIL_HOST_PASSWORD as an environment variable}
+      - DJANGO_ENVIRONMENT=production
