@@ -1,6 +1,11 @@
 #!/bin/sh
 set -e
 
+if [ "$DJANGO_ENVIRONMENT" = "development" ]; then
+    echo "Development environment detected, installing in editable mode..."
+    pip install --editable .[dev]
+fi
+
 echo "Applying database migrations..."
 manage migrate --noinput
 
@@ -10,7 +15,7 @@ if [ "$DJANGO_ENVIRONMENT" = "production" ]; then
 fi
 
 echo "Compiling messages..."
-manage compilemessages || true  # Ignore errors
+manage compilemessages
 
 # Run the main command
 exec "$@"

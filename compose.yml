@@ -1,17 +1,25 @@
 services:
   ida:
-    build: .
+    build:
+      context: .
+      target: production
     restart: unless-stopped
+    volumes:
+      - db_data:/db_data:rw
+      - static_data:/static_data
+      - media_data:/media_data
+    env_file:
+      - .dockerenv
     environment:
-      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:?Please export DJANGO_SECRET_KEY as an environment variable}
-      - DJANGO_DEBUG=${DJANGO_DEBUG:?Please export DJANGO_DEBUG as an environment variable}
-      - DJANGO_ALLOWED_HOSTS=${DJANGO_ALLOWED_HOSTS:?Please export DJANGO_ALLOWED_HOSTS as an environment variable}
-      - DJANGO_DOMAIN_NAME=${DJANGO_DOMAIN_NAME:?Please export DJANGO_DOMAIN_NAME as an environment variable}
-      - ADMIN_SITE_HEADER=${ADMIN_SITE_HEADER:?Please export ADMIN_SITE_HEADER as an environment variable}
-      - ADMIN_ROOT_URL=${ADMIN_ROOT_URL:?Please export ADMIN_ROOT_URL as an environment variable}
-      - DJANGO_EMAIL_HOST=${DJANGO_EMAIL_HOST:?Please export DJANGO_EMAIL_HOST as an environment variable}
-      - DJANGO_EMAIL_PORT=${DJANGO_EMAIL_PORT:?Please export DJANGO_EMAIL_PORT as an environment variable}
-      - DJANGO_EMAIL_USE_TLS=${DJANGO_EMAIL_USE_TLS:?Please export DJANGO_EMAIL_USE_TLS as an environment variable}
-      - DJANGO_EMAIL_HOST_USER=${DJANGO_EMAIL_HOST_USER:?Please export DJANGO_EMAIL_HOST_USER as an environment variable}
-      - DJANGO_EMAIL_HOST_PASSWORD=${DJANGO_EMAIL_HOST_PASSWORD:?Please export DJANGO_EMAIL_HOST_PASSWORD as an environment variable}
       - DJANGO_ENVIRONMENT=production
+      - DJANGO_STATIC_ROOT=/static_data
+      - DJANGO_MEDIA_ROOT=/media_data
+      - DJANGO_DATABASE_NAME=/db_data/db.sqlite3
+      - DJANGO_DEBUG=0
+    ports:
+      - "8000:38080"
+
+volumes:
+  db_data:
+  static_data:
+  media_data:

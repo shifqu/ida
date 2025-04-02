@@ -4,5 +4,9 @@ services:
       target: development
     environment:
       - DJANGO_ENVIRONMENT=development
+      - DJANGO_DEBUG=${DJANGO_DEBUG:-1}
     volumes:
       - ./:/app
+      - /app/.venv
+      - ./db.sqlite3:/db_data/db.sqlite3
+      - ./media/:/media_data/
