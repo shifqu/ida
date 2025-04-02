@@ -107,6 +107,11 @@ docker compose logs -f
 docker compose exec ida bash
 ```
 
+#### Remove all of the compose project's stuff
+```
+docker compose down -rmi all -v
+```
+
 ### Django
 #### Make migrations
 ```
