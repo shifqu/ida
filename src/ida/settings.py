@@ -18,7 +18,7 @@ from ida import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+ROOT_DIR = BASE_DIR.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -85,7 +85,7 @@ WSGI_APPLICATION = "ida.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": environ.from_env("DJANGO_DATABASE_NAME", default=ROOT_DIR / "db.sqlite3", astype=Path),
     }
 }
 
@@ -135,12 +135,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = environ.from_env("DJANGO_STATIC_ROOT", default=ROOT_DIR / "static", astype=Path)
 
 # Media files (user-uploaded files)
 # https://docs.djangoproject.com/en/5.1/topics/files/#managing-files
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = environ.from_env("DJANGO_MEDIA_ROOT", default=BASE_DIR / "media", astype=Path)
+MEDIA_ROOT = environ.from_env("DJANGO_MEDIA_ROOT", default=ROOT_DIR / "media", astype=Path)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
