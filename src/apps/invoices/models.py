@@ -98,7 +98,10 @@ class Invoice(models.Model):
         """
         if self.status == self.Status.CONFIRMED and not self.number:
             self.number = str(
-                Invoice.objects.filter(date__year=self.date.year).exclude(status=self.Status.DRAFT).count() + 1
+                Invoice.objects.filter(company=self.company, date__year=self.date.year)
+                .exclude(status=self.Status.DRAFT)
+                .count()
+                + 1
             ).zfill(4)
         return super().save(*args, **kwargs)
 
@@ -115,7 +118,9 @@ class Invoice(models.Model):
         if not self.invoiceitem_set.exists():
             raise ValidationError(gettext("An invoice without invoice items cannot be confirmed"), code="no_items")
 
-        last_non_draft = Invoice.objects.exclude(status=self.Status.DRAFT).order_by("-date").first()
+        last_non_draft = (
+            Invoice.objects.filter(company=self.company).exclude(status=self.Status.DRAFT).order_by("-date").first()
+        )
         if last_non_draft and last_non_draft.date > self.date:
             raise ValidationError(
                 gettext(
@@ -207,7 +212,7 @@ class Invoice(models.Model):
             details_to=details_to,
             title=title,
             date={self._meta.get_field("date").verbose_name.capitalize(): invoice_date},
-            due_date={gettext("date_due").capitalize(): invoice_date_due},
+            due_date={gettext("date due").capitalize(): invoice_date_due},
             payment_communication={gettext("payment communication").capitalize(): self.payment_communication},
             lines=lines,
             summary=summary,

@@ -204,6 +204,27 @@ class InvoicesTest(TestCase):
             {"Description": "[DUMMY] Service", "Quantity": 2, "Unit price": 100, "VAT": "21%", "Subtotal": "200.00"},
         )
 
+    def test_invoice_number_generates_per_company(self):
+        """Test that the invoice number is generated per company."""
+        self.assertEqual(self.invoice.number, "0001")
+        self.assertEqual(self.invoice_2.number, "0002")
+        self.assertEqual(self.invoice_3.number, "")
+        self.assertEqual(self.invoice_4.number, "")
+
+        # Create a new company
+        new_company = Company.objects.create(name="New Company")
+
+        # Create a new invoice for the new company
+        new_invoice = Invoice.objects.create(
+            company=new_company,
+            relation=self.relation,
+            date=date(2025, 1, 1),
+        )
+        new_invoice.invoiceitem_set.create(description="Test", unit_price=100, quantity=1, vat_percentage=21)
+        self.assertEqual(new_invoice.number, "")
+        new_invoice.confirm()
+        self.assertEqual(new_invoice.number, "0001")
+
     def tearDown(self):
         """Clean up files after the test to avoid polluting storage."""
         shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
