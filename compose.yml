@@ -16,8 +16,6 @@ services:
       - DJANGO_MEDIA_ROOT=/media_data
       - DJANGO_DATABASE_NAME=/db_data/db.sqlite3
       - DJANGO_DEBUG=0
-    ports:
-      - "8000:38080"
 
 volumes:
   db_data:
