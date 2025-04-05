@@ -5,7 +5,7 @@ services:
       target: production
     restart: unless-stopped
     volumes:
-      - ida_db_data:/db_data:rw
+      - ida_db_data:/db_data
       - ida_static_data:/static_data
       - ida_media_data:/media_data
       - ida_log_data:/log_data
