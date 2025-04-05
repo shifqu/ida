@@ -18,4 +18,17 @@ echo "Compiling messages..."
 manage compilemessages
 
 # Run the main command
-exec "$@"
+echo "Starting the application..."
+if [ "$1" = "gunicorn" ]; then
+  shift
+  exec gunicorn \
+    --bind "${GUNICORN_BIND_IP:-0.0.0.0}:${GUNICORN_BIND_PORT:-38080}" \
+    --workers "${GUNICORN_WORKERS:-4}" \
+    --access-logfile "${GUNICORN_ACCESS_LOGFILE:-/log_data/access.log}" \
+    --error-logfile "${GUNICORN_ERROR_LOGFILE:-/log_data/error.log}" \
+    --log-level "${GUNICORN_LOG_LEVEL:-info}" \
+    "$@"
+else
+  # Else, run whatever was passed (e.g. manage.py commands)
+  exec "$@"
+fi

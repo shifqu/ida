@@ -64,4 +64,4 @@ RUN pip install .
 USER appuser
 
 # Run the application with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:38080", "--workers", "4", "ida.wsgi:application"]
+CMD ["gunicorn", "ida.wsgi:application"]
