@@ -50,8 +50,8 @@ RUN adduser \
 WORKDIR /app
 
 # Create directories with proper permissions
-RUN mkdir -p /db_data /static_data /media_data && \ 
-    chown -R appuser:appuser /db_data /static_data /media_data /app
+RUN mkdir -p /db_data /static_data /media_data /log_data && \
+    chown -R appuser:appuser /db_data /static_data /media_data /log_data /app
 
 # Copy application code
 COPY --chown=appuser:appuser src/ src/

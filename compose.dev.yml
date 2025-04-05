@@ -10,5 +10,6 @@ services:
       - /app/.venv
       - ./db.sqlite3:/db_data/db.sqlite3
       - ./media/:/media_data/
+      - ./logs/:/log_data/
     ports:
       - "8000:38080"

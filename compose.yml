@@ -8,6 +8,7 @@ services:
       - ida_db_data:/db_data:rw
       - ida_static_data:/static_data
       - ida_media_data:/media_data
+      - ida_log_data:/log_data
     env_file:
       - .dockerenv
     environment:
@@ -15,9 +16,11 @@ services:
       - DJANGO_STATIC_ROOT=/static_data
       - DJANGO_MEDIA_ROOT=/media_data
       - DJANGO_DATABASE_NAME=/db_data/db.sqlite3
+      - DJANGO_LOG_FILENAME=/log_data/ida.log
       - DJANGO_DEBUG=0
 
 volumes:
   ida_db_data:
   ida_static_data:
   ida_media_data:
+  ida_log_data:
