@@ -112,6 +112,11 @@ docker compose exec ida bash
 docker compose down -rmi all -v
 ```
 
+#### Browse a volume in a temporary container (update VOLNAME with the correct volume name)
+```
+VOLNAME="log_data" docker run --rm -it -v "$VOLNAME":/data alpine /bin/sh
+```
+
 ### Django
 #### Make migrations
 ```
