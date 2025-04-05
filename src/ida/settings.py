@@ -158,6 +158,9 @@ EMAIL_USE_TLS = environ.from_env("DJANGO_EMAIL_USE_TLS", False, astype=environ.s
 EMAIL_HOST_USER = environ.from_env("DJANGO_EMAIL_HOST_USER", default="")
 EMAIL_HOST_PASSWORD = environ.from_env("DJANGO_EMAIL_HOST_PASSWORD", default="")
 
+# CSRF settings
+# https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-trusted-origins
+CSRF_TRUSTED_ORIGINS = environ.from_env("DJANGO_CSRF_TRUSTED_ORIGINS", [], astype=json.loads)
 
 # Custom settings
 
