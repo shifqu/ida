@@ -20,6 +20,9 @@ manage = "manage:main"
 dependencies = { file = ["requirements/requirements-main.in"] }
 optional-dependencies.dev = { file = ["requirements/requirements-dev.in"] }
 
+[tool.setuptools.package-data]
+"pdf" = ["assets/fonts/*"]
+
 [tool.ruff]
 line-length = 120
 target-version = "py312"
