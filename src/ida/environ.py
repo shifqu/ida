@@ -38,20 +38,3 @@ def from_env(name: str, default: T | _Missing = _MISSING, astype: Callable[..., 
             raise MissingEnvironmentVariableError(f"Environment variable {name} is not set.") from exc
         return default
     return astype(value)
-
-
-def strtobool(value: str) -> bool:
-    """Convert a string to a boolean.
-
-    The provided value is converted to lowercase before comparing.
-
-    The following values are considered True:
-        - "true"
-        - "1"
-        - "t"
-        - "y"
-        - "yes"
-
-    All other values are considered False.
-    """
-    return value.lower() in ("true", "1", "t", "y", "yes")
