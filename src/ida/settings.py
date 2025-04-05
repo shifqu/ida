@@ -162,6 +162,31 @@ EMAIL_HOST_PASSWORD = environ.from_env("DJANGO_EMAIL_HOST_PASSWORD", default="")
 # https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-trusted-origins
 CSRF_TRUSTED_ORIGINS = environ.from_env("DJANGO_CSRF_TRUSTED_ORIGINS", [], astype=json.loads)
 
+# Logging settings
+# https://docs.djangoproject.com/en/5.1/topics/logging/
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": environ.from_env("DJANGO_FILE_LOG_LEVEL", default="INFO"),
+            "class": "logging.FileHandler",
+            "filename": environ.from_env("DJANGO_LOG_FILENAME", default=ROOT_DIR / "logs" / "ida.log", astype=Path),
+        },
+        "console": {
+            "level": environ.from_env("DJANGO_CONSOLE_LOG_LEVEL", default="DEBUG"),
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file", "console"],
+            "level": environ.from_env("DJANGO_LOG_LEVEL", default="DEBUG"),
+            "propagate": True,
+        },
+    },
+}
+
 # Custom settings
 
 ADMIN = {
