@@ -169,7 +169,7 @@ APPNAME="myapp" bash -c 'mkdir -p src/apps/$APPNAME/fixtures && manage dumpdata 
 #### Generate a secret key
 ##### Bash
 ```
-openssl rand -base64 40
+openssl rand -hex 40
 ```
 ##### Powershell
 ```

@@ -5,9 +5,9 @@ services:
       target: production
     restart: unless-stopped
     volumes:
-      - db_data:/db_data:rw
-      - static_data:/static_data
-      - media_data:/media_data
+      - ida_db_data:/db_data:rw
+      - ida_static_data:/static_data
+      - ida_media_data:/media_data
     env_file:
       - .dockerenv
     environment:
@@ -18,6 +18,6 @@ services:
       - DJANGO_DEBUG=0
 
 volumes:
-  db_data:
-  static_data:
-  media_data:
+  ida_db_data:
+  ida_static_data:
+  ida_media_data:
