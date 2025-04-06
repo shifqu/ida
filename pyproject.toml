@@ -22,6 +22,7 @@ optional-dependencies.dev = { file = ["requirements/requirements-dev.in"] }
 
 [tool.setuptools.package-data]
 "pdf" = ["assets/fonts/*"]
+"apps" = ["*/locale/*/LC_MESSAGES/*.mo"]
 
 [tool.ruff]
 line-length = 120

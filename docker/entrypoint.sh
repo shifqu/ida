@@ -14,9 +14,6 @@ if [ "$DJANGO_ENVIRONMENT" = "production" ]; then
   manage collectstatic --noinput
 fi
 
-echo "Compiling messages..."
-manage compilemessages
-
 # Run the main command
 echo "Starting the application..."
 if [ "$1" = "gunicorn" ]; then
