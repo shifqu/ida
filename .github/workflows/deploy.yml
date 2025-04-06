@@ -20,4 +20,4 @@ jobs:
 
       - name: Trigger remote deployment
         run: |
-          ssh -p ${{ secrets.DEPLOY_SSH_PORT }} {{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} deploy ida
+          ssh -p ${{ secrets.DEPLOY_SSH_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} deploy ida
