@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "apps.geo",
     "apps.relations",
     "apps.invoices",
+    "apps.users",
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.LoginRequiredMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "apps.users.middleware.UserLanguageMiddleware",
 ]
 
 ROOT_URLCONF = "ida.urls"
@@ -190,6 +192,8 @@ LOGGING = {
         },
     },
 }
+
+AUTH_USER_MODEL = "users.IdaUser"
 
 # Custom settings
 
