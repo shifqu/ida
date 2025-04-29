@@ -18,11 +18,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.shortcuts import redirect
+from django.urls import include, path
 from django.utils.translation import gettext as _
 
 admin.site.site_header = _(settings.ADMIN["SITE_HEADER"])
 
 urlpatterns = [
     path(settings.ADMIN["ROOT_URL"], admin.site.urls),
+    path("favicon.ico", lambda _: redirect(f"{settings.MEDIA_URL}/icons/favicon.ico", permanent=True)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
