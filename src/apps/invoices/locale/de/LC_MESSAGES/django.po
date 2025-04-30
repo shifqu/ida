@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-01 10:15+0000\n"
+"POT-Creation-Date: 2025-04-30 20:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr "PDF-Datei"
 msgid "An invoice without invoice items cannot be confirmed"
 msgstr "Eine Rechnung ohne Rechnungspositionen kann nicht bestätigt werden"
 
-#: invoices/models.py:125
+#: invoices/models.py:127
 #, python-format
 msgid ""
 "A non-draft invoice (date: %(last_date)s) exists after %(self_date)s. Update "
@@ -71,89 +71,89 @@ msgstr ""
 "Eine nicht-Entwurfsrechnung (Datum: %(last_date)s) existiert nach "
 "%(self_date)s. Aktualisieren Sie das Datum auf mindestens %(last_date)s."
 
-#: invoices/models.py:139
+#: invoices/models.py:141
 msgid "Only confirmed invoices can have their PDF generated"
 msgstr "Nur bestätigte Rechnungen können als PDF erstellt werden"
 
-#: invoices/models.py:175
+#: invoices/models.py:177
 msgid "Draft invoices can not be sent by email"
 msgstr "Entwurfsrechnungen können nicht per E-Mail versendet werden"
 
-#: invoices/models.py:177
+#: invoices/models.py:179
 msgid "Invoice has already been sent"
 msgstr "Rechnung wurde bereits gesendet"
 
-#: invoices/models.py:180
+#: invoices/models.py:182
 #, python-format
 msgid "Relation (%(relation)s) has no email address"
 msgstr "Beziehung (%(relation)s) hat keine E-Mail-Adresse"
 
-#: invoices/models.py:213
+#: invoices/models.py:215
 #, fuzzy
 #| msgid "date due"
 msgid "date due"
 msgstr "Fälligkeitsdatum"
 
-#: invoices/models.py:214
+#: invoices/models.py:216
 msgid "payment communication"
 msgstr "Zahlungskommunikation"
 
-#: invoices/models.py:222 models.py:311
+#: invoices/models.py:224 invoices/models.py:313
 msgid "subtotal"
 msgstr "Teilsumme"
 
-#: invoices/models.py:223 models.py:285
+#: invoices/models.py:225 invoices/models.py:287
 msgid "VAT"
 msgstr "MwSt."
 
-#: invoices/models.py:224
+#: invoices/models.py:226
 msgid "total"
 msgstr "Gesamt"
 
-#: invoices/models.py:230
+#: invoices/models.py:232
 msgid "ATTN."
 msgstr "Z. Hd."
 
-#: invoices/models.py:256
+#: invoices/models.py:258
 msgid "Relation has no address"
 msgstr "Beziehung hat keine Adresse"
 
-#: invoices/models.py:262
+#: invoices/models.py:264
 msgid "Company has no bank account"
 msgstr "Unternehmen hat kein Bankkonto"
 
-#: invoices/models.py:268
+#: invoices/models.py:270
 msgid "Company has no address"
 msgstr "Unternehmen hat keine Adresse"
 
-#: invoices/models.py:274 models.py:287
+#: invoices/models.py:276 invoices/models.py:289
 msgid "invoice"
 msgstr "Rechnung"
 
-#: invoices/models.py:275
+#: invoices/models.py:277
 msgid "invoices"
 msgstr "Rechnungen"
 
-#: invoices/models.py:281
+#: invoices/models.py:283
 msgid "description"
 msgstr "Beschreibung"
 
-#: invoices/models.py:282
+#: invoices/models.py:284
 msgid "unit price"
 msgstr "Stückpreis"
 
-#: invoices/models.py:283
+#: invoices/models.py:285
 msgid "quantity"
 msgstr "Menge"
 
-#: invoices/models.py:285
+#: invoices/models.py:287
 msgid "VAT percentage"
 msgstr "MwSt.-Prozentsatz"
 
-#: invoices/models.py:321
+#: invoices/models.py:323
 msgid "invoice item"
 msgstr "Rechnungsposition"
 
-#: invoices/models.py:322
+#: invoices/models.py:324
 msgid "invoice items"
 msgstr "Rechnungspositionen"
