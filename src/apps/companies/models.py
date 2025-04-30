@@ -12,9 +12,11 @@ class Company(models.Model):
 
     if TYPE_CHECKING:
         from apps.geo.models import Address
+        from apps.users.models import IdaUser
 
-        address_set: models.Manager["Address"]
+        address_set: models.Manager[Address]
         bankaccount_set: models.Manager["BankAccount"]
+        user_set: models.Manager[IdaUser]
 
     name = models.CharField(verbose_name=_("name"), max_length=255)
     phone = models.CharField(
