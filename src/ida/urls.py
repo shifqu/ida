@@ -26,5 +26,6 @@ admin.site.site_header = _(settings.ADMIN["SITE_HEADER"])
 
 urlpatterns = [
     path(settings.ADMIN["ROOT_URL"], admin.site.urls),
+    path(settings.TELEGRAM["ROOT_URL"], include("apps.telegram.urls")),
     path("favicon.ico", lambda _: redirect(f"{settings.MEDIA_URL}/icons/favicon.ico", permanent=True)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
