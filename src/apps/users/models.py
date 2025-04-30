@@ -13,8 +13,10 @@ class IdaUser(AbstractUser):
 
     if TYPE_CHECKING:
         from apps.companies.models import Company
+        from apps.telegram.models import TelegramSettings
 
         company: models.ForeignKey[Company | None]
+        telegramsettings: models.OneToOneField[TelegramSettings | None]
 
     company = models.ForeignKey(
         "companies.Company", on_delete=models.SET_NULL, verbose_name=_("company"), null=True, blank=True
