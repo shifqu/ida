@@ -4,10 +4,12 @@ import json
 
 from django.contrib.auth.decorators import login_not_required  # type: ignore[reportAttributeAccessIssue]
 from django.http import HttpRequest, JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from apps.telegram import bot, models
 
 
+@csrf_exempt
 @login_not_required
 def webhook(request: HttpRequest) -> JsonResponse:
     """Handle incoming messages."""
