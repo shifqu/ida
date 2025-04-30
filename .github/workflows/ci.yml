@@ -32,6 +32,8 @@ jobs:
 
       - name: Test
         env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          DJANGO_SECRET_KEY: dummy-eadec2dca4758f123c9144011e386c00806bbdf1d3ba93dd18a098fa11a005f89ec988a3a6
+          TELEGRAM_BOT_URL: https://api.dummybots.org/dummybot
+          TELEGRAM_WEBHOOK_TOKEN: dummytoken
         run: |
           manage test src/apps
