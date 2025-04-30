@@ -22,8 +22,8 @@ class Invoice(models.Model):
         from apps.companies.models import Company
         from apps.relations.models import Relation
 
-        company: models.ForeignKey["Company"]
-        relation: models.ForeignKey["Relation"]
+        company: models.ForeignKey[Company]
+        relation: models.ForeignKey[Relation]
         invoiceitem_set: models.Manager["InvoiceItem"]
 
     class Status(models.TextChoices):
