@@ -28,5 +28,5 @@ class Command(BaseCommand):
         response_json: dict = response.json()
         if not response_json.get("ok"):
             self.stderr.write(self.style.ERROR(f"Something went wrong while setting the webhook. {response_json}"))
-            raise CommandError("Failed to set webhook.")
+            raise CommandError(f"Failed to set webhook to {url}.")
         self.stdout.write(self.style.SUCCESS(f'Successfully set webhook to "{url}"'))
