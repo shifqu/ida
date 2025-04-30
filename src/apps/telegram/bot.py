@@ -37,7 +37,6 @@ class Bot:
         if "message" in update and "text" in update["message"]:
             text = update["message"]["text"]
             chat_id = update["message"]["chat"]["id"]
-            setting = TelegramSettings.objects.get(chat_id=chat_id)
             cmd = Commands(text)
             if cmd is Commands.REGISTERWORK:
                 days = cls._get_missing_days()
