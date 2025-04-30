@@ -114,7 +114,7 @@ docker compose down -rmi all -v
 
 #### Browse a volume in a temporary container (update VOLNAME with the correct volume name)
 ```
-VOLNAME="log_data" docker run --rm -it -v "$VOLNAME":/data alpine /bin/sh
+docker run --rm -it -v VOLNAME:/data alpine /bin/sh
 ```
 
 ### Django
@@ -185,6 +185,11 @@ Add-Type -AssemblyName System.Web
 #### Run the development server (using 0.0.0.0 to be available to any device on the network)
 ```
 manage runserver 0.0.0.0:38080
+```
+
+#### Set or update the telegram webhook (should be done only the first time the app is deployed)
+```
+manage setwebhook
 ```
 
 ## Contributing / Developing
