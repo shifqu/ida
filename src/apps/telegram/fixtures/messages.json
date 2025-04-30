@@ -1,0 +1,258 @@
+[
+    {
+        "model": "telegram.Message",
+        "pk": 1,
+        "fields": {
+            "raw_message": {
+                "update_id": 555199478,
+                "message": {
+                    "message_id": 1533,
+                    "from": {
+                        "id": 123456789,
+                        "is_bot": false,
+                        "first_name": "test",
+                        "language_code": "en"
+                    },
+                    "chat": {
+                        "id": 123456789,
+                        "first_name": "test",
+                        "type": "private"
+                    },
+                    "date": 1741188516,
+                    "text": "/registerwork",
+                    "entities": [
+                        {
+                            "offset": 0,
+                            "length": 13,
+                            "type": "bot_command"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "model": "telegram.Message",
+        "pk": 2,
+        "fields": {
+            "raw_message": {
+                "update_id": 555199479,
+                "callback_query": {
+                    "id": "6014609692612749402",
+                    "from": {
+                        "id": 123456789,
+                        "is_bot": false,
+                        "first_name": "test",
+                        "language_code": "en"
+                    },
+                    "message": {
+                        "message_id": 1534,
+                        "from": {
+                            "id": 5275798396,
+                            "is_bot": true,
+                            "first_name": "softllama_bot",
+                            "username": "softllama_bot"
+                        },
+                        "chat": {
+                            "id": 123456789,
+                            "first_name": "test",
+                            "type": "private"
+                        },
+                        "date": 1741188516,
+                        "text": "Select a day:",
+                        "reply_markup": {
+                            "inline_keyboard": [
+                                [
+                                    {
+                                        "text": "2025-01-01",
+                                        "callback_data": "day_2025-01-01"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-02",
+                                        "callback_data": "day_2025-01-02"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-03",
+                                        "callback_data": "day_2025-01-03"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-06",
+                                        "callback_data": "day_2025-01-06"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "➡️ Next",
+                                        "callback_data": "page_2"
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    "chat_instance": "4699052244686676785",
+                    "data": "page_2"
+                }
+            }
+        }
+    },
+    {
+        "model": "telegram.Message",
+        "pk": 3,
+        "fields": {
+            "raw_message": {
+                "update_id": 555199480,
+                "callback_query": {
+                    "id": "6014609693580199360",
+                    "from": {
+                        "id": 123456789,
+                        "is_bot": false,
+                        "first_name": "test",
+                        "language_code": "en"
+                    },
+                    "message": {
+                        "message_id": 1534,
+                        "from": {
+                            "id": 5275798396,
+                            "is_bot": true,
+                            "first_name": "softllama_bot",
+                            "username": "softllama_bot"
+                        },
+                        "chat": {
+                            "id": 123456789,
+                            "first_name": "test",
+                            "type": "private"
+                        },
+                        "date": 1741188516,
+                        "edit_date": 1741188533,
+                        "text": "Select a day:",
+                        "reply_markup": {
+                            "inline_keyboard": [
+                                [
+                                    {
+                                        "text": "2025-01-07",
+                                        "callback_data": "day_2025-01-07"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-08",
+                                        "callback_data": "day_2025-01-08"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-09",
+                                        "callback_data": "day_2025-01-09"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-10",
+                                        "callback_data": "day_2025-01-10"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "⬅️ Back",
+                                        "callback_data": "page_1"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "➡️ Next",
+                                        "callback_data": "page_3"
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    "chat_instance": "4699052244686676785",
+                    "data": "day_2025-01-07"
+                }
+            }
+        }
+    },
+    {
+        "model": "telegram.Message",
+        "pk": 4,
+        "fields": {
+            "raw_message": {
+                "update_id": 555199481,
+                "callback_query": {
+                    "id": "6014609693580199361",
+                    "from": {
+                        "id": 123456789,
+                        "is_bot": false,
+                        "first_name": "test",
+                        "language_code": "en"
+                    },
+                    "message": {
+                        "message_id": 1534,
+                        "from": {
+                            "id": 5275798396,
+                            "is_bot": true,
+                            "first_name": "softllama_bot",
+                            "username": "softllama_bot"
+                        },
+                        "chat": {
+                            "id": 123456789,
+                            "first_name": "test",
+                            "type": "private"
+                        },
+                        "date": 1741188516,
+                        "edit_date": 1741188533,
+                        "text": "Options for 2025-01-07:",
+                        "reply_markup": {
+                            "inline_keyboard": [
+                                [
+                                    {
+                                        "text": "0h",
+                                        "callback_data": "option_2025-01-07_0h"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "4h",
+                                        "callback_data": "option_2025-01-07_4h"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "8h",
+                                        "callback_data": "option_2025-01-07_8h"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "16h",
+                                        "callback_data": "option_2025-01-07_16h"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "24h",
+                                        "callback_data": "option_2025-01-07_24h"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "⬅️ Back",
+                                        "callback_data": "page_1"
+                                    }
+                                ]
+                            ]
+                        }
+                    },
+                    "chat_instance": "4699052244686676785",
+                    "data": "option_2025-01-07_8h"
+                }
+            }
+        }
+    }
+]

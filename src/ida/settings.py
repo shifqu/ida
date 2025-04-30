@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "apps.relations",
     "apps.invoices",
     "apps.users",
+    "apps.telegram",
+    "apps.timesheets",
 ]
 
 MIDDLEWARE = [
@@ -201,3 +203,12 @@ ADMIN = {
     "SITE_HEADER": environ.from_env("ADMIN_SITE_HEADER", "IDA Administration"),
     "ROOT_URL": environ.from_env("ADMIN_ROOT_URL", "admin/"),
 }
+
+TELEGRAM = {
+    "BOT_URL": environ.from_env("TELEGRAM_BOT_URL"),
+    "WEBHOOK_TOKEN": environ.from_env("TELEGRAM_WEBHOOK_TOKEN"),
+    "ROOT_URL": environ.from_env("TELEGRAM_ROOT_URL", default="telegram/"),
+    "WEBHOOK_URL": environ.from_env("TELEGRAM_WEBHOOK_URL", default="webhook/"),
+}
+
+DOMAIN_NAME = environ.from_env("DJANGO_DOMAIN_NAME", "http://localhost:8000")
