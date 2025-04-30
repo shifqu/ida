@@ -24,14 +24,14 @@ class UsersTestCase(TestCase):
         self.assertEqual(user.language, "en")
         self.assertIsNone(user.company)
 
-        user.company = Company.objects.get(pk=1)
+        company = Company.objects.get(pk=1)
+        user.company = company
         user.save()
-        self.assertEqual(user.company, 1)
+        self.assertEqual(user.company, company)
 
     def test_create_superuser(self):
         """Test creating a superuser."""
-        User = get_user_model()
-        admin_user = User.objects.create_superuser(
+        admin_user = IdaUser.objects.create_superuser(
             username="testsuperuser", email="testsuperuser@example.com", password="testpass1234"
         )
         self.assertEqual(admin_user.username, "testsuperuser")
