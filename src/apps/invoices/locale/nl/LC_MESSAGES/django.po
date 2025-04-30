@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-01 10:15+0000\n"
+"POT-Creation-Date: 2025-04-30 20:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <LL@li.org>\n"
@@ -62,7 +62,7 @@ msgstr "PDF-bestand"
 msgid "An invoice without invoice items cannot be confirmed"
 msgstr "Een factuur zonder factuuritems kan niet worden bevestigd"
 
-#: invoices/models.py:125
+#: invoices/models.py:127
 #, python-format
 msgid ""
 "A non-draft invoice (date: %(last_date)s) exists after %(self_date)s. Update "
@@ -71,87 +71,87 @@ msgstr ""
 "Een niet-conceptfactuur (datum: %(last_date)s) bestaat na %(self_date)s. "
 "Verander de datum naar ten minste %(last_date)s."
 
-#: invoices/models.py:139
+#: invoices/models.py:141
 msgid "Only confirmed invoices can have their PDF generated"
 msgstr "Een PDF kan enkel gegenereerd worden voor bevestigde facturen"
 
-#: invoices/models.py:175
+#: invoices/models.py:177
 msgid "Draft invoices can not be sent by email"
 msgstr "Concept facturen kunnen niet per e-mail verzonden worden"
 
-#: invoices/models.py:177
+#: invoices/models.py:179
 msgid "Invoice has already been sent"
 msgstr "Factuur werd reeds verzonden"
 
-#: invoices/models.py:180
+#: invoices/models.py:182
 #, python-format
 msgid "Relation (%(relation)s) has no email address"
 msgstr "Relatie (%(relation)s) heeft geen e-mailadres"
 
-#: invoices/models.py:213
+#: invoices/models.py:215
 msgid "date due"
 msgstr "vervaldatum"
 
-#: invoices/models.py:214
+#: invoices/models.py:216
 msgid "payment communication"
 msgstr "betalings mededeling"
 
-#: invoices/models.py:222 models.py:311
+#: invoices/models.py:224 invoices/models.py:313
 msgid "subtotal"
 msgstr "subtotaal"
 
-#: invoices/models.py:223 models.py:285
+#: invoices/models.py:225 invoices/models.py:287
 msgid "VAT"
 msgstr "BTW"
 
-#: invoices/models.py:224
+#: invoices/models.py:226
 msgid "total"
 msgstr "totaal"
 
-#: invoices/models.py:230
+#: invoices/models.py:232
 msgid "ATTN."
 msgstr "T.A.V."
 
-#: invoices/models.py:256
+#: invoices/models.py:258
 msgid "Relation has no address"
 msgstr "Relatie heeft geen adres"
 
-#: invoices/models.py:262
+#: invoices/models.py:264
 msgid "Company has no bank account"
 msgstr "Bedrijf heeft geen bankrekening"
 
-#: invoices/models.py:268
+#: invoices/models.py:270
 msgid "Company has no address"
 msgstr "Bedrijf heeft geen adres"
 
-#: invoices/models.py:274 models.py:287
+#: invoices/models.py:276 invoices/models.py:289
 msgid "invoice"
 msgstr "factuur"
 
-#: invoices/models.py:275
+#: invoices/models.py:277
 msgid "invoices"
 msgstr "facturen"
 
-#: invoices/models.py:281
+#: invoices/models.py:283
 msgid "description"
 msgstr "omschrijving"
 
-#: invoices/models.py:282
+#: invoices/models.py:284
 msgid "unit price"
 msgstr "eenheidsprijs"
 
-#: invoices/models.py:283
+#: invoices/models.py:285
 msgid "quantity"
 msgstr "aantal"
 
-#: invoices/models.py:285
+#: invoices/models.py:287
 msgid "VAT percentage"
 msgstr "BTW-percentage"
 
-#: invoices/models.py:321
+#: invoices/models.py:323
 msgid "invoice item"
 msgstr "factuuritem"
 
-#: invoices/models.py:322
+#: invoices/models.py:324
 msgid "invoice items"
 msgstr "factuuritems"

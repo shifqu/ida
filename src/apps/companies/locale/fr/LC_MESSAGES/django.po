@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-24 12:02+0000\n"
+"POT-Creation-Date: 2025-04-30 20:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <LL@li.org>\n"
@@ -18,70 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: companies/models.py:19 companies/models.py:75
+#: companies/models.py:21 companies/models.py:77
 msgid "name"
 msgstr "nom"
 
-#: companies/models.py:21
+#: companies/models.py:23
 msgid "phone"
 msgstr "téléphone"
 
-#: companies/models.py:25
+#: companies/models.py:27
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
 msgstr "Numéro de téléphone avec code pays (ex. +32 490 12 34 56)"
 
-#: companies/models.py:27
+#: companies/models.py:29
 msgid "email"
 msgstr "e-mail"
 
-#: companies/models.py:28
+#: companies/models.py:30
 msgid "website"
 msgstr "site web"
 
-#: companies/models.py:29
+#: companies/models.py:31
 msgid "VAT number"
 msgstr "numéro de TVA"
 
-#: companies/models.py:31
+#: companies/models.py:33
 msgid "business court"
 msgstr "tribunal de commerce"
 
-#: companies/models.py:35
+#: companies/models.py:37
 msgid "Example: Antwerpen, afd. Hasselt"
 msgstr "Exemple : Anvers, div. Hasselt"
 
-#: companies/models.py:37
+#: companies/models.py:39
 msgid "logo"
 msgstr "logo"
 
-#: companies/models.py:39
+#: companies/models.py:41
 msgid "graphic element"
 msgstr "élément graphique"
 
-#: companies/models.py:48
+#: companies/models.py:50
 msgid "VAT"
 msgstr "TVA"
 
-#: companies/models.py:66 companies/models.py:76
+#: companies/models.py:68 companies/models.py:78
 msgid "company"
 msgstr "entreprise"
 
-#: companies/models.py:67
+#: companies/models.py:69
 msgid "companies"
 msgstr "entreprises"
 
-#: companies/models.py:73
+#: companies/models.py:75
 msgid "IBAN"
 msgstr "IBAN"
 
-#: companies/models.py:74
+#: companies/models.py:76
 msgid "BIC"
 msgstr "BIC"
 
-#: companies/models.py:85
+#: companies/models.py:87
 msgid "bank account"
 msgstr "compte bancaire"
 
-#: companies/models.py:86
+#: companies/models.py:88
 msgid "bank accounts"
 msgstr "comptes bancaires"
