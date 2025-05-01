@@ -1,6 +1,7 @@
 """Telegram bot module."""
 
 import enum
+import logging
 from datetime import datetime
 
 import requests
@@ -29,7 +30,9 @@ class Bot:
     def post(cls, endpoint, payload, timeout=5):
         """Post the payload to the given endpoint."""
         url = cls.construct_endpoint(endpoint)
-        return requests.post(url, json=payload, timeout=timeout)
+        response = requests.post(url, json=payload, timeout=timeout)
+        logging.info(f"Telegram: POST {url} {payload} -> {response.status_code} {response.json()}")
+        return response
 
     @classmethod
     def handle(cls, update: dict):
