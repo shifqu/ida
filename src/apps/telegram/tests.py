@@ -79,7 +79,7 @@ def _construct_expected_payload(idx: int, fixtures: list[dict], bot_post: MagicM
         message = raw_message["callback_query"]["message"]
     else:
         message = raw_message["message"]
-    payload = {"chat_id": message["chat"]["id"], "text": message["text"], "parse_mode": Bot.parse_mode}
+    payload = {"chat_id": message["chat"]["id"], "text": message["text"]}
     if "reply_markup" in message:
         payload["reply_markup"] = message["reply_markup"]
     if bot_post.call_args[0][0] == "editMessageText":
