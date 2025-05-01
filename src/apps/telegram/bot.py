@@ -1,7 +1,6 @@
 """Telegram bot module."""
 
 import enum
-import logging
 from datetime import datetime
 
 import requests
@@ -24,14 +23,11 @@ class Commands(enum.Enum):
 class Bot:
     """Telegram bot."""
 
-    parse_mode = "MarkdownV2"
-
     @classmethod
     def post(cls, endpoint, payload, timeout=5):
         """Post the payload to the given endpoint."""
         url = cls.construct_endpoint(endpoint)
         response = requests.post(url, json=payload, timeout=timeout)
-        logging.info(f"Telegram: POST {url} {payload} -> {response.status_code} {response.json()}")
         return response
 
     @classmethod
@@ -108,11 +104,7 @@ class Bot:
         References:
         https://core.telegram.org/bots/api#sendmessage
         """
-        payload = {
-            "chat_id": chat_id,
-            "text": text,
-            # "parse_mode": cls.parse_mode,
-        }
+        payload = {"chat_id": chat_id, "text": text}
         if reply_markup:
             payload["reply_markup"] = reply_markup
         cls.post("sendMessage", payload=payload)
@@ -124,14 +116,8 @@ class Bot:
         References:
         https://core.telegram.org/bots/api#editmessagetext
         """
-        payload = {
-            "chat_id": chat_id,
-            "message_id": message_id,
-            "text": text,
-            # "parse_mode": cls.parse_mode,
-        }
+        payload = {"chat_id": chat_id, "message_id": message_id, "text": text}
         if reply_markup:
-            # payload["reply_markup"] = {"inline_keyboard": keyboard}
             payload["reply_markup"] = reply_markup
         cls.post("editMessageText", payload=payload)
 

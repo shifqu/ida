@@ -175,10 +175,8 @@ LOGGING = {
         "file": {
             "level": environ.from_env("DJANGO_FILE_LOG_LEVEL", default="INFO"),
             "class": "logging.FileHandler",
-            "filename": environ.from_env(
-                "DJANGO_LOG_FILENAME",
-                default=utils.existing_str_path(ROOT_DIR / "logs" / "ida.log"),
-                astype=utils.existing_str_path,
+            "filename": utils.existing_path(
+                environ.from_env("DJANGO_LOG_FILENAME", default=ROOT_DIR / "logs" / "ida.log")
             ),
         },
         "console": {
