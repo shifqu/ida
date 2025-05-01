@@ -32,3 +32,9 @@ def existing_path(value: str | Path) -> Path:
     except Exception as e:
         print(f"[WARNING] Could not create log file {path}: {e}")
     return path
+
+
+def existing_str_path(value: str | Path) -> str:
+    """Convert the path to a string."""
+    path = existing_path(value)
+    return str(path)

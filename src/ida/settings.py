@@ -177,8 +177,8 @@ LOGGING = {
             "class": "logging.FileHandler",
             "filename": environ.from_env(
                 "DJANGO_LOG_FILENAME",
-                default=utils.existing_path(ROOT_DIR / "logs" / "ida.log"),
-                astype=utils.existing_path,
+                default=utils.existing_str_path(ROOT_DIR / "logs" / "ida.log"),
+                astype=utils.existing_str_path,
             ),
         },
         "console": {
