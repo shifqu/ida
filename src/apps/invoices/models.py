@@ -105,6 +105,21 @@ class Invoice(models.Model):
             ).zfill(4)
         return super().save(*args, **kwargs)
 
+    def mark_as_paid(self):
+        """Mark the invoice as paid.
+
+        Draft invoices cannot be marked as paid.
+        If the invoice is already paid, this is a no-op.
+        """
+        if self.status == self.Status.DRAFT:
+            raise ValidationError(gettext("Draft invoices cannot be marked as paid"), code="invalid_status")
+
+        if self.status == self.Status.PAID:
+            return
+
+        self.status = self.Status.PAID
+        self.save()
+
     def confirm(self):
         """Confirm the invoice.
 

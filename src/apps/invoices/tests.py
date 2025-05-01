@@ -120,6 +120,18 @@ class InvoicesTest(TestCase):
         self.assertEqual(self.invoice_4.status, Invoice.Status.CONFIRMED)
         self.assertEqual(self.invoice_4.number, "0002")  # Should be the second of 2026
 
+    def test_invoice_mark_as_paid(self):
+        """Test the invoice mark_as_paid method."""
+        self.assertEqual(self.invoice.status, Invoice.Status.CONFIRMED)
+        self.invoice.mark_as_paid()
+        self.assertEqual(self.invoice.status, Invoice.Status.PAID)
+
+        self.assertEqual(self.invoice_3.status, Invoice.Status.DRAFT)
+        with self.assertRaises(ValidationError) as context:
+            self.invoice_3.mark_as_paid()
+        self.assertEqual(context.exception.code, "invalid_status")
+        self.assertEqual(self.invoice_3.status, Invoice.Status.DRAFT)
+
     def test_invoice_create_pdf(self):
         """Test the invoice create PDF method."""
         # Ensure it's not possible to create pdf for draft invoices
