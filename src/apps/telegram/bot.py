@@ -111,7 +111,7 @@ class Bot:
         payload = {
             "chat_id": chat_id,
             "text": text,
-            "parse_mode": cls.parse_mode,
+            # "parse_mode": cls.parse_mode,
         }
         if reply_markup:
             payload["reply_markup"] = reply_markup
@@ -128,7 +128,7 @@ class Bot:
             "chat_id": chat_id,
             "message_id": message_id,
             "text": text,
-            "parse_mode": cls.parse_mode,
+            # "parse_mode": cls.parse_mode,
         }
         if reply_markup:
             # payload["reply_markup"] = {"inline_keyboard": keyboard}
