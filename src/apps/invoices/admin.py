@@ -17,6 +17,16 @@ def confirm_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG0
             messages.error(request, f"{invoice}: {error}")
 
 
+@admin.action(permissions=["change"], description="Mark the selected invoices as paid")
+def mark_as_paid(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
+    """Mark the selected invoices as paid."""
+    for invoice in queryset:
+        try:
+            invoice.mark_as_paid()
+        except ValidationError as error:
+            messages.error(request, f"{invoice}: {error}")
+
+
 @admin.action(permissions=["change"], description="Create a PDF for the selected invoices")
 def create_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Create a PDF for the selected invoices."""

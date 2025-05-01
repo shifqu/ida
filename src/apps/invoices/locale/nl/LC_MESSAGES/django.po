@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-05-01 23:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <LL@li.org>\n"
@@ -18,51 +18,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: invoices/models.py:32
+#: models.py:32
 msgid "Draft"
 msgstr "Concept"
 
-#: invoices/models.py:33
+#: models.py:33
 msgid "Confirmed"
 msgstr "Bevestigd"
 
-#: invoices/models.py:34
+#: models.py:34
 msgid "Sent"
 msgstr "Verzonden"
 
-#: invoices/models.py:35
+#: models.py:35
 msgid "Paid"
 msgstr "Betaald"
 
-#: invoices/models.py:37
+#: models.py:37
 msgid "number"
 msgstr "nummer"
 
-#: invoices/models.py:38
+#: models.py:38
 msgid "date"
 msgstr "datum"
 
-#: invoices/models.py:39
+#: models.py:39
 msgid "company"
 msgstr "bedrijf"
 
-#: invoices/models.py:40
+#: models.py:40
 msgid "relation"
 msgstr "relatie"
 
-#: invoices/models.py:42
+#: models.py:42
 msgid "status"
 msgstr "status"
 
-#: invoices/models.py:44
+#: models.py:44
 msgid "PDF file"
 msgstr "PDF-bestand"
 
-#: invoices/models.py:119
+#: models.py:115
+msgid "Draft invoices cannot be marked as paid"
+msgstr "Concept facturen kunnen niet als betaald gemarkeerd worden"
+
+#: models.py:134
 msgid "An invoice without invoice items cannot be confirmed"
 msgstr "Een factuur zonder factuuritems kan niet worden bevestigd"
 
-#: invoices/models.py:127
+#: models.py:142
 #, python-format
 msgid ""
 "A non-draft invoice (date: %(last_date)s) exists after %(self_date)s. Update "
@@ -71,87 +75,87 @@ msgstr ""
 "Een niet-conceptfactuur (datum: %(last_date)s) bestaat na %(self_date)s. "
 "Verander de datum naar ten minste %(last_date)s."
 
-#: invoices/models.py:141
+#: models.py:156
 msgid "Only confirmed invoices can have their PDF generated"
 msgstr "Een PDF kan enkel gegenereerd worden voor bevestigde facturen"
 
-#: invoices/models.py:177
+#: models.py:192
 msgid "Draft invoices can not be sent by email"
 msgstr "Concept facturen kunnen niet per e-mail verzonden worden"
 
-#: invoices/models.py:179
+#: models.py:194
 msgid "Invoice has already been sent"
 msgstr "Factuur werd reeds verzonden"
 
-#: invoices/models.py:182
+#: models.py:197
 #, python-format
 msgid "Relation (%(relation)s) has no email address"
 msgstr "Relatie (%(relation)s) heeft geen e-mailadres"
 
-#: invoices/models.py:215
+#: models.py:230
 msgid "date due"
 msgstr "vervaldatum"
 
-#: invoices/models.py:216
+#: models.py:231
 msgid "payment communication"
 msgstr "betalings mededeling"
 
-#: invoices/models.py:224 invoices/models.py:313
+#: models.py:239 models.py:328
 msgid "subtotal"
 msgstr "subtotaal"
 
-#: invoices/models.py:225 invoices/models.py:287
+#: models.py:240 models.py:302
 msgid "VAT"
 msgstr "BTW"
 
-#: invoices/models.py:226
+#: models.py:241
 msgid "total"
 msgstr "totaal"
 
-#: invoices/models.py:232
+#: models.py:247
 msgid "ATTN."
 msgstr "T.A.V."
 
-#: invoices/models.py:258
+#: models.py:273
 msgid "Relation has no address"
 msgstr "Relatie heeft geen adres"
 
-#: invoices/models.py:264
+#: models.py:279
 msgid "Company has no bank account"
 msgstr "Bedrijf heeft geen bankrekening"
 
-#: invoices/models.py:270
+#: models.py:285
 msgid "Company has no address"
 msgstr "Bedrijf heeft geen adres"
 
-#: invoices/models.py:276 invoices/models.py:289
+#: models.py:291 models.py:304
 msgid "invoice"
 msgstr "factuur"
 
-#: invoices/models.py:277
+#: models.py:292
 msgid "invoices"
 msgstr "facturen"
 
-#: invoices/models.py:283
+#: models.py:298
 msgid "description"
 msgstr "omschrijving"
 
-#: invoices/models.py:284
+#: models.py:299
 msgid "unit price"
 msgstr "eenheidsprijs"
 
-#: invoices/models.py:285
+#: models.py:300
 msgid "quantity"
 msgstr "aantal"
 
-#: invoices/models.py:287
+#: models.py:302
 msgid "VAT percentage"
 msgstr "BTW-percentage"
 
-#: invoices/models.py:323
+#: models.py:338
 msgid "invoice item"
 msgstr "factuuritem"
 
-#: invoices/models.py:324
+#: models.py:339
 msgid "invoice items"
 msgstr "factuuritems"
