@@ -80,7 +80,7 @@ class InvoiceAdmin(admin.ModelAdmin):
     list_filter = ("status",)
     search_fields = ("number", "relation__name")
     readonly_fields = ("status", "number", "date_due", "payment_communication", "subtotal", "vat_amount", "total")
-    actions = [confirm_pdf, create_pdf, send_by_email, send_by_email_allow_resend]
+    actions = [confirm_pdf, create_pdf, send_by_email, send_by_email_allow_resend, mark_as_paid]
 
     def has_delete_permission(self, request, obj: Invoice | None = None):
         """Do not allow to delete invoices that are not new or in draft."""
