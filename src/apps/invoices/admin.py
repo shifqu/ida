@@ -10,7 +10,7 @@ from apps.invoices.models import Invoice, InvoiceItem
 @admin.action(permissions=["change"], description="Confirm the selected invoices")
 def confirm_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Confirm the selected invoices."""
-    for invoice in queryset:
+    for invoice in queryset.order_by("date"):
         try:
             invoice.confirm()
         except ValidationError as error:
@@ -20,7 +20,7 @@ def confirm_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG0
 @admin.action(permissions=["change"], description="Mark the selected invoices as paid")
 def mark_as_paid(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Mark the selected invoices as paid."""
-    for invoice in queryset:
+    for invoice in queryset.order_by("number"):
         try:
             invoice.mark_as_paid()
         except ValidationError as error:
@@ -30,7 +30,7 @@ def mark_as_paid(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG
 @admin.action(permissions=["change"], description="Create a PDF for the selected invoices")
 def create_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Create a PDF for the selected invoices."""
-    for invoice in queryset:
+    for invoice in queryset.order_by("number"):
         try:
             invoice.create_pdf()
         except ValidationError as error:
@@ -44,7 +44,7 @@ def send_by_email(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: AR
     If an invoice does not have a pdf, it will be created.
     If the invoice was already sent, it will NOT be sent again.
     """
-    for invoice in queryset:
+    for invoice in queryset.order_by("date", "number"):
         try:
             invoice.send_by_email()
         except ValidationError as error:
@@ -58,7 +58,7 @@ def send_by_email_allow_resend(modeladmin, request, queryset: QuerySet[Invoice])
     If an invoice does not have a pdf, it will be created.
     If the invoice was already sent, it will be sent again.
     """
-    for invoice in queryset:
+    for invoice in queryset.order_by("date", "number"):
         try:
             invoice.send_by_email(even_if_already_sent=True)
         except ValidationError as error:
