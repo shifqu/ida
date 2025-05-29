@@ -64,9 +64,8 @@ class Bot:
 
             elif cmd is Commands.OPTION:
                 _, day, option = data.split("_", 2)
-                option = option.lower().replace("h", "")
                 cls._registerwork(day, option, chat_id)
-                cls.edit_message(message_id, "Thanks, your action was registered", chat_id)
+                cls.edit_message(message_id, f"{day}: {option} registered.", chat_id)
 
             elif cmd is Commands.PAGE:
                 page = int(data.split("_", 1)[1])
@@ -141,11 +140,12 @@ class Bot:
         return ["0h", "4h", "8h", "16h", "24h"]
 
     @staticmethod
-    def _registerwork(date_str, option, chat_id):
+    def _registerwork(date_str: str, option: str, chat_id: int):
         """Register the work."""
+        hours = option.lower().replace("h", "")
         date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
         setting = TelegramSettings.objects.get(chat_id=chat_id)
         timesheet = Timesheet.objects.get(
             status=Timesheet.Status.DRAFT, month=date_obj.month, year=date_obj.year, user=setting.user
         )
-        timesheet.timesheetitem_set.create(date=date_str, worked_hours=option)
+        timesheet.timesheetitem_set.create(date=date_str, worked_hours=hours)
