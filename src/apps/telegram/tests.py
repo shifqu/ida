@@ -9,7 +9,6 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.relations.models import Relation
-from apps.telegram.bot import Bot
 from apps.telegram.models import TelegramSettings
 from apps.timesheets.models import Timesheet
 from apps.users.models import IdaUser
@@ -64,7 +63,7 @@ class TelegramTestCase(TestCase):
                 self.assertEqual(self.timesheet.timesheetitem_set.count(), 0)
             else:
                 # No payload means it's the final payload
-                self.assertEqual(bot_post.call_args[1]["payload"]["text"], "Thanks, your action was registered")
+                self.assertEqual(bot_post.call_args[1]["payload"]["text"], "2025-01-07: 8h registered.")
                 self.assertEqual(self.timesheet.timesheetitem_set.count(), 1)
 
 
