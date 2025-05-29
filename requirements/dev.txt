@@ -6,19 +6,19 @@
 #
 asgiref==3.8.1
     # via django
-astroid==3.3.8
+astroid==3.3.10
     # via pylint
-certifi==2025.1.31
+certifi==2025.4.26
     # via requests
 chardet==5.2.0
     # via reportlab
-charset-normalizer==3.4.1
+charset-normalizer==3.4.2
     # via requests
-coverage==7.7.1
+coverage==7.8.2
     # via ida (pyproject.toml)
-dill==0.3.9
+dill==0.4.0
     # via pylint
-django==5.1.6
+django==5.1.9
     # via ida (pyproject.toml)
 django-types==0.20.0
     # via ida (pyproject.toml)
@@ -32,31 +32,31 @@ mccabe==0.7.0
     # via pylint
 nodeenv==1.9.1
     # via pyright
-packaging==24.2
+packaging==25.0
     # via gunicorn
-pillow==11.1.0
+pillow==11.2.1
     # via reportlab
-platformdirs==4.3.6
+platformdirs==4.3.8
     # via pylint
-pylint==3.3.4
+pylint==3.3.7
     # via ida (pyproject.toml)
-pyright==1.1.396
+pyright==1.1.401
     # via ida (pyproject.toml)
-python-dotenv==1.0.1
+python-dotenv==1.1.0
     # via ida (pyproject.toml)
-reportlab==4.3.1
+reportlab==4.4.1
     # via ida (pyproject.toml)
 requests==2.32.3
     # via ida (pyproject.toml)
-ruff==0.9.9
+ruff==0.11.11
     # via ida (pyproject.toml)
 sqlparse==0.5.3
     # via django
 tomlkit==0.13.2
     # via pylint
-types-psycopg2==2.9.21.20250121
+types-psycopg2==2.9.21.20250516
     # via django-types
-typing-extensions==4.12.2
+typing-extensions==4.13.2
     # via pyright
-urllib3==2.3.0
+urllib3==2.4.0
     # via requests
