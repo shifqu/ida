@@ -39,7 +39,7 @@ class TelegramSettings(models.Model):
         user: models.OneToOneField[IdaUser]
 
     user = models.OneToOneField("users.IdaUser", on_delete=models.CASCADE)
-    chat_id = models.IntegerField(verbose_name=_("chat id"), unique=True, max_length=255)
+    chat_id = models.IntegerField(verbose_name=_("chat id"), unique=True)
 
     class Meta:
         """Set meta options."""
