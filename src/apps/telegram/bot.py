@@ -100,7 +100,7 @@ class Bot:
         cls.send_message("Select a day:", chat_id, reply_markup=reply_markup)
 
     @staticmethod
-    def valid_token(token: str):
+    def valid_token(token: str | None):
         """Validate the token.
 
         If no token is configured, the token is considered valid.
