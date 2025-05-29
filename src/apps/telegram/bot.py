@@ -24,7 +24,7 @@ class Bot:
     """Telegram bot."""
 
     @classmethod
-    def post(cls, endpoint, payload, timeout=5):
+    def post(cls, endpoint: str, payload: dict, timeout: int = 5):
         """Post the payload to the given endpoint."""
         url = cls.construct_endpoint(endpoint)
         response = requests.post(url, json=payload, timeout=timeout)
@@ -38,14 +38,7 @@ class Bot:
             chat_id = update["message"]["chat"]["id"]
             cmd = Commands(text)
             if cmd is Commands.REGISTERWORK:
-                days = cls._get_missing_days()
-                keyboard = [[{"text": day, "callback_data": f"day_{day}"}] for day in days]
-                if len(keyboard) > 4:
-                    keyboard = keyboard[:4]
-                    keyboard.append([{"text": "➡️ Next", "callback_data": "page_2"}])
-                reply_markup = {"inline_keyboard": keyboard}
-                cls.send_message("Select a day:", chat_id, reply_markup=reply_markup)
-
+                cls.display_missing_days(chat_id)
         elif "callback_query" in update:
             query = update["callback_query"]
             message_id = query["message"]["message_id"]
@@ -53,35 +46,61 @@ class Bot:
             data: str = query["data"]
             text = data.split("_", 1)[0]
             cmd = Commands(text)
-
             if cmd is Commands.DAY:
-                day = data.split("_", 1)[1]
-                options = cls._get_day_options()
-                keyboard = [[{"text": option, "callback_data": f"option_{day}_{option}"}] for option in options]
-                keyboard.append([{"text": "⬅️ Back", "callback_data": "page_1"}])
-                reply_markup = {"inline_keyboard": keyboard}
-                cls.edit_message(message_id, f"Options for {day}:", chat_id, reply_markup=reply_markup)
-
+                cls.show_day_options(chat_id, message_id, data)
             elif cmd is Commands.OPTION:
-                _, day, option = data.split("_", 2)
-                cls._registerwork(day, option, chat_id)
-                cls.edit_message(message_id, f"{day}: {option} registered.", chat_id)
-
+                cls.register_option(chat_id, message_id, data)
             elif cmd is Commands.PAGE:
-                page = int(data.split("_", 1)[1])
-                start = (page - 1) * 4
-                end = start + 4
-                days = cls._get_missing_days()
-                keyboard = [[{"text": day, "callback_data": f"day_{day}"}] for day in days[start:end]]
-                if page > 1:
-                    keyboard.append([{"text": "⬅️ Back", "callback_data": f"page_{page - 1}"}])
-                if len(days) > end:
-                    keyboard.append([{"text": "➡️ Next", "callback_data": f"page_{page + 1}"}])
-                reply_markup = {"inline_keyboard": keyboard}
-                cls.edit_message(message_id, "Select a day:", chat_id, reply_markup=reply_markup)
+                cls.show_page(chat_id, message_id, data)
+
+    @classmethod
+    def show_page(cls, chat_id: int, message_id: int, data: str):
+        """Show the next or previous page of missing days."""
+        page = int(data.split("_", 1)[1])
+        start = (page - 1) * 4
+        end = start + 4
+        days = cls._get_missing_days()
+        keyboard = [[{"text": day, "callback_data": f"day_{day}"}] for day in days[start:end]]
+        if page > 1:
+            keyboard.append([{"text": "⬅️ Back", "callback_data": f"page_{page - 1}"}])
+        if len(days) > end:
+            keyboard.append([{"text": "➡️ Next", "callback_data": f"page_{page + 1}"}])
+        reply_markup = {"inline_keyboard": keyboard}
+        cls.edit_message(message_id, "Select a day:", chat_id, reply_markup=reply_markup)
+
+    @classmethod
+    def register_option(cls, chat_id: int, message_id: int, data: str):
+        """Register the work for the given day and option."""
+        _, day, option = data.split("_", 2)
+        cls._registerwork(day, option, chat_id)
+        cls.edit_message(message_id, f"{day}: {option} registered.", chat_id)
+
+    @classmethod
+    def show_day_options(cls, chat_id: int, message_id: int, data: str):
+        """Show the options for the given day."""
+        day = data.split("_", 1)[1]
+        options = cls._get_day_options()
+        keyboard = [[{"text": option, "callback_data": f"option_{day}_{option}"}] for option in options]
+        keyboard.append([{"text": "⬅️ Back", "callback_data": "page_1"}])
+        reply_markup = {"inline_keyboard": keyboard}
+        cls.edit_message(message_id, f"Options for {day}:", chat_id, reply_markup=reply_markup)
+
+    @classmethod
+    def display_missing_days(cls, chat_id: int):
+        """Display the missing days to the user.
+
+        This is the first step in the registerwork process.
+        """
+        days = cls._get_missing_days()
+        keyboard = [[{"text": day, "callback_data": f"day_{day}"}] for day in days]
+        if len(keyboard) > 4:
+            keyboard = keyboard[:4]
+            keyboard.append([{"text": "➡️ Next", "callback_data": "page_2"}])
+        reply_markup = {"inline_keyboard": keyboard}
+        cls.send_message("Select a day:", chat_id, reply_markup=reply_markup)
 
     @staticmethod
-    def valid_token(token):
+    def valid_token(token: str):
         """Validate the token.
 
         If no token is configured, the token is considered valid.
@@ -97,7 +116,7 @@ class Bot:
         return f"{root_url}/{name}"
 
     @classmethod
-    def send_message(cls, text, chat_id, reply_markup=None):
+    def send_message(cls, text: str, chat_id: int, reply_markup: dict | None = None):
         """Send a message to the user.
 
         References:
@@ -109,7 +128,7 @@ class Bot:
         cls.post("sendMessage", payload=payload)
 
     @classmethod
-    def edit_message(cls, message_id, text, chat_id, reply_markup=None):
+    def edit_message(cls, message_id: int, text: str, chat_id: int, reply_markup: dict | None = None):
         """Edit a message.
 
         References:
