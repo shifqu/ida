@@ -8,6 +8,7 @@ from django.conf import settings
 
 from apps.telegram.models import TelegramSettings
 from apps.timesheets.models import Timesheet, TimesheetItem
+from apps.users.models import IdaUser
 
 
 class Commands(enum.Enum):
@@ -54,12 +55,12 @@ class Bot:
                 cls.show_page(chat_id, message_id, data)
 
     @classmethod
-    def show_page(cls, chat_id: int, message_id: int, data: str):
+    def show_page(cls, chat_id: int, message_id: int, data: str, user: IdaUser | None = None):
         """Show the next or previous page of missing days."""
         page = int(data.split("_", 1)[1])
         start = (page - 1) * 4
         end = start + 4
-        days = cls._get_missing_days()
+        days = cls._get_missing_days(user=user, chat_id=chat_id)
         keyboard = [[{"text": day, "callback_data": f"day_{day}"}] for day in days[start:end]]
         if page > 1:
             keyboard.append([{"text": "⬅️ Back", "callback_data": f"page_{page - 1}"}])
@@ -86,12 +87,12 @@ class Bot:
         cls.edit_message(message_id, f"Options for {day}:", chat_id, reply_markup=reply_markup)
 
     @classmethod
-    def display_missing_days(cls, chat_id: int):
+    def display_missing_days(cls, chat_id: int, user: IdaUser | None = None):
         """Display the missing days to the user.
 
         This is the first step in the registerwork process.
         """
-        days = cls._get_missing_days()
+        days = cls._get_missing_days(user=user, chat_id=chat_id)
         keyboard = [[{"text": day, "callback_data": f"day_{day}"}] for day in days]
         if len(keyboard) > 4:
             keyboard = keyboard[:4]
@@ -145,12 +146,17 @@ class Bot:
         return TimesheetItem.ItemType.choices
 
     @staticmethod
-    def _get_missing_days():
-        """Get the missing days.
+    def _get_missing_days(user: IdaUser | None = None, chat_id: int | None = None):
+        """Get the missing days for the user.
 
-        Only monday through friday are considered.
+        If no user is provided, the chat_id must be provided to get the user.
+        If neither is provided, a ValueError is raised.
         """
-        draft_timesheets = Timesheet.objects.filter(status=Timesheet.Status.DRAFT)
+        if not user:
+            if not chat_id:
+                raise ValueError("Either chat_id or user must be provided.")
+            user = TelegramSettings.objects.get(chat_id=chat_id).user
+        draft_timesheets = Timesheet.objects.filter(status=Timesheet.Status.DRAFT, user=user)
         return [str(date) for timesheet in draft_timesheets for date in timesheet.missing_days]
 
     @staticmethod
