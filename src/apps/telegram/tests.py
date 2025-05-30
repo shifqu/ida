@@ -9,6 +9,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.relations.models import Relation
+from apps.telegram.management.commands import displaymissingdays
 from apps.telegram.models import TelegramSettings
 from apps.timesheets.models import Timesheet
 from apps.users.models import IdaUser
@@ -28,6 +29,8 @@ class TelegramTestCase(TestCase):
         cls.timesheet = Timesheet.objects.create(
             name="Test Timesheet", month=1, year=2025, relation=cls.relation, user=cls.user
         )
+        cls.fixture_file = Path(__file__).parent / "fixtures" / "messages.json"
+        cls.fixtures: list = json.loads(cls.fixture_file.read_text())
 
     def test_telegram_invalid_token(self):
         """Test the telegram app with an invalid token."""
@@ -44,11 +47,9 @@ class TelegramTestCase(TestCase):
     def test_telegram(self):
         """Test the telegram app."""
         self.maxDiff = None
-        fixture_file = Path(__file__).parent / "fixtures" / "messages.json"
-        fixtures: list = json.loads(fixture_file.read_text())
         url = reverse("webhook")
         bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
-        for i, fixture in enumerate(fixtures):
+        for i, fixture in enumerate(self.fixtures):
             response = self.client.post(
                 url,
                 fixture["fields"]["raw_message"],
@@ -57,7 +58,7 @@ class TelegramTestCase(TestCase):
             )
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.json(), {"status": "ok", "message": "Message received."}, f"fixture {i=} failed.")
-            expected_payload = _construct_expected_payload(i, fixtures, bot_post)
+            expected_payload = _construct_expected_payload(i, self.fixtures, bot_post)
             if expected_payload:
                 self.assertDictEqual(bot_post.call_args[1], expected_payload)
                 self.assertEqual(self.timesheet.timesheetitem_set.count(), 0)
@@ -65,6 +66,15 @@ class TelegramTestCase(TestCase):
                 # No payload means it's the final payload
                 self.assertEqual(bot_post.call_args[1]["payload"]["text"], "2025-01-07: 8h registered.")
                 self.assertEqual(self.timesheet.timesheetitem_set.count(), 1)
+
+    def test_display_missing_days(self):
+        """Test the display missing days command."""
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
+        displaymissingdays.Command().handle()
+        self.assertEqual(bot_post.call_count, 1)
+        self.assertEqual(bot_post.call_args.args[0], "sendMessage")
+        expected_payload = _construct_expected_payload(0, self.fixtures, bot_post)
+        self.assertEqual(bot_post.call_args.kwargs, expected_payload)
 
 
 def _construct_expected_payload(idx: int, fixtures: list[dict], bot_post: MagicMock):
