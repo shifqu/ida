@@ -23,6 +23,6 @@ class Command(BaseCommand):
         """
         for setting in TelegramSettings.objects.filter(user__is_active=True):
             translation.activate(setting.user.language)
-            Bot.display_missing_days(setting.chat_id)
+            Bot.display_missing_days(setting.chat_id, user=setting.user)
             translation.deactivate()
             self.stdout.write(self.style.SUCCESS(f"Successfully sent the message to {setting.user}."))
