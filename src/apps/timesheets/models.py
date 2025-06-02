@@ -33,8 +33,7 @@ class Timesheet(models.Model):
     only_weekdays = models.BooleanField(_("only weekdays"), default=True, blank=True)
     send_reminder = models.BooleanField(_("send reminder"), default=True, blank=True)
 
-    @property
-    def missing_days(self) -> list[date]:
+    def get_missing_days(self) -> list[date]:
         """Return the dates for the standard days missing in the timesheet."""
         if self.status == self.Status.COMPLETED:
             return []

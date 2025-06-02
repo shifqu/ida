@@ -1,15 +1,16 @@
 """Telegram tests."""
 
 import json
+from io import StringIO
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from django.conf import settings
+from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
 
 from apps.relations.models import Relation
-from apps.telegram.management.commands import displaymissingdays
 from apps.telegram.models import TelegramSettings
 from apps.timesheets.models import Timesheet
 from apps.users.models import IdaUser
@@ -70,11 +71,22 @@ class TelegramTestCase(TestCase):
     def test_display_missing_days(self):
         """Test the display missing days command."""
         bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
-        displaymissingdays.Command().handle()
+        out = StringIO()
+        call_command("displaymissingdays", stdout=out)
         self.assertEqual(bot_post.call_count, 1)
         self.assertEqual(bot_post.call_args.args[0], "sendMessage")
         expected_payload = _construct_expected_payload(0, self.fixtures, bot_post)
         self.assertEqual(bot_post.call_args.kwargs, expected_payload)
+        self.assertIn("Successfully sent the message", out.getvalue())
+
+        # Confirm timesheets and run command again, this should result in "no missing days"
+        self.timesheet.status = Timesheet.Status.COMPLETED
+        self.timesheet.save()
+        bot_post.reset_mock()
+        out = StringIO()
+        call_command("displaymissingdays", stdout=out)
+        self.assertFalse(bot_post.called, "Bot should not post when no days are missing.")
+        self.assertIn("No missing days", out.getvalue())
 
 
 def _construct_expected_payload(idx: int, fixtures: list[dict], bot_post: MagicMock):
