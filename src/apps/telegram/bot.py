@@ -87,18 +87,24 @@ class Bot:
         cls.edit_message(message_id, f"Options for {day}:", chat_id, reply_markup=reply_markup)
 
     @classmethod
-    def display_missing_days(cls, chat_id: int, user: IdaUser | None = None):
+    def display_missing_days(cls, chat_id: int, user: IdaUser | None = None) -> bool:
         """Display the missing days to the user.
 
         This is the first step in the registerwork process.
+
+        Returns:
+            bool: True if a message was sent, False if there are no missing days.
         """
         days = cls._get_missing_days(user=user, chat_id=chat_id)
+        if not days:
+            return False  # No missing days to display, no need to send a message.
         keyboard = [[{"text": day, "callback_data": f"day_{day}"}] for day in days]
         if len(keyboard) > 4:
             keyboard = keyboard[:4]
             keyboard.append([{"text": "➡️ Next", "callback_data": "page_2"}])
         reply_markup = {"inline_keyboard": keyboard}
         cls.send_message("Select a day:", chat_id, reply_markup=reply_markup)
+        return True
 
     @staticmethod
     def valid_token(token: str | None):
@@ -157,7 +163,7 @@ class Bot:
                 raise ValueError("Either chat_id or user must be provided.")
             user = TelegramSettings.objects.get(chat_id=chat_id).user
         draft_timesheets = Timesheet.objects.filter(status=Timesheet.Status.DRAFT, user=user)
-        return [str(date) for timesheet in draft_timesheets for date in timesheet.missing_days]
+        return [str(date) for timesheet in draft_timesheets for date in timesheet.get_missing_days()]
 
     @staticmethod
     def _get_day_options():
