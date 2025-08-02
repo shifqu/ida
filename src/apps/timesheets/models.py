@@ -84,11 +84,13 @@ class TimesheetItem(models.Model):
         SUNDAY = "sunday", _("Sunday")
         OTHER = "other", _("Other")
 
-    timesheet = models.ForeignKey(Timesheet, on_delete=models.CASCADE)
-    item_type = models.CharField(max_length=50, choices=ItemType.choices, default=ItemType.STANDARD)
-    date = models.DateField()
-    worked_hours = models.FloatField()
-    description = models.TextField(blank=True)
+    timesheet = models.ForeignKey(Timesheet, on_delete=models.CASCADE, verbose_name=_("timesheet"))
+    item_type = models.CharField(
+        verbose_name=_("item type"), max_length=50, choices=ItemType.choices, default=ItemType.STANDARD
+    )
+    date = models.DateField(verbose_name=_("date"))
+    worked_hours = models.FloatField(verbose_name=_("worked hours"))
+    description = models.TextField(verbose_name=_("description"), blank=True)
 
     def __str__(self):
         """Return the string representation of the timesheet item."""
