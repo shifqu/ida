@@ -16,8 +16,8 @@ class Message(models.Model):
     https://core.telegram.org/bots/api#message
     """
 
-    raw_message = models.JSONField()
-    error = models.TextField(null=True, blank=True)
+    raw_message = models.JSONField(verbose_name=_("raw message"))
+    error = models.TextField(verbose_name=_("error"), null=True, blank=True)
 
     def __str__(self):
         """Return the string representation of the message."""
@@ -38,7 +38,7 @@ class TelegramSettings(models.Model):
 
         user: models.OneToOneField[IdaUser]
 
-    user = models.OneToOneField("users.IdaUser", on_delete=models.CASCADE)
+    user = models.OneToOneField("users.IdaUser", on_delete=models.CASCADE, verbose_name=_("user"))
     chat_id = models.IntegerField(verbose_name=_("chat id"), unique=True)
 
     class Meta:

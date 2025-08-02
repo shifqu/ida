@@ -24,6 +24,6 @@ class IdaUser(AbstractUser):
     language = models.CharField(verbose_name=_("language"), max_length=10, default="en", choices=settings.LANGUAGES)
 
     def __str__(self):
-        """Return a string representation of the user setting."""
+        """Return a string representation of the custom user."""
         super_ = super().__str__()
         return f"{super_} ({self.language})"
