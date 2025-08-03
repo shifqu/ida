@@ -74,6 +74,10 @@ msgstr "relation"
 msgid "company"
 msgstr "entreprise"
 
-#: geo/models.py:59 geo/models.py:60
+#: geo/models.py:59
+msgid "address"
+msgstr "adresse"
+
+#: geo/models.py:60
 msgid "addresses"
 msgstr "adresses"
