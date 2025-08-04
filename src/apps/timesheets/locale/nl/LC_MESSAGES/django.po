@@ -64,7 +64,7 @@ msgstr "Standaard"
 
 #: timesheets/models.py:82
 msgid "On call"
-msgstr "Bereikbaar"
+msgstr "Wachtdienst"
 
 #: timesheets/models.py:83
 msgid "Night"
