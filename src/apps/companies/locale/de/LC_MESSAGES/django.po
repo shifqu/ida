@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-08-04 08:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <LL@li.org>\n"
@@ -18,70 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: companies/models.py:21 companies/models.py:77
+#: models.py:23 models.py:79
 msgid "name"
 msgstr "Name"
 
-#: companies/models.py:23
+#: models.py:25
 msgid "phone"
 msgstr "Telefon"
 
-#: companies/models.py:27
+#: models.py:29
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
 msgstr "Telefonnummer mit Ländervorwahl (z. B. +32 490 12 34 56)"
 
-#: companies/models.py:29
+#: models.py:31
 msgid "email"
 msgstr "E-Mail"
 
-#: companies/models.py:30
+#: models.py:32
 msgid "website"
 msgstr "Webseite"
 
-#: companies/models.py:31
+#: models.py:33
 msgid "VAT number"
 msgstr "Umsatzsteuer-Identifikationsnummer"
 
-#: companies/models.py:33
+#: models.py:35
 msgid "business court"
 msgstr "Handelsgericht"
 
-#: companies/models.py:37
+#: models.py:39
 msgid "Example: Antwerpen, afd. Hasselt"
 msgstr "Beispiel: Antwerpen, Abt. Hasselt"
 
-#: companies/models.py:39
+#: models.py:41
 msgid "logo"
 msgstr "Logo"
 
-#: companies/models.py:41
+#: models.py:43
 msgid "graphic element"
 msgstr "grafisches Element"
 
-#: companies/models.py:50
+#: models.py:52
 msgid "VAT"
 msgstr "MwSt."
 
-#: companies/models.py:68 companies/models.py:78
+#: models.py:70 models.py:80
 msgid "company"
 msgstr "Unternehmen"
 
-#: companies/models.py:69
+#: models.py:71
 msgid "companies"
 msgstr "Unternehmen"
 
-#: companies/models.py:75
+#: models.py:77
 msgid "IBAN"
 msgstr "IBAN"
 
-#: companies/models.py:76
+#: models.py:78
 msgid "BIC"
 msgstr "BIC"
 
-#: companies/models.py:87
+#: models.py:89
 msgid "bank account"
 msgstr "Bankkonto"
 
-#: companies/models.py:88
+#: models.py:90
 msgid "bank accounts"
 msgstr "Bankkonten"
