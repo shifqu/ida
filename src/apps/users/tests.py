@@ -10,7 +10,7 @@ from apps.users.models import IdaUser
 class UsersTestCase(TestCase):
     """Users test case."""
 
-    fixtures = ["companies.json"]
+    fixtures = ["companies"]
 
     def test_create_user(self):
         """Test creating a user."""
@@ -28,6 +28,7 @@ class UsersTestCase(TestCase):
         user.company = company
         user.save()
         self.assertEqual(user.company, company)
+        self.assertTrue(company.user_set.contains(user))
 
     def test_create_superuser(self):
         """Test creating a superuser."""

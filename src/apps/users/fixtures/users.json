@@ -1,0 +1,20 @@
+[
+    {
+        "model": "users.idauser",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$ihuAf9VBZCuIprf9alKOhQ==",
+            "is_superuser": false,
+            "username": "dummyuser",
+            "first_name": "Dummy",
+            "last_name": "User",
+            "email": "",
+            "is_staff": true,
+            "is_active": true,
+            "company": 1,
+            "language": "nl",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]
