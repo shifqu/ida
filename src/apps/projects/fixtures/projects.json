@@ -1,0 +1,73 @@
+[
+    {
+        "model": "projects.project",
+        "pk": 1,
+        "fields": {
+            "name": "Dummy Project",
+            "description": "A project for testing purposes",
+            "start_date": "2025-01-01",
+            "end_date": "2025-12-31",
+            "relation": 1,
+            "company": 1,
+            "invoice_line_prefix": "Dummy Prefix",
+            "users": [
+                1
+            ]
+        }
+    },
+    {
+        "model": "projects.rate",
+        "pk": 1,
+        "fields": {
+            "project": 1,
+            "item_type": "standard",
+            "rate_type": "daily",
+            "rate": "500.00",
+            "vat_percentage": "21.00"
+        }
+    },
+    {
+        "model": "projects.rate",
+        "pk": 2,
+        "fields": {
+            "project": 1,
+            "item_type": "on_call",
+            "rate_type": "hourly",
+            "rate": "0.5",
+            "vat_percentage": "21.00"
+        }
+    },
+    {
+        "model": "projects.rate",
+        "pk": 3,
+        "fields": {
+            "project": 1,
+            "item_type": "night",
+            "rate_type": "hourly",
+            "rate": "93.75",
+            "vat_percentage": "21.00"
+        }
+    },
+    {
+        "model": "projects.rate",
+        "pk": 4,
+        "fields": {
+            "project": 1,
+            "item_type": "saturday",
+            "rate_type": "hourly",
+            "rate": "93.75",
+            "vat_percentage": "21.00"
+        }
+    },
+    {
+        "model": "projects.rate",
+        "pk": 5,
+        "fields": {
+            "project": 1,
+            "item_type": "sunday",
+            "rate_type": "hourly",
+            "rate": "125.00",
+            "vat_percentage": "21.00"
+        }
+    }
+]
