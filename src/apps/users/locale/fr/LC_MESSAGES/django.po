@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-08-04 09:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -18,14 +18,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: users/admin.py:15 users/admin.py:16
+#: admin.py:15 admin.py:16
 msgid "Ida data"
 msgstr "Données Ida"
 
-#: users/models.py:22
+#: models.py:26
 msgid "company"
 msgstr "entreprise"
 
-#: users/models.py:24
+#: models.py:31
 msgid "language"
 msgstr "langue"
