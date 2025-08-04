@@ -12,8 +12,10 @@ class Relation(models.Model):
 
     if TYPE_CHECKING:
         from apps.geo.models import Address
+        from apps.projects.models import Project
 
-        address_set: models.Manager["Address"]
+        address_set: models.Manager[Address]
+        project_set: models.Manager[Project]
 
     class Category(models.TextChoices):
         """Represent the relation type choices."""
