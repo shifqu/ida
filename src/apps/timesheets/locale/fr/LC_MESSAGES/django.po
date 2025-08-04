@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-08-04 09:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -18,66 +18,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: timesheets/models.py:24
+#: models.py:36
 msgid "Draft"
 msgstr "Brouillon"
 
-#: timesheets/models.py:25
+#: models.py:37
 msgid "Completed"
 msgstr "Terminé"
 
-#: timesheets/models.py:27
-msgid "name"
-msgstr "nom"
-
-#: timesheets/models.py:28
+#: models.py:39
 msgid "month"
 msgstr "mois"
 
-#: timesheets/models.py:29
+#: models.py:40
 msgid "year"
 msgstr "année"
 
-#: timesheets/models.py:30
+#: models.py:41
 msgid "status"
 msgstr "statut"
 
-#: timesheets/models.py:31
+#: models.py:42
 msgid "user"
 msgstr "utilisateur"
 
-#: timesheets/models.py:32
-msgid "relation"
-msgstr "relation"
+#: models.py:43
+msgid "project"
+msgstr "projet"
 
-#: timesheets/models.py:33
-msgid "only weekdays"
-msgstr "seulement les jours de semaine"
-
-#: timesheets/models.py:34
-msgid "send reminder"
-msgstr "envoyer un rappel"
-
-#: timesheets/models.py:81
+#: models.py:102
 msgid "Standard"
 msgstr "Standard"
 
-#: timesheets/models.py:82
+#: models.py:103
 msgid "On call"
 msgstr "De garde"
 
-#: timesheets/models.py:83
+#: models.py:104
 msgid "Night"
 msgstr "Nuit"
 
-#: timesheets/models.py:84
+#: models.py:105
 msgid "Saturday"
 msgstr "Samedi"
 
-#: timesheets/models.py:85
+#: models.py:106
 msgid "Sunday"
 msgstr "Dimanche"
 
-#: timesheets/models.py:86
+#: models.py:107
 msgid "Other"
 msgstr "Autre"
+
+#: models.py:109
+msgid "timesheet"
+msgstr "feuille de temps"
+
+#: models.py:111
+msgid "item type"
+msgstr "type d’article"
+
+#: models.py:113
+msgid "date"
+msgstr "date"
+
+#: models.py:114
+msgid "worked hours"
+msgstr "heures travaillées"
+
+#: models.py:115
+msgid "description"
+msgstr "description"
