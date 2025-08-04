@@ -48,3 +48,4 @@ exclude = [ "**/migrations", "**/_reportlab.py", "**/tests.py"]
 typeCheckingMode = "standard"
 deprecateTypingAliases = true
 pythonVersion = "3.12"
+extraPaths = [ "src/apps/" ]
