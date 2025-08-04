@@ -4,6 +4,31 @@ import django.db.models.deletion
 from django.db import migrations, models
 
 
+def create_default_othermodel(apps, schema_editor):
+    Project = apps.get_model("projects", "Project")
+    Relation = apps.get_model("relations", "Relation")
+    Company = apps.get_model("companies", "Company")
+    relation, _created = Relation.objects.get_or_create(id=1, defaults={"name": "Dummy Relation", "category": "CUSTOMER"})
+    company_defaults = {
+        "name": "IDA Inc.",
+        "phone": "+32 490 12 34 56",
+        "email": "info@ida.com",
+        "website": "https://ida.com",
+        "vat_number": "BE0123456789",
+        "business_court": "Antwerpen, afd. Tongeren",
+    }
+    company, _created = Company.objects.get_or_create(id=1, defaults=company_defaults)
+    defaults = {
+        "name": "Dummy Project",
+        "description": "A project for testing purposes",
+        "start_date": "2025-01-01",
+        "end_date": "2025-12-31",
+        "relation": relation,
+        "company": company,
+        "invoice_line_prefix": "Dummy Prefix"
+    }
+    Project.objects.get_or_create(id=1, defaults=defaults)
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -12,6 +37,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(
+            create_default_othermodel,
+            reverse_code=migrations.RunPython.noop
+        ),
         migrations.RemoveField(
             model_name='timesheet',
             name='relation',
