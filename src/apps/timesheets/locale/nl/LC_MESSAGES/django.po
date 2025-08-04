@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-08-04 09:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -18,66 +18,74 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: timesheets/models.py:24
+#: models.py:36
 msgid "Draft"
 msgstr "Concept"
 
-#: timesheets/models.py:25
+#: models.py:37
 msgid "Completed"
 msgstr "Voltooid"
 
-#: timesheets/models.py:27
-msgid "name"
-msgstr "naam"
-
-#: timesheets/models.py:28
+#: models.py:39
 msgid "month"
 msgstr "maand"
 
-#: timesheets/models.py:29
+#: models.py:40
 msgid "year"
 msgstr "jaar"
 
-#: timesheets/models.py:30
+#: models.py:41
 msgid "status"
 msgstr "status"
 
-#: timesheets/models.py:31
+#: models.py:42
 msgid "user"
 msgstr "gebruiker"
 
-#: timesheets/models.py:32
-msgid "relation"
-msgstr "relatie"
+#: models.py:43
+msgid "project"
+msgstr "project"
 
-#: timesheets/models.py:33
-msgid "only weekdays"
-msgstr "alleen weekdagen"
-
-#: timesheets/models.py:34
-msgid "send reminder"
-msgstr "herinnering sturen"
-
-#: timesheets/models.py:81
+#: models.py:102
 msgid "Standard"
 msgstr "Standaard"
 
-#: timesheets/models.py:82
+#: models.py:103
 msgid "On call"
 msgstr "Wachtdienst"
 
-#: timesheets/models.py:83
+#: models.py:104
 msgid "Night"
 msgstr "Nacht"
 
-#: timesheets/models.py:84
+#: models.py:105
 msgid "Saturday"
 msgstr "Zaterdag"
 
-#: timesheets/models.py:85
+#: models.py:106
 msgid "Sunday"
 msgstr "Zondag"
 
-#: timesheets/models.py:86
+#: models.py:107
 msgid "Other"
 msgstr "Overig"
+
+#: models.py:109
+msgid "timesheet"
+msgstr "timesheet"
+
+#: models.py:111
+msgid "item type"
+msgstr "item type"
+
+#: models.py:113
+msgid "date"
+msgstr "datum"
+
+#: models.py:114
+msgid "worked hours"
+msgstr "gewerkte uren"
+
+#: models.py:115
+msgid "description"
+msgstr "beschrijving"

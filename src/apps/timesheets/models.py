@@ -9,14 +9,26 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 
+def current_year():
+    """Return the current year."""
+    return timezone.now().year
+
+
+def current_month():
+    """Return the current month."""
+    return timezone.now().month
+
+
 class Timesheet(models.Model):
     """Represent a Timesheet."""
 
     if TYPE_CHECKING:
+        from apps.projects.models import Project
         from apps.users.models import IdaUser
 
         timesheetitem_set: models.Manager["TimesheetItem"]
         user: models.ForeignKey[IdaUser]
+        project: models.ForeignKey[Project]
 
     class Status(models.TextChoices):
         """Represent the status of a timesheet."""
@@ -24,14 +36,24 @@ class Timesheet(models.Model):
         DRAFT = "draft", _("Draft")
         COMPLETED = "completed", _("Completed")
 
-    name = models.CharField(_("name"), max_length=255)
-    month = models.IntegerField(_("month"))
-    year = models.IntegerField(_("year"))
+    month = models.IntegerField(_("month"), default=current_month)
+    year = models.IntegerField(_("year"), default=current_year)
     status = models.CharField(_("status"), max_length=50, choices=Status.choices, default=Status.DRAFT)
     user = models.ForeignKey("users.IdaUser", on_delete=models.CASCADE, verbose_name=_("user"))
-    relation = models.ForeignKey("relations.Relation", on_delete=models.CASCADE, verbose_name=_("relation"))
-    only_weekdays = models.BooleanField(_("only weekdays"), default=True, blank=True)
-    send_reminder = models.BooleanField(_("send reminder"), default=True, blank=True)
+    project = models.ForeignKey("projects.Project", on_delete=models.CASCADE, verbose_name=_("project"))
+
+    class Meta:
+        """Set meta options."""
+
+        unique_together = ("user", "project", "month", "year")
+
+    @property
+    def name(self) -> str:
+        """Return the name of the timesheet."""
+        user_name = self.user.first_name
+        if self.user.last_name:
+            user_name = f"{user_name} {self.user.last_name}"
+        return f"{self.project} - {user_name} - {str(self.month).zfill(2)}/{self.year}"
 
     def get_missing_days(self) -> list[date]:
         """Return the dates for the standard days missing in the timesheet."""
@@ -53,7 +75,7 @@ class Timesheet(models.Model):
             if day in existing_days:
                 continue
             date_ = date(year=self.year, month=self.month, day=day)
-            if self.only_weekdays and date_.weekday() >= 5:
+            if date_.weekday() >= 5:
                 continue
             dates.append(date_)
         return dates

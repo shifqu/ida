@@ -1,0 +1,12 @@
+[
+    {
+        "model": "timesheets.timesheet",
+        "pk": 1,
+        "fields": {
+            "month": 1,
+            "year": 2025,
+            "user": 1,
+            "project": 1
+        }
+    }
+]
