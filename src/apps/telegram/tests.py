@@ -30,6 +30,7 @@ class TelegramTestCase(TestCase):
         cls.timesheet = Timesheet.objects.get(pk=1)
         cls.fixture_file = Path(__file__).parent / "fixtures" / "messages.json"
         cls.fixtures: list = json.loads(cls.fixture_file.read_text())
+        cls.existing_timesheet_items = cls.timesheet.timesheetitem_set.count()
 
     def test_telegram_invalid_token(self):
         """Test the telegram app with an invalid token."""
@@ -60,11 +61,11 @@ class TelegramTestCase(TestCase):
             expected_payload = _construct_expected_payload(i, self.fixtures, bot_post)
             if expected_payload:
                 self.assertDictEqual(bot_post.call_args[1], expected_payload)
-                self.assertEqual(self.timesheet.timesheetitem_set.count(), 0)
+                self.assertEqual(self.timesheet.timesheetitem_set.count(), self.existing_timesheet_items)
             else:
                 # No payload means it's the final payload
-                self.assertEqual(bot_post.call_args[1]["payload"]["text"], "2025-01-07: 8h registered.")
-                self.assertEqual(self.timesheet.timesheetitem_set.count(), 1)
+                self.assertEqual(bot_post.call_args[1]["payload"]["text"], "2025-01-09: 8h registered.")
+                self.assertEqual(self.timesheet.timesheetitem_set.count(), self.existing_timesheet_items + 1)
 
     def test_display_missing_days(self):
         """Test the display missing days command."""
