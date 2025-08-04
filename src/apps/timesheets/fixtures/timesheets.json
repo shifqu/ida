@@ -8,5 +8,49 @@
             "user": 1,
             "project": 1
         }
+    },
+    {
+        "model": "timesheets.timesheetitem",
+        "pk": 1,
+        "fields": {
+            "timesheet": 1,
+            "item_type": "standard",
+            "date": "2025-01-01",
+            "worked_hours": 8.0,
+            "description": ""
+        }
+    },
+    {
+        "model": "timesheets.timesheetitem",
+        "pk": 2,
+        "fields": {
+            "timesheet": 1,
+            "item_type": "standard",
+            "date": "2025-01-02",
+            "worked_hours": 8.0,
+            "description": ""
+        }
+    },
+    {
+        "model": "timesheets.timesheetitem",
+        "pk": 3,
+        "fields": {
+            "timesheet": 1,
+            "item_type": "on_call",
+            "date": "2025-01-01",
+            "worked_hours": 8.0,
+            "description": ""
+        }
+    },
+    {
+        "model": "timesheets.timesheetitem",
+        "pk": 4,
+        "fields": {
+            "timesheet": 1,
+            "item_type": "night",
+            "date": "2025-01-03",
+            "worked_hours": 2.0,
+            "description": ""
+        }
     }
 ]
