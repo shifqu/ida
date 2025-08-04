@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "apps.users",
     "apps.telegram",
     "apps.timesheets",
+    "apps.projects",
 ]
 
 MIDDLEWARE = [

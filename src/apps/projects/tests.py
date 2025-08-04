@@ -1,11 +1,9 @@
 """Projects app tests."""
 
 from django.contrib.auth import get_user_model
-from django.db import IntegrityError, transaction
 from django.test import TestCase
 
 from apps.companies.models import Company
-from apps.geo.models import Address
 from apps.projects.models import Project, Rate
 from apps.relations.models import Relation
 
