@@ -29,6 +29,10 @@ class CompanyTests(TestCase):
         self.assertEqual(self.bank_account.bic, "BBRUBEBB")
         self.assertEqual(self.bank_account.name, "ING")
         self.assertEqual(self.bank_account.company, self.company)
+        self.assertTrue(hasattr(self.company, "address_set"))
+        self.assertTrue(hasattr(self.company, "bankaccount_set"))
+        self.assertTrue(hasattr(self.company, "project_set"))
+        self.assertTrue(hasattr(self.company, "user_set"))
 
     def test_get_vat_number_display(self):
         """Test the get_vat_number_display method."""
