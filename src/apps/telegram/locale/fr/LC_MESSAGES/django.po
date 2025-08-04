@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-30 20:54+0000\n"
+"POT-Creation-Date: 2025-08-04 09:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -18,26 +18,36 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: telegram/management/commands/sendreminder.py:33
-msgid "Do not forget to register your work today!"
-msgstr "N'oubliez pas d'enregistrer votre travail aujourd'hui!"
+#: models.py:19
+#, fuzzy
+#| msgid "message"
+msgid "raw message"
+msgstr "message"
 
-#: telegram/models.py:29
+#: models.py:20
+msgid "error"
+msgstr "erreur"
+
+#: models.py:44
 msgid "message"
 msgstr "message"
 
-#: telegram/models.py:30
+#: models.py:45
 msgid "messages"
 msgstr "messages"
 
-#: telegram/models.py:42
+#: models.py:56
+msgid "user"
+msgstr "utilisateur"
+
+#: models.py:57
 msgid "chat id"
 msgstr "ID du chat"
 
-#: telegram/models.py:47
+#: models.py:62
 msgid "telegram setting"
 msgstr "paramètre Telegram"
 
-#: telegram/models.py:48
+#: models.py:63
 msgid "telegram settings"
 msgstr "paramètres Telegram"

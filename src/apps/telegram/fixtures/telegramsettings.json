@@ -1,0 +1,10 @@
+[
+    {
+        "model": "telegram.telegramsettings",
+        "pk": 1,
+        "fields": {
+            "user": 1,
+            "chat_id": 123456789
+        }
+    }
+]

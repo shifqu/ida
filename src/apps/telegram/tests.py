@@ -10,7 +10,7 @@ from django.core.management import call_command
 from django.test import TestCase
 from django.urls import reverse
 
-from apps.relations.models import Relation
+from apps.projects.models import Project
 from apps.telegram.models import TelegramSettings
 from apps.timesheets.models import Timesheet
 from apps.users.models import IdaUser
@@ -19,17 +19,15 @@ from apps.users.models import IdaUser
 class TelegramTestCase(TestCase):
     """Telegram test case."""
 
-    fixtures = ["relations"]
+    fixtures = ["users", "companies", "relations", "projects", "telegramsettings", "timesheets"]
 
     @classmethod
     def setUpTestData(cls):
         """Set up test data."""
-        cls.user = IdaUser.objects.create_user(username="test", password="test", is_superuser=False)
-        cls.telegram_setting = TelegramSettings.objects.create(user=cls.user, chat_id=123456789)
-        cls.relation = Relation.objects.get(pk=1)
-        cls.timesheet = Timesheet.objects.create(
-            name="Test Timesheet", month=1, year=2025, relation=cls.relation, user=cls.user
-        )
+        cls.user = IdaUser.objects.get(pk=1)
+        cls.telegram_setting = TelegramSettings.objects.get(pk=1)
+        cls.project = Project.objects.get(pk=1)
+        cls.timesheet = Timesheet.objects.get(pk=1)
         cls.fixture_file = Path(__file__).parent / "fixtures" / "messages.json"
         cls.fixtures: list = json.loads(cls.fixture_file.read_text())
 

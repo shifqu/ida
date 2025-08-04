@@ -17,6 +17,8 @@ user_inlines = [TelegramSettingInline]
 class MessageAdmin(admin.ModelAdmin):
     """Represent the Message admin."""
 
+    list_display = ("update_id", "message_truncated", "error")
+
     def has_add_permission(self, request, obj=None):  # noqa: ARG002  # pylint: disable=unused-argument
         """Do not allow to add messages."""
         return False
