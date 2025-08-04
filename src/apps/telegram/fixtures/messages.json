@@ -64,18 +64,6 @@
                             "inline_keyboard": [
                                 [
                                     {
-                                        "text": "2025-01-01",
-                                        "callback_data": "day_2025-01-01"
-                                    }
-                                ],
-                                [
-                                    {
-                                        "text": "2025-01-02",
-                                        "callback_data": "day_2025-01-02"
-                                    }
-                                ],
-                                [
-                                    {
                                         "text": "2025-01-03",
                                         "callback_data": "day_2025-01-03"
                                     }
@@ -84,6 +72,18 @@
                                     {
                                         "text": "2025-01-06",
                                         "callback_data": "day_2025-01-06"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-07",
+                                        "callback_data": "day_2025-01-07"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-08",
+                                        "callback_data": "day_2025-01-08"
                                     }
                                 ],
                                 [
@@ -135,18 +135,6 @@
                             "inline_keyboard": [
                                 [
                                     {
-                                        "text": "2025-01-07",
-                                        "callback_data": "day_2025-01-07"
-                                    }
-                                ],
-                                [
-                                    {
-                                        "text": "2025-01-08",
-                                        "callback_data": "day_2025-01-08"
-                                    }
-                                ],
-                                [
-                                    {
                                         "text": "2025-01-09",
                                         "callback_data": "day_2025-01-09"
                                     }
@@ -155,6 +143,18 @@
                                     {
                                         "text": "2025-01-10",
                                         "callback_data": "day_2025-01-10"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-13",
+                                        "callback_data": "day_2025-01-13"
+                                    }
+                                ],
+                                [
+                                    {
+                                        "text": "2025-01-14",
+                                        "callback_data": "day_2025-01-14"
                                     }
                                 ],
                                 [
@@ -173,7 +173,7 @@
                         }
                     },
                     "chat_instance": "4699052244686676785",
-                    "data": "day_2025-01-07"
+                    "data": "day_2025-01-09"
                 }
             }
         }
@@ -207,37 +207,37 @@
                         },
                         "date": 1741188516,
                         "edit_date": 1741188533,
-                        "text": "Options for 2025-01-07:",
+                        "text": "Options for 2025-01-09:",
                         "reply_markup": {
                             "inline_keyboard": [
                                 [
                                     {
                                         "text": "0h",
-                                        "callback_data": "option_2025-01-07_0h"
+                                        "callback_data": "option_2025-01-09_0h"
                                     }
                                 ],
                                 [
                                     {
                                         "text": "4h",
-                                        "callback_data": "option_2025-01-07_4h"
+                                        "callback_data": "option_2025-01-09_4h"
                                     }
                                 ],
                                 [
                                     {
                                         "text": "8h",
-                                        "callback_data": "option_2025-01-07_8h"
+                                        "callback_data": "option_2025-01-09_8h"
                                     }
                                 ],
                                 [
                                     {
                                         "text": "16h",
-                                        "callback_data": "option_2025-01-07_16h"
+                                        "callback_data": "option_2025-01-09_16h"
                                     }
                                 ],
                                 [
                                     {
                                         "text": "24h",
-                                        "callback_data": "option_2025-01-07_24h"
+                                        "callback_data": "option_2025-01-09_24h"
                                     }
                                 ],
                                 [
@@ -250,7 +250,7 @@
                         }
                     },
                     "chat_instance": "4699052244686676785",
-                    "data": "option_2025-01-07_8h"
+                    "data": "option_2025-01-09_8h"
                 }
             }
         }
