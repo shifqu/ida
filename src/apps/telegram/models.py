@@ -19,9 +19,24 @@ class Message(models.Model):
     raw_message = models.JSONField(verbose_name=_("raw message"))
     error = models.TextField(verbose_name=_("error"), null=True, blank=True)
 
+    @property
+    def message_truncated(self) -> str:
+        """Return the message truncated to 100 characters."""
+        message_str = str(self.raw_message)
+        if len(message_str) > 100:
+            return message_str[:97] + "..."
+        return message_str
+
+    @property
+    def update_id(self) -> int:
+        """Return the chat id from the raw message."""
+        return self.raw_message.get("update_id", "unknown")
+
     def __str__(self):
         """Return the string representation of the message."""
-        return str(self.raw_message.get("update_id", "unknown"))
+        if self.error:
+            return f"{self.update_id} - {self.error}"
+        return str(self.update_id)
 
     class Meta:
         """Set meta options."""
