@@ -4,6 +4,7 @@ import calendar
 from datetime import date
 from typing import TYPE_CHECKING
 
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -36,11 +37,18 @@ class Timesheet(models.Model):
         DRAFT = "draft", _("Draft")
         COMPLETED = "completed", _("Completed")
 
-    month = models.IntegerField(_("month"), default=current_month)
+    month = models.IntegerField(
+        _("month"), default=current_month, validators=[MinValueValidator(1), MaxValueValidator(12)]
+    )
     year = models.IntegerField(_("year"), default=current_year)
     status = models.CharField(_("status"), max_length=50, choices=Status.choices, default=Status.DRAFT)
     user = models.ForeignKey("users.IdaUser", on_delete=models.CASCADE, verbose_name=_("user"))
     project = models.ForeignKey("projects.Project", on_delete=models.CASCADE, verbose_name=_("project"))
+
+    def save(self, *args, **kwargs):
+        """Override save method to ensure full_clean is called."""
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     class Meta:
         """Set meta options."""
@@ -53,6 +61,8 @@ class Timesheet(models.Model):
         user_name = self.user.first_name
         if self.user.last_name:
             user_name = f"{user_name} {self.user.last_name}"
+        if not user_name:
+            user_name = self.user.username
         return f"{self.project} - {user_name} - {str(self.month).zfill(2)}/{self.year}"
 
     def get_missing_days(self) -> list[date]:
