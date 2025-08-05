@@ -102,6 +102,16 @@ class Timesheet(models.Model):
         """Return the string representation of the timesheet."""
         return self.name
 
+    def mark_as_completed(self):
+        """Mark the timesheet as completed.
+
+        If the timesheet already has the COMPLETED status, do nothing.
+        """
+        if self.status == self.Status.COMPLETED:
+            return
+        self.status = self.Status.COMPLETED
+        self.save()
+
 
 class TimesheetItem(models.Model):
     """Represent a Timesheet."""

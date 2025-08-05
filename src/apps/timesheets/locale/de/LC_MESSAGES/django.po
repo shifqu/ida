@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-04 09:22+0000\n"
+"POT-Creation-Date: 2025-08-05 19:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
@@ -18,74 +18,78 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:36
+#: admin.py:10
+msgid "Mark the selected timesheets as completed"
+msgstr "Markiere die ausgewählten Stundenzettel als abgeschlossen"
+
+#: models.py:37
 msgid "Draft"
 msgstr "Entwurf"
 
-#: models.py:37
+#: models.py:38
 msgid "Completed"
 msgstr "Abgeschlossen"
 
-#: models.py:39
+#: models.py:41
 msgid "month"
 msgstr "Monat"
 
-#: models.py:40
+#: models.py:43
 msgid "year"
 msgstr "Jahr"
 
-#: models.py:41
+#: models.py:44
 msgid "status"
 msgstr "Status"
 
-#: models.py:42
+#: models.py:45
 msgid "user"
 msgstr "Benutzer"
 
-#: models.py:43
+#: models.py:46
 msgid "project"
 msgstr "Projekt"
 
-#: models.py:102
+#: models.py:122
 msgid "Standard"
 msgstr "Standard"
 
-#: models.py:103
+#: models.py:123
 msgid "On call"
 msgstr "Bereitschaft"
 
-#: models.py:104
+#: models.py:124
 msgid "Night"
 msgstr "Nacht"
 
-#: models.py:105
+#: models.py:125
 msgid "Saturday"
 msgstr "Samstag"
 
-#: models.py:106
+#: models.py:126
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: models.py:107
+#: models.py:127
 msgid "Other"
 msgstr "Andere"
 
-#: models.py:109
+#: models.py:129
 msgid "timesheet"
 msgstr "Stundenzettel"
 
-#: models.py:111
+#: models.py:131
 msgid "item type"
 msgstr "Postentyp"
 
-#: models.py:113
+#: models.py:133
 msgid "date"
 msgstr "Datum"
 
-#: models.py:114
+#: models.py:134
 msgid "worked hours"
 msgstr "Gearbeitete Stunden"
 
-#: models.py:115
+#: models.py:135
 msgid "description"
 msgstr "Beschreibung"
