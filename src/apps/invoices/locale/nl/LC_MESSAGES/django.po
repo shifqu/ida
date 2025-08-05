@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-01 23:16+0000\n"
+"POT-Creation-Date: 2025-08-05 19:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <LL@li.org>\n"
@@ -17,6 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: admin.py:11
+msgid "Confirm the selected invoices"
+msgstr "Bevestig de geselecteerde facturen"
+
+#: admin.py:21
+msgid "Mark the selected invoices as paid"
+msgstr "Markeer de geselecteerde facturen als betaald"
+
+#: admin.py:31
+msgid "Create a PDF for the selected invoices"
+msgstr "Maak een PDF van de geselecteerde facturen"
+
+#: admin.py:41
+msgid "Send the selected invoices by email"
+msgstr "Verstuur de geselecteerde facturen per e-mail"
+
+#: admin.py:55
+msgid "Send the selected invoices by email (even if already sent)"
+msgstr "Verstuur de geselecteerde facturen per e-mail (ook als ze al verzonden zijn)"
 
 #: models.py:32
 msgid "Draft"

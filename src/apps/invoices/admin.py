@@ -3,11 +3,12 @@
 from django.contrib import admin, messages
 from django.core.exceptions import ValidationError
 from django.db.models import QuerySet
+from django.utils.translation import gettext_lazy as _
 
 from apps.invoices.models import Invoice, InvoiceItem
 
 
-@admin.action(permissions=["change"], description="Confirm the selected invoices")
+@admin.action(permissions=["change"], description=_("Confirm the selected invoices"))
 def confirm_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Confirm the selected invoices."""
     for invoice in queryset.order_by("date"):
@@ -17,7 +18,7 @@ def confirm_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG0
             messages.error(request, f"{invoice}: {error}")
 
 
-@admin.action(permissions=["change"], description="Mark the selected invoices as paid")
+@admin.action(permissions=["change"], description=_("Mark the selected invoices as paid"))
 def mark_as_paid(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Mark the selected invoices as paid."""
     for invoice in queryset.order_by("number"):
@@ -27,7 +28,7 @@ def mark_as_paid(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG
             messages.error(request, f"{invoice}: {error}")
 
 
-@admin.action(permissions=["change"], description="Create a PDF for the selected invoices")
+@admin.action(permissions=["change"], description=_("Create a PDF for the selected invoices"))
 def create_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Create a PDF for the selected invoices."""
     for invoice in queryset.order_by("number"):
@@ -37,7 +38,7 @@ def create_pdf(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG00
             messages.error(request, f"{invoice}: {error}")
 
 
-@admin.action(permissions=["change"], description="Send the selected invoices by email")
+@admin.action(permissions=["change"], description=_("Send the selected invoices by email"))
 def send_by_email(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Send the selected invoices by email.
 
@@ -51,7 +52,7 @@ def send_by_email(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: AR
             messages.error(request, f"{invoice}: {error}")
 
 
-@admin.action(permissions=["change"], description="Send the selected invoices by email (even if already sent)")
+@admin.action(permissions=["change"], description=_("Send the selected invoices by email (even if already sent)"))
 def send_by_email_allow_resend(modeladmin, request, queryset: QuerySet[Invoice]):  # noqa: ARG001  # pylint: disable=unused-argument
     """Send the selected invoices by email.
 
