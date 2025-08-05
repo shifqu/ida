@@ -14,6 +14,7 @@ class RateInline(admin.TabularInline):
 class ProjectAdmin(admin.ModelAdmin):
     """Represent the Project admin."""
 
+    filter_horizontal = ("users",)
     inlines = [RateInline]
 
 
