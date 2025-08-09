@@ -29,7 +29,7 @@ The builtin module [venv](https://docs.python.org/3/library/venv.html) is used t
 #### WINDOWS
 `.\.venv\Scripts\activate`
 ### Ensure pip is updated and pip-tools is installed
-`pip install --upgrade pip pip-tools`
+`python -m pip install --upgrade pip pip-tools`
 
 ## Installation
 `pip-sync` is used to ensure only the required dependencies are installed. Without it, if any packages were installed before, they would remain in the environment.
