@@ -104,7 +104,7 @@ docker compose logs -f
 
 #### Get a shell in the docker container
 ```
-docker compose exec ida bash
+docker compose exec ida /bin/sh
 ```
 
 #### Remove all of the compose project's stuff

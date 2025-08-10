@@ -8,9 +8,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Install gettext because it is required for django's compilemessages
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gettext \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache gettext 
 
 # Copy only requirements files first for better caching
 COPY requirements/ /app/requirements/
@@ -39,12 +37,9 @@ FROM builder AS production
 # Create a non-privileged user
 ARG UID=10001
 RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
+    -D \
+    -s "/sbin/nologin" \
+    -u "${UID}" \
     appuser
 
 WORKDIR /app
