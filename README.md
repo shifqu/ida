@@ -13,7 +13,7 @@ A python app that takes care of your accountancy.
 
 ---
 ## System requirements
-I Do Accountancy uses [Python 3.12](https://www.python.org/downloads/).
+I Do Accountancy uses [Python 3.13](https://www.python.org/downloads/).
 
 Optionally Docker can be used for deployments or consistent local development.
 

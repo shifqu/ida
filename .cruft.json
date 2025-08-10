@@ -9,7 +9,7 @@
       "package_slug_kebab": "ida",
       "project_description": "A python app that takes care of your accountancy.",
       "project_version": "0.0.1",
-      "python_version": "3.12",
+      "python_version": "3.13",
       "author_name": "Sonny Valkeneers",
       "author_email": "sonny@softllama.net",
       "github_username": "shifqu",

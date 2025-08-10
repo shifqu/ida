@@ -10,7 +10,7 @@ authors = [
 ]
 description = "A python app that takes care of your accountancy."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.13"
 dynamic = ["dependencies", "optional-dependencies"]
 
 [project.scripts]
@@ -47,5 +47,5 @@ enable = "C1805,E1120,R1705,W0107,W0221,W0223,W0613,W0632,W0719,W2301,W3101"
 exclude = [ "**/migrations", "**/_reportlab.py", "**/tests.py"]
 typeCheckingMode = "standard"
 deprecateTypingAliases = true
-pythonVersion = "3.12"
+pythonVersion = "3.13"
 extraPaths = [ "src/apps/" ]
