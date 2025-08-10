@@ -14,8 +14,6 @@ charset-normalizer==3.4.3
     # via
     #   reportlab
     #   requests
-colorama==0.4.6
-    # via pylint
 coverage==7.10.2
     # via ida (pyproject.toml)
 dill==0.4.0
@@ -60,7 +58,5 @@ types-psycopg2==2.9.21.20250809
     # via django-types
 typing-extensions==4.14.1
     # via pyright
-tzdata==2025.2
-    # via django
 urllib3==2.5.0
     # via requests
