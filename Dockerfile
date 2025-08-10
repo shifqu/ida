@@ -38,6 +38,7 @@ FROM builder AS production
 ARG UID=10001
 RUN adduser \
     -D \
+    -H \
     -s "/sbin/nologin" \
     -u "${UID}" \
     appuser
