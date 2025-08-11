@@ -1,6 +1,7 @@
 """Timesheets app tests."""
 
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from apps.projects.models import Project
@@ -51,3 +52,27 @@ class TimesheetsTests(TestCase):
         """Test the string representation."""
         timesheet_item = self.timesheet.timesheetitem_set.first()
         self.assertEqual(str(timesheet_item), "2025-01-01 - 8.0 hours ()")
+
+    def test_timesheet_unique_together(self):
+        """Test the unique together constraint."""
+        self.timesheet.mark_as_completed()
+        self.assertEqual(self.timesheet.status, Timesheet.Status.COMPLETED)
+
+        with self.assertRaises(ValidationError) as cm:
+            Timesheet.objects.get_or_create(
+                user=self.timesheet.user,
+                month=self.timesheet.month,
+                year=self.timesheet.year,
+                status=Timesheet.Status.DRAFT,
+                project_id=self.timesheet.project.pk,
+            )
+        self.assertIn("already exists", str(cm.exception))
+
+        with self.assertRaises(Timesheet.DoesNotExist) as cm:
+            Timesheet.objects.get(
+                user=self.timesheet.user,
+                month=self.timesheet.month,
+                year=self.timesheet.year,
+                status=Timesheet.Status.DRAFT,
+                project_id=self.timesheet.project.pk,
+            )
