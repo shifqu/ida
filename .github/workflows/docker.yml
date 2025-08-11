@@ -1,4 +1,4 @@
-name: "Docker Build Validation"
+name: "Docker Build Validation: I Do Accountancy"
 
 on:
   pull_request:
