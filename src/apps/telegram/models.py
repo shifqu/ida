@@ -52,9 +52,12 @@ class TelegramSettings(models.Model):
         from apps.users.models import IdaUser
 
         user: models.OneToOneField[IdaUser]
+        data: models.JSONField[dict]
 
     user = models.OneToOneField("users.IdaUser", on_delete=models.CASCADE, verbose_name=_("user"))
     chat_id = models.IntegerField(verbose_name=_("chat id"), unique=True)
+    data = models.JSONField(verbose_name=_("data"), default=dict, blank=True)
+    updated_at = models.DateTimeField(verbose_name=_("updated at"), auto_now=True)
 
     class Meta:
         """Set meta options."""
