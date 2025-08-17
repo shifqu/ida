@@ -1,6 +1,7 @@
 """Django command to create invoices for completed timesheets for a given month/year."""
 
 import calendar
+from datetime import datetime
 
 from django.core.management.base import BaseCommand, CommandError
 from django.db.models import Sum
@@ -96,9 +97,9 @@ class Command(BaseCommand):
             projects = Project.objects.all()
         return projects
 
-    def _generate_invoice_items(self, project: Project, timesheet: Timesheet, invoice: Invoice) -> list[InvoiceItem]:
+    def _generate_invoice_items(self, project: Project, timesheet: Timesheet, invoice: Invoice):
         """Generate invoice items based on the project's rates and the timesheet."""
-        items = []
+        items: list[InvoiceItem] = []
         for project_rate in project.rate_set.all():
             total_hours = timesheet.timesheetitem_set.filter(item_type=project_rate.item_type).aggregate(
                 total=Sum("worked_hours")
@@ -125,7 +126,7 @@ class Command(BaseCommand):
             items.append(item)
         return items
 
-    def _convert_hours_to_total(self, project_rate: Rate, total_hours: float) -> float:
+    def _convert_hours_to_total(self, project_rate: Rate, total_hours: float):
         """Convert total hours to the total amount based on the rate type."""
         match project_rate.rate_type:
             case project_rate.RateType.HOURLY:
@@ -139,8 +140,8 @@ class Command(BaseCommand):
 
         return total
 
-    def _previous(self, month: int, year: int) -> tuple[int, int]:
+    def _previous(self, month: int, year: int):
         """Calculate the previous month and year."""
         if month == 1:
-            return 12, year - 1
+            return datetime.max.month, year - 1
         return month - 1, year

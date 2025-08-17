@@ -56,7 +56,7 @@ class Timesheet(models.Model):
         unique_together = ("user", "project", "month", "year")
 
     @property
-    def name(self) -> str:
+    def name(self):
         """Return the name of the timesheet."""
         user_name = self.user.first_name
         if self.user.last_name:
