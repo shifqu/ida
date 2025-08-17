@@ -1,6 +1,8 @@
 """Timesheets admin."""
 
+from django import forms
 from django.contrib import admin
+from django.db import models
 from django.db.models.query import QuerySet
 from django.utils.translation import gettext_lazy as _
 
@@ -19,6 +21,8 @@ class TimesheetItemInline(admin.TabularInline):
 
     model = TimesheetItem
     extra = 0
+
+    formfield_overrides = {models.TextField: {"widget": forms.Textarea(attrs={"cols": 40})}}
 
 
 class TimesheetAdmin(admin.ModelAdmin):
