@@ -1,8 +1,7 @@
 """Telegram tests."""
 
-import json
+from datetime import datetime, timezone
 from io import StringIO
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 from django.conf import settings
@@ -28,15 +27,12 @@ class TelegramTestCase(TestCase):
         cls.telegram_setting = TelegramSettings.objects.get(pk=1)
         cls.project = Project.objects.get(pk=1)
         cls.timesheet = Timesheet.objects.get(pk=1)
-        cls.fixture_file = Path(__file__).parent / "fixtures" / "messages.json"
-        cls.fixtures: list = json.loads(cls.fixture_file.read_text())
-        cls.existing_timesheet_items = cls.timesheet.timesheetitem_set.count()
+        cls.url = reverse("webhook")
 
     def test_telegram_invalid_token(self):
         """Test the telegram app with an invalid token."""
-        url = reverse("webhook")
         response = self.client.post(
-            url,
+            self.url,
             data={},
             headers={"X-Telegram-Bot-Api-Secret-Token": "invalid_token"},
             content_type="application/json",
@@ -44,64 +40,101 @@ class TelegramTestCase(TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.json(), {"status": "error", "message": "Invalid token."})
 
-    def test_telegram(self):
-        """Test the telegram app."""
-        self.maxDiff = None
-        url = reverse("webhook")
-        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
-        for i, fixture in enumerate(self.fixtures):
-            response = self.client.post(
-                url,
-                fixture["fields"]["raw_message"],
-                headers={"X-Telegram-Bot-Api-Secret-Token": settings.TELEGRAM["WEBHOOK_TOKEN"]},
-                content_type="application/json",
-            )
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(response.json(), {"status": "ok", "message": "Message received."}, f"fixture {i=} failed.")
-            expected_payload = _construct_expected_payload(i, self.fixtures, bot_post)
-            if expected_payload:
-                self.assertDictEqual(bot_post.call_args[1], expected_payload)
-                self.assertEqual(self.timesheet.timesheetitem_set.count(), self.existing_timesheet_items)
-            else:
-                # No payload means it's the final payload
-                self.assertEqual(bot_post.call_args[1]["payload"]["text"], "2025-01-09: 8h registered.")
-                self.assertEqual(self.timesheet.timesheetitem_set.count(), self.existing_timesheet_items + 1)
-
-    def test_display_missing_days(self):
-        """Test the display missing days command."""
-        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
-        out = StringIO()
-        call_command("displaymissingdays", stdout=out)
+    def test_telegram_send_help(self):
+        """Test the telegram send help command."""
+        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        self._send_text("dummy text")
         self.assertEqual(bot_post.call_count, 1)
         self.assertEqual(bot_post.call_args.args[0], "sendMessage")
-        expected_payload = _construct_expected_payload(0, self.fixtures, bot_post)
-        self.assertEqual(bot_post.call_args.kwargs, expected_payload)
-        self.assertIn("Successfully sent the message", out.getvalue())
+        self.assertIn("I am IDA", bot_post.call_args[1]["payload"]["text"])
+
+    def test_telegram_registerwork(self):
+        """Test the telegram registerwork command."""
+        existing_timesheet_items = self.timesheet.timesheetitem_set.count()
+        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        self._send_text("/registerwork")
+        self._click_on_text("➡️ Next", bot_post)
+        self._click_on_text("⬅️ Back", bot_post)
+        self._click_on_text("Dummy Project: 2025-01-03", bot_post)
+        self._click_on_text("⬅️ Back", bot_post)
+        self._click_on_text("Dummy Project: 2025-01-03", bot_post)
+        self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
+        self._click_on_text("Full day (8h)", bot_post)
+        self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items + 1)
+
+    def test_telegram_registerovertime(self):
+        """Test the telegram registerovertime command."""
+        fixed_now = datetime(2025, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
+        with patch("django.utils.timezone.now", return_value=fixed_now):
+            existing_timesheet_items = self.timesheet.timesheetitem_set.count()
+            bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+            self._send_text("/registerovertime")
+            self._click_on_text("(01)", bot_post)
+            self._send_text("1630")
+            self._click_on_text("(01)", bot_post)
+            self._send_text("1830")
+            self._send_text("test")
+            self._click_on_text("Night", bot_post)
+            self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
+            self._click_on_text("yes", bot_post)
+            self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items + 1)
+
+    def test_startregisterwork(self):
+        """Test the start register work command."""
+        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        out = StringIO()
+        call_command("startregisterwork", stdout=out)
+        self.assertEqual(bot_post.call_count, 1)
+        self.assertEqual(bot_post.call_args.args[0], "sendMessage")
+        self.assertIn("Started the command for", out.getvalue())
 
         # Confirm timesheets and run command again, this should result in "no missing days"
         self.timesheet.status = Timesheet.Status.COMPLETED
         self.timesheet.save()
         bot_post.reset_mock()
         out = StringIO()
-        call_command("displaymissingdays", stdout=out)
-        self.assertFalse(bot_post.called, "Bot should not post when no days are missing.")
-        self.assertIn("No missing days", out.getvalue())
+        call_command("startregisterwork", stdout=out)
+        self.assertTrue(bot_post.called)
+        self.assertIn("No missing days", bot_post.call_args[1]["payload"]["text"])
+
+    def _click_on_text(self, text: str, bot_post: MagicMock):
+        """Simulate a click on the specified text button."""
+        inline_keyboard = bot_post.call_args[1]["payload"]["reply_markup"]["inline_keyboard"]
+        callback_data = [item for row in inline_keyboard for item in row if item["text"] == text][0]["callback_data"]
+        data = construct_telegram_callback_query(callback_data)
+        response = self._post(data)
+        return response
+
+    def _send_text(self, text: str, verify: bool = True):
+        """Simulate sending a text message."""
+        payload = construct_telegram_update(text)
+        return self._post(payload, verify=verify)
+
+    def _post(self, data: dict, verify: bool = True):
+        response = self.client.post(
+            self.url,
+            data=data,
+            headers={"X-Telegram-Bot-Api-Secret-Token": settings.TELEGRAM["WEBHOOK_TOKEN"]},
+            content_type="application/json",
+        )
+        if verify:
+            self.assertEqual(response.json(), {"status": "ok", "message": "Message received."})
+        return response
 
 
-def _construct_expected_payload(idx: int, fixtures: list[dict], bot_post: MagicMock):
-    """Construct the expected payload."""
-    try:
-        next_fixture = fixtures[idx + 1]
-    except IndexError:
-        return None
-    raw_message = next_fixture["fields"]["raw_message"]
-    if "callback_query" in raw_message:
-        message = raw_message["callback_query"]["message"]
-    else:
-        message = raw_message["message"]
-    payload = {"chat_id": message["chat"]["id"], "text": message["text"]}
-    if "reply_markup" in message:
-        payload["reply_markup"] = message["reply_markup"]
-    if bot_post.call_args[0][0] == "editMessageText":
-        payload["message_id"] = message["message_id"]
-    return {"payload": payload}
+def construct_telegram_update(message_text: str):
+    """Construct a minimal telegram update."""
+    return {"message": {"chat": {"id": 123456789}, "text": message_text}}
+
+
+def construct_telegram_callback_query(callback_data: str):
+    """Construct a minimal telegram callback query."""
+    return {
+        "callback_query": {
+            "message": {
+                "message_id": 537,
+                "chat": {"id": 123456789, "first_name": "test", "type": "private"},
+            },
+            "data": callback_data,
+        },
+    }
