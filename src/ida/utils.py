@@ -3,7 +3,7 @@
 from pathlib import Path
 
 
-def strtobool(value: str) -> bool:
+def strtobool(value: str):
     """Convert a string to a boolean.
 
     The provided value is converted to lowercase before comparing.
@@ -20,7 +20,7 @@ def strtobool(value: str) -> bool:
     return value.lower() in ("true", "1", "t", "y", "yes")
 
 
-def existing_path(value: str | Path) -> Path:
+def existing_path(value: str | Path):
     """Convert the value to a Path and ensure it exists.
 
     Prints a warning if the file could not be created.

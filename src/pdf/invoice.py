@@ -101,7 +101,7 @@ class InvoicePDF:
     invoice: InvoiceDetails
     pdf: PDFDetails
 
-    def generate(self) -> None:
+    def generate(self):
         """Generate the PDF."""
         doc = SimpleDocTemplatePaddable(
             self.pdf.name,
@@ -192,7 +192,7 @@ class InvoicePDF:
         )
 
     @staticmethod
-    def _static(canvas: Canvas, doc: SimpleDocTemplatePaddable, context: "InvoicePDF") -> None:
+    def _static(canvas: Canvas, doc: SimpleDocTemplatePaddable, context: "InvoicePDF"):
         """Draw static content."""
         canvas.saveState()
 

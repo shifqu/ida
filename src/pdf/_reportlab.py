@@ -76,7 +76,7 @@ class SimpleDocTemplatePaddable(SimpleDocTemplate):
         BaseDocTemplate.build(self, flowables, canvasmaker=canvasmaker)
 
 
-def get_default_stylesheet() -> StyleSheet1:
+def get_default_stylesheet():
     """Return a stylesheet object using PT Mono for text and AnonymiceNerd for code.
 
     All styles are aliased to their lowercase or hN in case of Heading.
