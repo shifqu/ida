@@ -21,6 +21,7 @@ class TimesheetItemInline(admin.TabularInline):
 
     model = TimesheetItem
     extra = 0
+    ordering = ["date"]
 
     formfield_overrides = {models.TextField: {"widget": forms.Textarea(attrs={"cols": 40})}}
 
