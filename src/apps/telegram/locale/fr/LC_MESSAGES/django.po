@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-04 09:17+0000\n"
+"POT-Creation-Date: 2025-08-17 22:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <fr@li.org>\n"
@@ -18,36 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: models.py:19
-#, fuzzy
-#| msgid "message"
-msgid "raw message"
-msgstr "message"
+#: bot/commands/registerovertime.py:253
+msgid "yes"
+msgstr "oui"
+
+#: bot/commands/registerovertime.py:254
+msgid "no"
+msgstr "non"
 
 #: models.py:20
+msgid "raw message"
+msgstr "message brut"
+
+#: models.py:21
 msgid "error"
 msgstr "erreur"
 
-#: models.py:44
+#: models.py:45
 msgid "message"
 msgstr "message"
 
-#: models.py:45
+#: models.py:46
 msgid "messages"
 msgstr "messages"
 
-#: models.py:56
+#: models.py:58
 msgid "user"
 msgstr "utilisateur"
 
-#: models.py:57
+#: models.py:59
 msgid "chat id"
-msgstr "ID du chat"
+msgstr "ID de chat"
 
-#: models.py:62
+#: models.py:60
+msgid "data"
+msgstr "données"
+
+#: models.py:61
+msgid "updated at"
+msgstr "mis à jour le"
+
+#: models.py:66
 msgid "telegram setting"
 msgstr "paramètre Telegram"
 
-#: models.py:63
+#: models.py:67
 msgid "telegram settings"
 msgstr "paramètres Telegram"
+
+#: models.py:83
+msgid "token"
+msgstr "jeton"
+
+#: models.py:84
+msgid "command"
+msgstr "commande"
+
+#: models.py:85
+msgid "step"
+msgstr "étape"
+
+#: models.py:86 models.py:92 models.py:93
+msgid "callback data"
+msgstr "données de rappel"
+
+#: models.py:87
+msgid "created at"
+msgstr "créé le"
