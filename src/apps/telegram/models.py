@@ -1,7 +1,9 @@
 """Telegram models."""
 
-from typing import TYPE_CHECKING
+import uuid
+from typing import TYPE_CHECKING, Any
 
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -10,7 +12,6 @@ class Message(models.Model):
     """Represent a Telegram Message.
 
     The raw message from the Telegram API is stored as json.
-    Some fields often used by the bot are stored as separate fields.
 
     Reference:
     https://core.telegram.org/bots/api#message
@@ -20,7 +21,7 @@ class Message(models.Model):
     error = models.TextField(verbose_name=_("error"), null=True, blank=True)
 
     @property
-    def message_truncated(self) -> str:
+    def message_truncated(self):
         """Return the message truncated to 100 characters."""
         message_str = str(self.raw_message)
         if len(message_str) > 100:
@@ -52,9 +53,12 @@ class TelegramSettings(models.Model):
         from apps.users.models import IdaUser
 
         user: models.OneToOneField[IdaUser]
+        data: models.JSONField[dict[str, str]]
 
     user = models.OneToOneField("users.IdaUser", on_delete=models.CASCADE, verbose_name=_("user"))
     chat_id = models.IntegerField(verbose_name=_("chat id"), unique=True)
+    data = models.JSONField(verbose_name=_("data"), default=dict, blank=True, encoder=DjangoJSONEncoder)
+    updated_at = models.DateTimeField(verbose_name=_("updated at"), auto_now=True)
 
     class Meta:
         """Set meta options."""
@@ -65,3 +69,38 @@ class TelegramSettings(models.Model):
     def __str__(self):
         """Return a string representation of the telegram setting."""
         return f"{self.user.username} ({self.chat_id})"
+
+
+class CallbackData(models.Model):
+    """Store callback data for Telegram inline keyboards.
+
+    This is required because telegram limits the size of callback data to 64 bytes.
+    """
+
+    if TYPE_CHECKING:
+        data: models.JSONField[dict[str, Any]]
+
+    token = models.UUIDField(verbose_name=_("token"), default=uuid.uuid4, unique=True, db_index=True)
+    command = models.CharField(verbose_name=_("command"), max_length=255)
+    step = models.CharField(verbose_name=_("step"), max_length=255)
+    data = models.JSONField(verbose_name=_("callback data"), default=dict, encoder=DjangoJSONEncoder)
+    created_at = models.DateTimeField(verbose_name=_("created at"), auto_now_add=True)
+
+    class Meta:
+        """Set meta options."""
+
+        verbose_name = _("callback data")
+        verbose_name_plural = _("callback data")
+        indexes = [models.Index(models.F("data__correlation_key"), name="callback_correlation_key_idx")]
+
+    def __str__(self):
+        """Return a string representation of the callback data."""
+        return f"{self.token} - {self.data}"
+
+    @property
+    def data_truncated(self):
+        """Return the data truncated to 100 characters."""
+        data_str = str(self.data)
+        if len(data_str) > 100:
+            return data_str[:97] + "..."
+        return data_str

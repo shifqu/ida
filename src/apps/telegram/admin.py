@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from apps.telegram.models import Message, TelegramSettings
+from apps.telegram.models import CallbackData, Message, TelegramSettings
 
 
 class TelegramSettingInline(admin.TabularInline):
@@ -12,6 +12,24 @@ class TelegramSettingInline(admin.TabularInline):
 
 
 user_inlines = [TelegramSettingInline]
+
+
+class CallbackDataAdmin(admin.ModelAdmin):
+    """Represent the CallbackData admin."""
+
+    list_display = ("token", "data_truncated")
+
+    def has_add_permission(self, request, obj=None):  # noqa: ARG002  # pylint: disable=unused-argument
+        """Do not allow to add callback_data."""
+        return False
+
+    def has_delete_permission(self, request, obj=None):  # noqa: ARG002  # pylint: disable=unused-argument
+        """Do not allow to delete callback_data."""
+        return False
+
+    def has_change_permission(self, request, obj=None):  # noqa: ARG002  # pylint: disable=unused-argument
+        """Do not allow to change callback_data."""
+        return False
 
 
 class MessageAdmin(admin.ModelAdmin):
@@ -32,4 +50,5 @@ class MessageAdmin(admin.ModelAdmin):
         return False
 
 
+admin.site.register(CallbackData, CallbackDataAdmin)
 admin.site.register(Message, MessageAdmin)
