@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-03 22:07+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <LL@li.org>\n"
@@ -18,88 +18,86 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: models.py:25
+#: projects/models.py:25
 msgid "name"
 msgstr "nom"
 
-#: models.py:26
+#: projects/models.py:26
 msgid "description"
 msgstr "description"
 
-#: models.py:27
+#: projects/models.py:27
 msgid "start date"
 msgstr "date de début"
 
-#: models.py:28
+#: projects/models.py:28
 msgid "end date"
 msgstr "date de fin"
 
-#: models.py:29
+#: projects/models.py:29
 msgid "users"
 msgstr "utilisateurs"
 
-#: models.py:30
+#: projects/models.py:30
 msgid "relation"
 msgstr "relation"
 
-#: models.py:34
+#: projects/models.py:34
 msgid "company"
 msgstr "entreprise"
 
-#: models.py:35
+#: projects/models.py:35
 msgid "The company that executes work for this project"
 msgstr "L’entreprise qui exécute les travaux pour ce projet"
 
-#: models.py:38
+#: projects/models.py:38
 msgid "invoice line prefix"
 msgstr "préfixe de ligne de facture"
 
-#: models.py:38
+#: projects/models.py:38
 msgid "Prefix for invoice lines, e.g. 'IT-Service'"
 msgstr "Préfixe pour les lignes de facture, par ex. 'IT-Service'"
 
-#: models.py:48 models.py:68
+#: projects/models.py:48 projects/models.py:68
 msgid "project"
 msgstr "projet"
 
-#: models.py:49
-#, fuzzy
-#| msgid "project"
+#: projects/models.py:49
 msgid "projects"
-msgstr "projet"
+msgstr "projets"
 
-#: models.py:64
+#: projects/models.py:64
 msgid "Daily"
 msgstr "Quotidien"
 
-#: models.py:65
+#: projects/models.py:65
 msgid "Hourly"
 msgstr "Horaire"
 
-#: models.py:66
+#: projects/models.py:66
 msgid "Monthly"
 msgstr "Mensuel"
 
-#: models.py:69
+#: projects/models.py:69
 msgid "item type"
 msgstr "type d’article"
 
-#: models.py:71
+#: projects/models.py:71
 msgid "rate type"
 msgstr "type de tarif"
 
-#: models.py:75
+#: projects/models.py:75
 msgid "VAT"
 msgstr "TVA"
 
-#: models.py:79
+#: projects/models.py:79
 msgid "VAT percentage"
 msgstr "taux de TVA"
 
-#: models.py:86
+#: projects/models.py:86
 msgid "project rate"
 msgstr "tarif du projet"
 
-#: models.py:87
+#: projects/models.py:87
 msgid "project rates"
 msgstr "tarifs du projet"

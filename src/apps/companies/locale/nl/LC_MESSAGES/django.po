@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-04 08:29+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: DUTCH <LL@li.org>\n"
@@ -18,70 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:23 models.py:79
+#: companies/models.py:23 companies/models.py:79
 msgid "name"
 msgstr "naam"
 
-#: models.py:25
+#: companies/models.py:25
 msgid "phone"
 msgstr "telefoon"
 
-#: models.py:29
+#: companies/models.py:29
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
 msgstr "Telefoonnummer met landcode (bijv. +32 490 12 34 56)"
 
-#: models.py:31
+#: companies/models.py:31
 msgid "email"
 msgstr "e-mail"
 
-#: models.py:32
+#: companies/models.py:32
 msgid "website"
 msgstr "website"
 
-#: models.py:33
+#: companies/models.py:33
 msgid "VAT number"
 msgstr "BTW-nummer"
 
-#: models.py:35
+#: companies/models.py:35
 msgid "business court"
 msgstr "ondernemingsrechtbank"
 
-#: models.py:39
+#: companies/models.py:39
 msgid "Example: Antwerpen, afd. Hasselt"
 msgstr "Voorbeeld: Antwerpen, afd. Hasselt"
 
-#: models.py:41
+#: companies/models.py:41
 msgid "logo"
 msgstr "logo"
 
-#: models.py:43
+#: companies/models.py:43
 msgid "graphic element"
 msgstr "grafisch element"
 
-#: models.py:52
+#: companies/models.py:52
 msgid "VAT"
 msgstr "BTW"
 
-#: models.py:70 models.py:80
+#: companies/models.py:70 companies/models.py:80
 msgid "company"
 msgstr "bedrijf"
 
-#: models.py:71
+#: companies/models.py:71
 msgid "companies"
 msgstr "bedrijven"
 
-#: models.py:77
+#: companies/models.py:77
 msgid "IBAN"
 msgstr "IBAN"
 
-#: models.py:78
+#: companies/models.py:78
 msgid "BIC"
 msgstr "BIC"
 
-#: models.py:89
+#: companies/models.py:89
 msgid "bank account"
 msgstr "bankrekening"
 
-#: models.py:90
+#: companies/models.py:90
 msgid "bank accounts"
 msgstr "bankrekeningen"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-05 19:46+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -18,78 +18,78 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: admin.py:10
+#: timesheets/admin.py:12
 msgid "Mark the selected timesheets as completed"
 msgstr "Markeer de geselecteerde timesheets als voltooid"
 
-#: models.py:37
+#: timesheets/models.py:37
 msgid "Draft"
 msgstr "Concept"
 
-#: models.py:38
+#: timesheets/models.py:38
 msgid "Completed"
 msgstr "Voltooid"
 
-#: models.py:41
+#: timesheets/models.py:41
 msgid "month"
 msgstr "maand"
 
-#: models.py:43
+#: timesheets/models.py:43
 msgid "year"
 msgstr "jaar"
 
-#: models.py:44
+#: timesheets/models.py:44
 msgid "status"
 msgstr "status"
 
-#: models.py:45
+#: timesheets/models.py:45
 msgid "user"
 msgstr "gebruiker"
 
-#: models.py:46
+#: timesheets/models.py:46
 msgid "project"
 msgstr "project"
 
-#: models.py:122
+#: timesheets/models.py:122
 msgid "Standard"
 msgstr "Standaard"
 
-#: models.py:123
+#: timesheets/models.py:123
 msgid "On call"
 msgstr "Wachtdienst"
 
-#: models.py:124
+#: timesheets/models.py:124
 msgid "Night"
 msgstr "Nacht"
 
-#: models.py:125
+#: timesheets/models.py:125
 msgid "Saturday"
 msgstr "Zaterdag"
 
-#: models.py:126
+#: timesheets/models.py:126
 msgid "Sunday"
 msgstr "Zondag"
 
-#: models.py:127
+#: timesheets/models.py:127
 msgid "Other"
 msgstr "Overig"
 
-#: models.py:129
+#: timesheets/models.py:129
 msgid "timesheet"
 msgstr "timesheet"
 
-#: models.py:131
+#: timesheets/models.py:131
 msgid "item type"
 msgstr "item type"
 
-#: models.py:133
+#: timesheets/models.py:133
 msgid "date"
 msgstr "datum"
 
-#: models.py:134
+#: timesheets/models.py:134
 msgid "worked hours"
 msgstr "gewerkte uren"
 
-#: models.py:135
+#: timesheets/models.py:135
 msgid "description"
 msgstr "beschrijving"

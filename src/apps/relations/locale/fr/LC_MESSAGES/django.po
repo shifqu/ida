@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-04 08:32+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <LL@li.org>\n"
@@ -18,58 +18,58 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: models.py:23
+#: relations/models.py:23
 msgid "Customer"
 msgstr "Client"
 
-#: models.py:24
+#: relations/models.py:24
 msgid "Supplier"
 msgstr "Fournisseur"
 
-#: models.py:26
+#: relations/models.py:26
 msgid "name"
 msgstr "nom"
 
-#: models.py:27
+#: relations/models.py:27
 msgid "category"
 msgstr "catégorie"
 
-#: models.py:28
+#: relations/models.py:28
 msgid "language"
 msgstr "langue"
 
-#: models.py:30
+#: relations/models.py:30
 msgid "phone"
 msgstr "téléphone"
 
-#: models.py:34
+#: relations/models.py:34
 msgid "Phone number with country code (eg. +32 490 12 34 56)"
 msgstr "Numéro de téléphone avec l'indicatif pays (par ex. +32 490 12 34 56)"
 
-#: models.py:36
+#: relations/models.py:36
 msgid "email"
 msgstr "e-mail"
 
-#: models.py:37
+#: relations/models.py:37
 msgid "website"
 msgstr "site web"
 
-#: models.py:39
+#: relations/models.py:39
 msgid "VAT number"
 msgstr "numéro de TVA"
 
-#: models.py:42
+#: relations/models.py:42
 msgid "bank account number"
 msgstr "numéro de compte bancaire"
 
-#: models.py:53
+#: relations/models.py:53
 msgid "VAT"
 msgstr "TVA"
 
-#: models.py:59
+#: relations/models.py:59
 msgid "relation"
 msgstr "relation"
 
-#: models.py:60
+#: relations/models.py:60
 msgid "relations"
 msgstr "relations"

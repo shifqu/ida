@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-03 22:07+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <LL@li.org>\n"
@@ -18,86 +18,86 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:25
+#: projects/models.py:25
 msgid "name"
 msgstr "naam"
 
-#: models.py:26
+#: projects/models.py:26
 msgid "description"
 msgstr "beschrijving"
 
-#: models.py:27
+#: projects/models.py:27
 msgid "start date"
 msgstr "startdatum"
 
-#: models.py:28
+#: projects/models.py:28
 msgid "end date"
 msgstr "einddatum"
 
-#: models.py:29
+#: projects/models.py:29
 msgid "users"
 msgstr "gebruikers"
 
-#: models.py:30
+#: projects/models.py:30
 msgid "relation"
 msgstr "relatie"
 
-#: models.py:34
+#: projects/models.py:34
 msgid "company"
 msgstr "bedrijf"
 
-#: models.py:35
+#: projects/models.py:35
 msgid "The company that executes work for this project"
 msgstr "Het bedrijf dat werkzaamheden uitvoert voor dit project"
 
-#: models.py:38
+#: projects/models.py:38
 msgid "invoice line prefix"
 msgstr "factuuritem prefix"
 
-#: models.py:38
+#: projects/models.py:38
 msgid "Prefix for invoice lines, e.g. 'IT-Service'"
 msgstr "Voorvoegsel voor factuuritems, bijv. 'IT-Service'"
 
-#: models.py:48 models.py:68
+#: projects/models.py:48 projects/models.py:68
 msgid "project"
 msgstr "project"
 
-#: models.py:49
+#: projects/models.py:49
 msgid "projects"
 msgstr "projecten"
 
-#: models.py:64
+#: projects/models.py:64
 msgid "Daily"
 msgstr "Dagelijks"
 
-#: models.py:65
+#: projects/models.py:65
 msgid "Hourly"
 msgstr "Per uur"
 
-#: models.py:66
+#: projects/models.py:66
 msgid "Monthly"
 msgstr "Maandelijks"
 
-#: models.py:69
+#: projects/models.py:69
 msgid "item type"
 msgstr "item type"
 
-#: models.py:71
+#: projects/models.py:71
 msgid "rate type"
 msgstr "tarieftype"
 
-#: models.py:75
+#: projects/models.py:75
 msgid "VAT"
 msgstr "btw"
 
-#: models.py:79
+#: projects/models.py:79
 msgid "VAT percentage"
 msgstr "btw-percentage"
 
-#: models.py:86
+#: projects/models.py:86
 msgid "project rate"
 msgstr "project tarief"
 
-#: models.py:87
+#: projects/models.py:87
 msgid "project rates"
 msgstr "project tarieven"
