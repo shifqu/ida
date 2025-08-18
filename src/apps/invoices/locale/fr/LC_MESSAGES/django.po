@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-05 19:44+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: French <LL@li.org>\n"
@@ -18,75 +18,75 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: admin.py:11
+#: invoices/admin.py:11
 msgid "Confirm the selected invoices"
 msgstr "Confirmer les factures sélectionnées"
 
-#: admin.py:21
+#: invoices/admin.py:21
 msgid "Mark the selected invoices as paid"
 msgstr "Marquer les factures sélectionnées comme payées"
 
-#: admin.py:31
+#: invoices/admin.py:31
 msgid "Create a PDF for the selected invoices"
 msgstr "Créer un PDF pour les factures sélectionnées"
 
-#: admin.py:41
+#: invoices/admin.py:41
 msgid "Send the selected invoices by email"
 msgstr "Envoyer les factures sélectionnées par e-mail"
 
-#: admin.py:55
+#: invoices/admin.py:55
 msgid "Send the selected invoices by email (even if already sent)"
 msgstr "Envoyer les factures sélectionnées par e-mail (même si déjà envoyées)"
 
-#: models.py:32
+#: invoices/models.py:32
 msgid "Draft"
 msgstr "Brouillon"
 
-#: models.py:33
+#: invoices/models.py:33
 msgid "Confirmed"
 msgstr "Confirmé"
 
-#: models.py:34
+#: invoices/models.py:34
 msgid "Sent"
 msgstr "Envoyé"
 
-#: models.py:35
+#: invoices/models.py:35
 msgid "Paid"
 msgstr "Payé"
 
-#: models.py:37
+#: invoices/models.py:37
 msgid "number"
 msgstr "numéro"
 
-#: models.py:38
+#: invoices/models.py:38
 msgid "date"
 msgstr "date"
 
-#: models.py:39
+#: invoices/models.py:39
 msgid "company"
 msgstr "entreprise"
 
-#: models.py:40
+#: invoices/models.py:40
 msgid "relation"
 msgstr "relation"
 
-#: models.py:42
+#: invoices/models.py:42
 msgid "status"
 msgstr "Statut"
 
-#: models.py:44
+#: invoices/models.py:44
 msgid "PDF file"
 msgstr "Fichier PDF"
 
-#: models.py:115
+#: invoices/models.py:115
 msgid "Draft invoices cannot be marked as paid"
 msgstr "Les factures brouillon ne peuvent pas être marquées comme payées"
 
-#: models.py:134
+#: invoices/models.py:134
 msgid "An invoice without invoice items cannot be confirmed"
 msgstr "Une facture sans articles ne peut pas être confirmée"
 
-#: models.py:142
+#: invoices/models.py:142
 #, python-format
 msgid ""
 "A non-draft invoice (date: %(last_date)s) exists after %(self_date)s. Update "
@@ -95,87 +95,87 @@ msgstr ""
 "Une facture non brouillon (date : %(last_date)s) existe après %(self_date)s. "
 "Mettez à jour la date pour qu'elle soit au moins %(last_date)s."
 
-#: models.py:156
+#: invoices/models.py:156
 msgid "Only confirmed invoices can have their PDF generated"
 msgstr "Seules les factures confirmées peuvent être générées en PDF"
 
-#: models.py:192
+#: invoices/models.py:192
 msgid "Draft invoices can not be sent by email"
 msgstr "Les brouillons de factures ne peuvent pas être envoyés par e-mail"
 
-#: models.py:194
+#: invoices/models.py:194
 msgid "Invoice has already been sent"
 msgstr "La facture a déjà été envoyée"
 
-#: models.py:197
+#: invoices/models.py:197
 #, python-format
 msgid "Relation (%(relation)s) has no email address"
 msgstr "La relation (%(relation)s) n'a pas d'adresse e-mail"
 
-#: models.py:230
+#: invoices/models.py:230
 msgid "date due"
 msgstr "date d'échéance"
 
-#: models.py:231
+#: invoices/models.py:231
 msgid "payment communication"
 msgstr "communication de paiement"
 
-#: models.py:239 models.py:328
+#: invoices/models.py:239 invoices/models.py:328
 msgid "subtotal"
 msgstr "sous-total"
 
-#: models.py:240 models.py:302
+#: invoices/models.py:240 invoices/models.py:302
 msgid "VAT"
 msgstr "TVA"
 
-#: models.py:241
+#: invoices/models.py:241
 msgid "total"
 msgstr "total"
 
-#: models.py:247
+#: invoices/models.py:247
 msgid "ATTN."
 msgstr "À l'attention de"
 
-#: models.py:273
+#: invoices/models.py:273
 msgid "Relation has no address"
 msgstr "La relation n'a pas d'adresse"
 
-#: models.py:279
+#: invoices/models.py:279
 msgid "Company has no bank account"
 msgstr "L'entreprise n'a pas de compte bancaire"
 
-#: models.py:285
+#: invoices/models.py:285
 msgid "Company has no address"
 msgstr "L'entreprise n'a pas d'adresse"
 
-#: models.py:291 models.py:304
+#: invoices/models.py:291 invoices/models.py:304
 msgid "invoice"
 msgstr "facture"
 
-#: models.py:292
+#: invoices/models.py:292
 msgid "invoices"
 msgstr "factures"
 
-#: models.py:298
+#: invoices/models.py:298
 msgid "description"
 msgstr "description"
 
-#: models.py:299
+#: invoices/models.py:299
 msgid "unit price"
 msgstr "prix unitaire"
 
-#: models.py:300
+#: invoices/models.py:300
 msgid "quantity"
 msgstr "quantité"
 
-#: models.py:302
+#: invoices/models.py:302
 msgid "VAT percentage"
 msgstr "pourcentage de TVA"
 
-#: models.py:338
+#: invoices/models.py:338
 msgid "invoice item"
 msgstr "postes de facture"
 
-#: models.py:339
+#: invoices/models.py:339
 msgid "invoice items"
 msgstr "articles de facture"

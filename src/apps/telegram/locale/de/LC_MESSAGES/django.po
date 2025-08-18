@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-17 22:11+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: German <de@li.org>\n"
@@ -18,70 +18,70 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: bot/commands/registerovertime.py:253
+#: telegram/bot/commands/registerovertime.py:253
 msgid "yes"
 msgstr "ja"
 
-#: bot/commands/registerovertime.py:254
+#: telegram/bot/commands/registerovertime.py:254
 msgid "no"
 msgstr "nein"
 
-#: models.py:20
+#: telegram/models.py:20
 msgid "raw message"
 msgstr "Rohnachricht"
 
-#: models.py:21
+#: telegram/models.py:21
 msgid "error"
 msgstr "Fehler"
 
-#: models.py:45
+#: telegram/models.py:45
 msgid "message"
 msgstr "Nachricht"
 
-#: models.py:46
+#: telegram/models.py:46
 msgid "messages"
 msgstr "Nachrichten"
 
-#: models.py:58
+#: telegram/models.py:58
 msgid "user"
 msgstr "Benutzer"
 
-#: models.py:59
+#: telegram/models.py:59
 msgid "chat id"
 msgstr "Chat-ID"
 
-#: models.py:60
+#: telegram/models.py:60
 msgid "data"
 msgstr "Daten"
 
-#: models.py:61
+#: telegram/models.py:61
 msgid "updated at"
 msgstr "Aktualisiert am"
 
-#: models.py:66
+#: telegram/models.py:66
 msgid "telegram setting"
 msgstr "Telegram-Einstellung"
 
-#: models.py:67
+#: telegram/models.py:67
 msgid "telegram settings"
 msgstr "Telegram-Einstellungen"
 
-#: models.py:83
+#: telegram/models.py:83
 msgid "token"
 msgstr "Token"
 
-#: models.py:84
+#: telegram/models.py:84
 msgid "command"
 msgstr "Befehl"
 
-#: models.py:85
+#: telegram/models.py:85
 msgid "step"
 msgstr "Schritt"
 
-#: models.py:86 models.py:92 models.py:93
+#: telegram/models.py:86 telegram/models.py:92 telegram/models.py:93
 msgid "callback data"
 msgstr "Callback-Daten"
 
-#: models.py:87
+#: telegram/models.py:87
 msgid "created at"
 msgstr "Erstellt am"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-04 08:28+0000\n"
+"POT-Creation-Date: 2025-08-18 09:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Dutch <LL@li.org>\n"
@@ -18,66 +18,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: models.py:13
+#: geo/models.py:13
 msgid "Belgium"
 msgstr "België"
 
-#: models.py:14
+#: geo/models.py:14
 msgid "Netherlands"
 msgstr "Nederland"
 
-#: models.py:15
+#: geo/models.py:15
 msgid "United Kingdom"
 msgstr "Verenigd Koninkrijk"
 
-#: models.py:17
+#: geo/models.py:17
 msgid "line1"
 msgstr "regel1"
 
-#: models.py:17
+#: geo/models.py:17
 msgid "Example: dummystreet 42a"
 msgstr "Voorbeeld: nepstraat 42a"
 
-#: models.py:18
+#: geo/models.py:18
 msgid "line2"
 msgstr "regel2"
 
-#: models.py:19
+#: geo/models.py:19
 msgid "line3"
 msgstr "regel3"
 
-#: models.py:20
+#: geo/models.py:20
 msgid "line4"
 msgstr "regel4"
 
-#: models.py:21
+#: geo/models.py:21
 msgid "postal code"
 msgstr "postcode"
 
-#: models.py:22
+#: geo/models.py:22
 msgid "city"
 msgstr "stad"
 
-#: models.py:24
+#: geo/models.py:24
 msgid "state province region"
 msgstr "staat/provincie/regio"
 
-#: models.py:27
+#: geo/models.py:27
 msgid "country"
 msgstr "land"
 
-#: models.py:30
+#: geo/models.py:30
 msgid "relation"
 msgstr "relatie"
 
-#: models.py:33
+#: geo/models.py:33
 msgid "company"
 msgstr "bedrijf"
 
-#: models.py:59
+#: geo/models.py:59
 msgid "address"
 msgstr "adres"
 
-#: models.py:60
+#: geo/models.py:60
 msgid "addresses"
 msgstr "adressen"
