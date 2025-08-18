@@ -127,6 +127,11 @@ manage makemigrations
 ```
 manage migrate
 ```
+#### Reverse migrations (update APPNAME and 000N)
+```
+APPNAME="myapp" manage migrate $APPNAME 000N
+```
+##### This can be useful when you created many migrations during development, where some undo the previous and redo them. When done with development, you could just revert to the last migration on main, remove the new migrations on your branch and run makemigrations again.
 
 #### Collect static files (not required when using runserver)
 ```
@@ -144,8 +149,14 @@ The following commands should be ran from the `apps` directory to avoid django a
 cd src/apps
 ```
 
+Initial command (include all locales you want to have generated)
 ```
 manage makemessages --locale de --locale fr --locale nl
+```
+
+Later you probably just want to use --all and remove obsolete entries
+```
+manage makemessages --all --no-obsolete
 ```
 
 The following command should be ran on fresh installs as the MO files are not included in version control.
