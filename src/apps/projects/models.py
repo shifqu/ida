@@ -55,7 +55,6 @@ class Rate(models.Model):
     if TYPE_CHECKING:
 
         def get_item_type_display(self) -> str: ...  # noqa: D102
-
         def get_rate_type_display(self) -> str: ...  # noqa: D102
 
     class RateType(models.TextChoices):

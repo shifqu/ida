@@ -9,6 +9,7 @@ class RateInline(admin.TabularInline):
     """Represent rates inline in the admin."""
 
     model = Rate
+    extra = 0
 
 
 class ProjectAdmin(admin.ModelAdmin):
