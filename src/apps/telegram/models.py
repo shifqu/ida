@@ -1,11 +1,14 @@
 """Telegram models."""
 
+import calendar
 import uuid
 from typing import TYPE_CHECKING, Any
 
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+from apps.timesheets.models import TimesheetItem
 
 
 class Message(models.Model):
@@ -104,3 +107,39 @@ class CallbackData(models.Model):
         if len(data_str) > 100:
             return data_str[:97] + "..."
         return data_str
+
+
+class BaseItemTypeRule(models.Model):
+    """Represent an abstract base rule to infer the item type of a timesheet item."""
+
+    item_type = models.CharField(max_length=50, choices=TimesheetItem.ItemType.choices, verbose_name=_("item type"))
+
+    class Meta:
+        """Make the model abstract."""
+
+        abstract = True
+
+    if TYPE_CHECKING:
+
+        def get_item_type_display(self) -> str: ...  # noqa: D102
+
+
+class WeekdayItemTypeRule(BaseItemTypeRule):
+    """Represent a weekday rule to infer the item type of a timesheet item."""
+
+    weekday = models.IntegerField(choices=[(i, calendar.day_name[i]) for i in range(7)])
+
+    def __str__(self):
+        """Return the string representation of the weekday item type rule."""
+        return f"Weekday rule: {self.weekday} - {self.get_item_type_display()}"
+
+
+class TimeRangeItemTypeRule(BaseItemTypeRule):
+    """Represent a time range rule to infer the item type of a timesheet item."""
+
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+
+    def __str__(self):
+        """Return the string representation of the time range item type rule."""
+        return f"Time range rule: {self.start_time} - {self.end_time} ({self.get_item_type_display()})"

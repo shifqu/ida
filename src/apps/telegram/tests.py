@@ -10,8 +10,10 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.projects.models import Project
-from apps.telegram.models import TelegramSettings
-from apps.timesheets.models import Timesheet
+from apps.telegram.bot.commands.registerovertime import OvertimeData
+from apps.telegram.bot.commands.utils import get_command_cls
+from apps.telegram.models import TelegramSettings, TimeRangeItemTypeRule, WeekdayItemTypeRule
+from apps.timesheets.models import Timesheet, TimesheetItem
 from apps.users.models import IdaUser
 
 
@@ -96,6 +98,52 @@ class TelegramTestCase(TestCase):
         call_command("startregisterwork", stdout=out)
         self.assertTrue(bot_post.called)
         self.assertIn("No missing days", bot_post.call_args[1]["payload"]["text"])
+
+    def test_prepare_item_batches(self):
+        """Test the prepare item batches method."""
+        register_overtime_cmd = get_command_cls("/registerovertime")(self.telegram_setting)
+        rule1 = TimeRangeItemTypeRule(
+            item_type=TimesheetItem.ItemType.STANDARD,
+            start_time="07:00",
+            end_time="19:30",
+        )
+        rule1.save()
+        rule2 = TimeRangeItemTypeRule(
+            item_type=TimesheetItem.ItemType.NIGHT,
+            start_time="19:30",
+            end_time="07:00",
+        )
+        rule2.save()
+        step_data = OvertimeData(
+            project_id=self.project.pk,
+            project_name=self.project.name,
+            start_time=datetime(2025, 1, 1, 17, 30, 0),
+            end_time=datetime(2025, 1, 2, 8, 0, 0),
+            description="Test Overtime",
+        )
+        items = register_overtime_cmd._prepare_item_batches(step_data)
+        expected_key = (1, 2025, self.project.pk)
+        self.assertIn(expected_key, items)
+        self.assertEqual(len(items[expected_key]), 4)
+        self.assertEqual(sum(item.worked_hours for item in items[expected_key]), 14.5)
+
+        rule3 = WeekdayItemTypeRule(
+            item_type=TimesheetItem.ItemType.SUNDAY,
+            weekday=6,
+        )
+        rule3.save()
+        step_data_2 = OvertimeData(
+            project_id=self.project.pk,
+            project_name=self.project.name,
+            start_time=datetime(2025, 1, 5, 22, 0, 0),
+            end_time=datetime(2025, 1, 6, 2, 0, 0),
+            description="Test Overtime",
+        )
+        items_2 = register_overtime_cmd._prepare_item_batches(step_data_2)
+        self.assertEqual(len(items_2[expected_key]), 2)
+        self.assertEqual(sum(item.worked_hours for item in items_2[expected_key]), 4)
+        self.assertEqual(items_2[expected_key][0].item_type, TimesheetItem.ItemType.SUNDAY)
+        self.assertEqual(items_2[expected_key][1].item_type, TimesheetItem.ItemType.NIGHT)
 
     def _click_on_text(self, text: str, bot_post: MagicMock):
         """Simulate a click on the specified text button."""
