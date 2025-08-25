@@ -14,6 +14,7 @@ from apps.projects.models import Project
 from apps.telegram.bot.commands.base import Command, CommandData
 from apps.telegram.bot.core import DO_NOTHING, Bot
 from apps.telegram.bot.types import TelegramUpdate
+from apps.telegram.models import TimeRangeItemTypeRule, WeekdayItemTypeRule
 from apps.timesheets.models import Timesheet, TimesheetItem
 
 
@@ -38,6 +39,12 @@ class OvertimeData(CommandData):
         if instance.end_time and isinstance(instance.end_time, str):
             instance.end_time = datetime.fromisoformat(instance.end_time)
         return instance
+
+    def get_item_type_label(self):
+        """Get the item type label."""
+        if self.item_type == "infer":
+            return "Inferred"
+        return TimesheetItem.ItemType(self.item_type).label
 
 
 class RegisterOvertime(Command[OvertimeData]):
@@ -232,6 +239,17 @@ class RegisterOvertime(Command[OvertimeData]):
             ]
             keyboard.append(row)
 
+        # Add the infer item type
+        step_data_infer = replace(step_data, item_type="infer")
+        keyboard.append(
+            [
+                {
+                    "text": step_data_infer.get_item_type_label(),
+                    "callback_data": self.create_callback("_handle_item_type_selection", **step_data_infer.asdict()),
+                }
+            ]
+        )
+
         Bot.send_message(
             "Select the item type:",
             self.settings.chat_id,
@@ -247,7 +265,7 @@ class RegisterOvertime(Command[OvertimeData]):
         step_data_2 = replace(step_data, confirmation=False)
         confirmation_no = self.create_callback("finish", **step_data_2.asdict())
 
-        item_type_label = TimesheetItem.ItemType(step_data.item_type).label
+        item_type_label = step_data.get_item_type_label()
 
         keyboard = [
             [{"text": gettext("yes"), "callback_data": confirmation_yes}],
@@ -283,7 +301,7 @@ class RegisterOvertime(Command[OvertimeData]):
                 "The timesheet you are trying to register items for is in an invalid state. Contact your administrator."
             )
 
-        item_type_label = TimesheetItem.ItemType(step_data.item_type).label
+        item_type_label = step_data.get_item_type_label()
         return f"{item_type_label} registered from {step_data.start_time} to {step_data.end_time} with description: {step_data.description}."
 
     def _insert_items(self, step_data: OvertimeData):
@@ -291,10 +309,10 @@ class RegisterOvertime(Command[OvertimeData]):
 
         Create a timesheet item for each day in the duration between start and end time (inclusive).
         """
-        items_to_create, timesheet_keys = self._prepare_item_batches(step_data)
+        items_to_create = self._prepare_item_batches(step_data)
         with transaction.atomic():
             timesheets: dict[tuple[int, int, int], Timesheet] = {}
-            for timesheet_key in timesheet_keys:
+            for timesheet_key in items_to_create.keys():
                 month, year, project_id = timesheet_key
                 timesheet, _created = Timesheet.objects.get_or_create(
                     user=self.settings.user,
@@ -322,58 +340,132 @@ class RegisterOvertime(Command[OvertimeData]):
         end_date = step_data.end_time.date()
 
         items_to_create: defaultdict[tuple[int, int, int], list[TimesheetItem]] = defaultdict(list)
-        timesheets_keys: set[tuple[int, int, int]] = set()
         while current_date <= end_date:
             day_start_time = self._get_day_start_time(current_date, step_data.start_time)
             day_end_time = self._get_day_end_time(current_date, step_data.end_time)
+            if self._add_non_inferred_item(step_data, items_to_create, day_start_time, day_end_time, current_date):
+                current_date = self._get_next_day(current_date)
+                continue
 
-            worked_hours = (day_end_time - day_start_time).total_seconds() / 3600
+            if self._add_weekday_item(step_data, items_to_create, day_start_time, day_end_time, current_date):
+                current_date = self._get_next_day(current_date)
+                continue
 
-            timesheet_key = (day_start_time.month, day_start_time.year, step_data.project_id)
-            timesheets_keys.add(timesheet_key)
-
-            items_to_create[timesheet_key].append(
-                TimesheetItem(
-                    date=current_date,
-                    worked_hours=worked_hours,
-                    description=step_data.description,
-                    item_type=step_data.item_type,
-                )
-            )
-
-            current_date = current_date + timedelta(days=1)
-        return items_to_create, timesheets_keys
+            self._add_timerange_items(step_data, items_to_create, day_start_time, day_end_time, current_date)
+            current_date = self._get_next_day(current_date)
+        return items_to_create
 
     def _get_day_end_time(self, current_date: date, end_time: datetime):
-        if current_date == end_time.date():
-            day_end_time = end_time
-        else:
-            next_day_midnight = datetime.combine(current_date + timedelta(days=1), datetime.min.time())
-            day_end_time = next_day_midnight
-        return day_end_time
+        next_day_midnight = datetime.combine(current_date + timedelta(days=1), datetime.min.time())
+        return min(end_time, next_day_midnight)
 
     def _get_day_start_time(self, current_date: date, start_time: datetime):
-        if current_date == start_time.date():
-            day_start_time = start_time
-        else:
-            day_start_time = datetime.combine(current_date, datetime.min.time())
-        return day_start_time
+        day_start_time = datetime.combine(current_date, datetime.min.time())
+        return max(day_start_time, start_time)
 
-    def _insert_item(self, step_data: OvertimeData, worked_hours: float):
-        assert step_data.start_time, "Start time must be set to insert item."
-        timesheet, _created = Timesheet.objects.get_or_create(
-            user=self.settings.user,
-            month=step_data.start_time.month,
-            year=step_data.start_time.year,
-            project_id=step_data.project_id,
-            status=Timesheet.Status.DRAFT,
+    def _get_next_day(self, current_date: date):
+        return current_date + timedelta(days=1)
+
+    def _add_non_inferred_item(
+        self,
+        step_data: OvertimeData,
+        items_to_create: defaultdict[tuple, list],
+        day_start_time: datetime,
+        day_end_time: datetime,
+        current_date: date,
+    ):
+        if not step_data.item_type or step_data.item_type == "infer":
+            return False
+        worked_hours = (day_end_time - day_start_time).total_seconds() / 3600
+        timesheet_key = (day_start_time.month, day_start_time.year, step_data.project_id)
+        items_to_create[timesheet_key].append(
+            TimesheetItem(
+                date=current_date,
+                worked_hours=worked_hours,
+                description=step_data.description,
+                item_type=step_data.item_type,
+            )
         )
-        timesheet.timesheetitem_set.create(
-            date=step_data.start_time.date(),
-            worked_hours=worked_hours,
-            description=step_data.description,
-            item_type=step_data.item_type,
+        return True
+
+    def _add_weekday_item(
+        self,
+        step_data: OvertimeData,
+        items_to_create: defaultdict[tuple, list],
+        day_start_time: datetime,
+        day_end_time: datetime,
+        current_date: date,
+    ):
+        weekday = day_start_time.weekday()
+        matching_rule = WeekdayItemTypeRule.objects.filter(weekday=weekday).first()
+        if not matching_rule:
+            return False
+        worked_hours = (day_end_time - day_start_time).total_seconds() / 3600
+        timesheet_key = (day_start_time.month, day_start_time.year, step_data.project_id)
+        items_to_create[timesheet_key].append(
+            TimesheetItem(
+                date=current_date,
+                worked_hours=worked_hours,
+                description=step_data.description,
+                item_type=matching_rule.item_type,
+            )
         )
+        return True
+
+    def _add_timerange_items(
+        self,
+        step_data: OvertimeData,
+        items_to_create: defaultdict[tuple, list],
+        day_start_time: datetime,
+        day_end_time: datetime,
+        current_date: date,
+    ):
+        rules = TimeRangeItemTypeRule.objects.all()
+        for rule in rules:
+            rule_start = datetime.combine(current_date, rule.start_time)
+            rule_end = datetime.combine(current_date, rule.end_time)
+            if rule_end <= rule_start:
+                # Evening segment (current day)
+                seg_start = max(day_start_time, rule_start)
+                seg_end = min(day_end_time, datetime.combine(current_date + timedelta(days=1), datetime.min.time()))
+                if seg_start < seg_end:
+                    worked_hours = (seg_end - seg_start).total_seconds() / 3600
+                    items_to_create[(current_date.month, current_date.year, step_data.project_id)].append(
+                        TimesheetItem(
+                            date=current_date,
+                            worked_hours=worked_hours,
+                            description=step_data.description,
+                            item_type=rule.item_type,
+                        )
+                    )
+                # Morning segment (current day)
+                morning_start = datetime.combine(current_date, datetime.min.time())
+                morning_end = datetime.combine(current_date, rule.end_time)
+                seg_start = max(day_start_time, morning_start)
+                seg_end = min(day_end_time, morning_end)
+                if seg_start < seg_end:
+                    worked_hours = (seg_end - seg_start).total_seconds() / 3600
+                    items_to_create[(current_date.month, current_date.year, step_data.project_id)].append(
+                        TimesheetItem(
+                            date=current_date,
+                            worked_hours=worked_hours,
+                            description=step_data.description,
+                            item_type=rule.item_type,
+                        )
+                    )
+            else:
+                seg_start = max(day_start_time, rule_start)
+                seg_end = min(day_end_time, rule_end)
+                if seg_start < seg_end:
+                    worked_hours = (seg_end - seg_start).total_seconds() / 3600
+                    items_to_create[(current_date.month, current_date.year, step_data.project_id)].append(
+                        TimesheetItem(
+                            date=current_date,
+                            worked_hours=worked_hours,
+                            description=step_data.description,
+                            item_type=rule.item_type,
+                        )
+                    )
 
     def _validate_time_format(self, time_str: str):
         """Validate and return the time format HH:MM or send an error message.
