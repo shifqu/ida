@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.utils.translation import gettext
 
 from apps.projects.models import Project
-from apps.telegram.bot.commands.base import Command, CommandData
+from apps.telegram.bot.commands.base import CommandDataWithConfirm, CommandWithConfirm
 from apps.telegram.bot.core import DO_NOTHING, Bot
 from apps.telegram.bot.types import TelegramUpdate
 from apps.telegram.models import TimeRangeItemTypeRule, WeekdayItemTypeRule
@@ -19,7 +19,7 @@ from apps.timesheets.models import Timesheet, TimesheetItem
 
 
 @dataclass
-class OvertimeData(CommandData):
+class OvertimeData(CommandDataWithConfirm):
     """Represent the data for the register overtime command."""
 
     project_id: int | None = None
@@ -28,7 +28,6 @@ class OvertimeData(CommandData):
     end_time: datetime | None = None
     description: str | None = None
     item_type: str | None = None
-    confirmation: bool | None = None
 
     @classmethod
     def fromdict(cls, data: dict):
@@ -47,7 +46,7 @@ class OvertimeData(CommandData):
         return TimesheetItem.ItemType(self.item_type).label
 
 
-class RegisterOvertime(Command[OvertimeData]):
+class RegisterOvertime(CommandWithConfirm[OvertimeData]):
     """Represent the register overtime command."""
 
     name = "/registerovertime"
@@ -259,29 +258,16 @@ class RegisterOvertime(Command[OvertimeData]):
 
     def _handle_item_type_selection(self, telegram_update: TelegramUpdate):
         step_data = self.get_command_data(telegram_update.callback_data)
-
-        step_data_1 = replace(step_data, confirmation=True)
-        confirmation_yes = self.create_callback("finish", **step_data_1.asdict())
-        step_data_2 = replace(step_data, confirmation=False)
-        confirmation_no = self.create_callback("finish", **step_data_2.asdict())
-
         item_type_label = step_data.get_item_type_label()
-
-        keyboard = [
-            [{"text": gettext("yes"), "callback_data": confirmation_yes}],
-            [{"text": gettext("no"), "callback_data": confirmation_no}],
-        ]
-        Bot.send_message(
+        msg = (
             "Would you like to register time for the following details:\n"
             f"Project Name: {step_data.project_name}\n"
             f"Start: {step_data.start_time}\n"
             f"End: {step_data.end_time}\n"
             f"Description: {step_data.description}\n"
-            f"Item Type: {item_type_label}",
-            self.settings.chat_id,
-            reply_markup={"inline_keyboard": keyboard},
-            message_id=telegram_update.message_id,
+            f"Item Type: {item_type_label}"
         )
+        self._show_confirmation(step_data, msg, telegram_update)
 
     def _finish_command(self, telegram_update: TelegramUpdate):
         step_data = self.get_command_data(telegram_update.callback_data)
