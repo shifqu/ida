@@ -81,6 +81,36 @@ class TelegramTestCase(TestCase):
             self._click_on_text("yes", bot_post)
             self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items + 1)
 
+    def test_telegram_complete_timesheet(self):
+        """Test the telegram complete timesheet command."""
+        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        year = 2024  # The fixture defines a timesheet for 2025 already
+        timesheet_1 = Timesheet.objects.create(user=self.user, project=self.project, month=1, year=year)
+        timesheet_2 = Timesheet.objects.create(user=self.user, project=self.project, month=2, year=2025)
+
+        self.assertEqual(timesheet_1.status, Timesheet.Status.DRAFT)
+        self._send_text("/completetimesheet")
+        self._click_on_text(str(timesheet_1), bot_post)
+        self._click_on_text("yes", bot_post)
+        timesheet_1.refresh_from_db()  # The instance is updated indirectly, so we refresh it.
+        self.assertEqual(timesheet_1.status, Timesheet.Status.COMPLETED)
+
+        # Still two left, confirm timesheet_2
+        self.assertEqual(timesheet_2.status, Timesheet.Status.DRAFT)
+        self._send_text("/completetimesheet")
+        self._click_on_text(str(timesheet_2), bot_post)
+        self._click_on_text("yes", bot_post)
+        timesheet_2.refresh_from_db()  # The instance is updated indirectly, so we refresh it.
+        self.assertEqual(timesheet_2.status, Timesheet.Status.COMPLETED)
+
+        # Only one left, should go for completion immediately
+        timesheet_0 = Timesheet.objects.get(pk=1)
+        self.assertEqual(timesheet_0.status, Timesheet.Status.DRAFT)
+        self._send_text("/completetimesheet")
+        self._click_on_text("yes", bot_post)
+        timesheet_0.refresh_from_db()  # The instance is updated indirectly, so we refresh it.
+        self.assertEqual(timesheet_0.status, Timesheet.Status.COMPLETED)
+
     def test_startregisterwork(self):
         """Test the start register work command."""
         bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
