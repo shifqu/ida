@@ -115,7 +115,8 @@ class TelegramTestCase(TestCase):
         """Test the start register work command."""
         bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
         out = StringIO()
-        call_command("startregisterwork", stdout=out)
+
+        call_command("startregisterwork", stdout=out, force=True)
         self.assertEqual(bot_post.call_count, 1)
         self.assertEqual(bot_post.call_args.args[0], "sendMessage")
         self.assertIn("Started the command for", out.getvalue())
@@ -125,7 +126,7 @@ class TelegramTestCase(TestCase):
         self.timesheet.save()
         bot_post.reset_mock()
         out = StringIO()
-        call_command("startregisterwork", stdout=out)
+        call_command("startregisterwork", stdout=out, force=True)
         self.assertTrue(bot_post.called)
         self.assertIn("No missing days", bot_post.call_args[1]["payload"]["text"])
 

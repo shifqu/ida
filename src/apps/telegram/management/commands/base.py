@@ -16,7 +16,16 @@ class TelegramCommand(BaseCommand):
 
     command_text: str = ""
 
-    def handle(self, *_args, **_options):
+    def add_arguments(self, parser):
+        """Add command arguments."""
+        parser.add_argument(
+            "--force",
+            action="store_true",
+            default=False,
+            help="Force the command to run, regardless of the should_run outcome.",
+        )
+
+    def handle(self, *_args, **options):
         """Start the configured telegram command.
 
         Note:
@@ -26,9 +35,16 @@ class TelegramCommand(BaseCommand):
         if not self.command_text:
             raise ValueError("The attribute command_text must be set.")
 
+        if not options["force"] and not self.should_run():
+            return
+
         for settings in TelegramSettings.objects.filter(user__is_active=True):
             translation.activate(settings.user.language)
             update = {"message": {"chat": {"id": settings.chat_id}, "text": self.command_text}}
             Bot.handle(update=update)
             translation.deactivate()
             self.stdout.write(self.style.SUCCESS(f"Started the command for {settings.user}."))
+
+    def should_run(self) -> bool:
+        """Determine if the command should run."""
+        return True
