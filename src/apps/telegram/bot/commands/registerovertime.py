@@ -103,7 +103,7 @@ class RegisterOvertime(CommandWithConfirm[OvertimeData]):
         """Display a calendar to pick a date."""
         data = self.get_command_data(telegram_update.callback_data)
         now = timezone.now()
-        month, year, key = self._get_key_month_year(data, now)
+        key, month, year = self._get_key_month_year(data, now)
 
         displayed_now = now.replace(month=month, year=year)
         previous_month, previous_year = self._get_previous_month_year(displayed_now)
@@ -152,18 +152,18 @@ class RegisterOvertime(CommandWithConfirm[OvertimeData]):
 
     def _get_key_month_year(self, data: OvertimeData, now: datetime):
         if data.end_time:
+            key = "end_time"
             month = data.end_time.month
             year = data.end_time.year
-            key = "end_time"
         elif data.start_time:
+            key = "start_time"
             month = data.start_time.month
             year = data.start_time.year
-            key = "start_time"
         else:
+            key = "start_time"
             month = now.month
             year = now.year
-            key = "start_time"
-        return month, year, key
+        return key, month, year
 
     def _handle_date_selection(self, telegram_update: TelegramUpdate):
         step_data = self.get_command_data(telegram_update.callback_data)
