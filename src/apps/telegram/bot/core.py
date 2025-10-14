@@ -52,6 +52,7 @@ class Bot:
             "Currently available commands:\n"
             "/registerwork - Register work hours\n"
             "/registerovertime - Register overtime hours\n"
+            "/completetimesheet - Mark a timesheet as completed\n"
         )
         cls.send_message(help_text, chat_id)
 
