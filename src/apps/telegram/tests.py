@@ -71,7 +71,7 @@ class TelegramTestCase(TestCase):
         self.assertEqual(timesheet_item.worked_hours, 8.0)
         bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
         self._send_text("/editwork")
-        self._click_on_text("Dummy Project: 2025-01-02", bot_post)
+        self._click_on_text("Dummy Project: 2025-01-02 (8.0h)", bot_post)
         self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
         self._click_on_text("Holiday (0h)", bot_post)
         self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
