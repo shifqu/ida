@@ -52,12 +52,14 @@ class EditWork(Command[WorkData]):
             return Bot.send_message(msg, telegram_update.chat_id)
 
         keyboard = []
-        for project, day, item_pk in existing_days[start:end]:
-            data_day = replace(data, start_date=day, project_id=project.pk, project_name=project.name, item_pk=item_pk)
+        for project, item in existing_days[start:end]:
+            data_day = replace(
+                data, start_date=item.date, project_id=project.pk, project_name=project.name, item_pk=item.pk
+            )
             keyboard.append(
                 [
                     {
-                        "text": f"{project}: {day}",
+                        "text": f"{project}: {item.date} ({item.worked_hours}h)",
                         "callback_data": self.create_callback("_select_hours_worked", **data_day.asdict()),
                     }
                 ]
@@ -120,11 +122,11 @@ class EditWork(Command[WorkData]):
         """
         draft_timesheets = Timesheet.objects.filter(status=Timesheet.Status.DRAFT, user=self.settings.user)
         existing = [
-            (timesheet.project, item.date, item.pk)
+            (timesheet.project, item)
             for timesheet in draft_timesheets
             for item in timesheet.timesheetitem_set.filter(item_type=TimesheetItem.ItemType.STANDARD)
         ]
-        return sorted(existing, key=lambda x: x[1], reverse=True)
+        return sorted(existing, key=lambda x: x[1].date, reverse=True)
 
     def _editwork(self, step_data: WorkData):
         """Edit working hours for the given date and option."""
