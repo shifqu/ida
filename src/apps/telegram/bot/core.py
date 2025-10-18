@@ -53,6 +53,7 @@ class Bot:
             "/registerwork - Register work hours\n"
             "/registerovertime - Register overtime hours\n"
             "/completetimesheet - Mark a timesheet as completed\n"
+            "/editwork - Edit previously registered work hours\n"
         )
         cls.send_message(help_text, chat_id)
 

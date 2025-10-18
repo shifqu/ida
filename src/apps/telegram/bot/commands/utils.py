@@ -10,6 +10,7 @@ if TYPE_CHECKING:
 def get_command_cls(name: str) -> type["Command"]:
     """Get the command class based on the name."""
     from apps.telegram.bot.commands.completetimesheet import CompleteTimesheet
+    from apps.telegram.bot.commands.editwork import EditWork
     from apps.telegram.bot.commands.registerovertime import RegisterOvertime
     from apps.telegram.bot.commands.registerwork import RegisterWork
 
@@ -17,6 +18,7 @@ def get_command_cls(name: str) -> type["Command"]:
         "/registerovertime": RegisterOvertime,
         "/registerwork": RegisterWork,
         "/completetimesheet": CompleteTimesheet,
+        "/editwork": EditWork,
     }
     return command_map[name]
 
