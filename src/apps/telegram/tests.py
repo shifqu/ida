@@ -64,6 +64,20 @@ class TelegramTestCase(TestCase):
         self._click_on_text("Full day (8h)", bot_post)
         self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items + 1)
 
+    def test_telegram_editwork(self):
+        """Test the telegram editwork command."""
+        existing_timesheet_items = self.timesheet.timesheetitem_set.count()
+        timesheet_item = TimesheetItem.objects.get(timesheet=self.timesheet, date=datetime(2025, 1, 2).date())
+        self.assertEqual(timesheet_item.worked_hours, 8.0)
+        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        self._send_text("/editwork")
+        self._click_on_text("Dummy Project: 2025-01-02", bot_post)
+        self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
+        self._click_on_text("Holiday (0h)", bot_post)
+        self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
+        timesheet_item.refresh_from_db()
+        self.assertEqual(timesheet_item.worked_hours, 0.0)
+
     def test_telegram_registerovertime(self):
         """Test the telegram registerovertime command."""
         fixed_now = datetime(2025, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
