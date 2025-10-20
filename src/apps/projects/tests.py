@@ -10,7 +10,7 @@ from django.test import TestCase
 from apps.companies.models import Company
 from apps.projects.models import Project, Rate
 from apps.relations.models import Relation
-from apps.timesheets.models import Timesheet
+from apps.timesheets.models import Timesheet, TimesheetItem
 
 
 class ProjectsTests(TestCase):
@@ -43,7 +43,7 @@ class ProjectsTests(TestCase):
 
     def test_rate_str(self):
         """Test the string representation."""
-        expected_str = "Dummy Project - standard: 500.00 x 21.00% (daily)"
+        expected_str = "Dummy Project - Standard: 500.00 x 21.00% (Daily)"
         self.assertEqual(str(self.project.rate_set.first()), expected_str)
 
     def test_createinvoices(self):
@@ -62,14 +62,14 @@ class ProjectsTests(TestCase):
             project=self.project,
             month=1,
             year=2025,
-            status="completed",
+            status=Timesheet.Status.COMPLETED,
         )
         out = StringIO()
         call_command("createinvoices", month=1, year=2025, stdout=out)
         self.assertIn("No invoice items created", out.getvalue())
 
         timesheet.timesheetitem_set.create(
-            item_type="standard",
+            item_type=TimesheetItem.ItemType.STANDARD,
             date="2025-01-01",
             worked_hours=8.0,
             description="Worked on project tasks",

@@ -1,6 +1,7 @@
 """Timesheets models."""
 
 import calendar
+from collections import defaultdict
 from datetime import date
 from typing import TYPE_CHECKING
 
@@ -112,28 +113,71 @@ class Timesheet(models.Model):
         self.status = self.Status.COMPLETED
         self.save()
 
+    def get_overview(self, include_details: bool = False) -> str:
+        """Return an overview of the timesheet.
+
+        When include_details is True, return a detailed overview including each timesheet item.
+        Otherwise, only total hours per item type are returned.
+
+        Example output:
+        Detailed Timesheet Overview for Project X - John Doe - 05/2024:
+        - 2025-05-01 - Night - 2.0 hours (example description)
+        - 2025-05-02 - Standard - 8.0 hours (example std description)
+        ...
+        Totals for Project X - John Doe - 05/2024:
+        - 140 hours (Standard)
+        - 20 hours (On call)
+        - 2 hours (Night)
+        - 1 hour (Saturday)
+        - 0 hours (Sunday)
+        - 0 hours (Other)
+        """
+        detail_lines = [f"Detailed Timesheet Overview for {self}:"]
+        items = self.timesheetitem_set.all().order_by("date", "item_type")
+        total_hours_by_type = defaultdict(float)
+        for item in items:
+            detail_lines.append(str(item))
+            total_hours_by_type[item.get_item_type_display()] += item.worked_hours
+
+        overview_lines = [f"Totals for {self}:"]
+        for label, total_hours in total_hours_by_type.items():
+            hour_str = "hour" if total_hours == 1 else "hours"
+            overview_lines.append(f"- {total_hours} {hour_str} ({label})")
+
+        overview = "\n".join(overview_lines)
+        if not include_details:
+            return overview
+
+        details = "\n".join(detail_lines)
+        return "\n\n".join([details, overview])
+
 
 class TimesheetItem(models.Model):
     """Represent a Timesheet."""
 
-    class ItemType(models.TextChoices):
+    if TYPE_CHECKING:
+
+        def get_item_type_display(self) -> str: ...  # noqa: D102
+
+    class ItemType(models.IntegerChoices):
         """Represent the type of timesheet item."""
 
-        STANDARD = "standard", _("Standard")
-        ON_CALL = "on_call", _("On call")
-        NIGHT = "night", _("Night")
-        SATURDAY = "saturday", _("Saturday")
-        SUNDAY = "sunday", _("Sunday")
-        OTHER = "other", _("Other")
+        STANDARD = 1, _("Standard")
+        ON_CALL = 2, _("On call")
+        NIGHT = 3, _("Night")
+        SATURDAY = 4, _("Saturday")
+        SUNDAY = 5, _("Sunday")
+        OTHER = 6, _("Other")
 
     timesheet = models.ForeignKey(Timesheet, on_delete=models.CASCADE, verbose_name=_("timesheet"))
-    item_type = models.CharField(
-        verbose_name=_("item type"), max_length=50, choices=ItemType.choices, default=ItemType.STANDARD
-    )
+    item_type = models.IntegerField(verbose_name=_("item type"), choices=ItemType.choices, default=ItemType.STANDARD)
     date = models.DateField(verbose_name=_("date"))
     worked_hours = models.FloatField(verbose_name=_("worked hours"))
     description = models.TextField(verbose_name=_("description"), blank=True)
 
     def __str__(self):
         """Return the string representation of the timesheet item."""
-        return f"{self.date} - {self.worked_hours} hours ({self.description})"
+        timesheet_item = f"{self.date} - {self.get_item_type_display()} - {self.worked_hours} hours"
+        if self.description:
+            timesheet_item = f"{timesheet_item} ({self.description})"
+        return timesheet_item

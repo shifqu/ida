@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from apps.projects.models import Project
-from apps.timesheets.models import Timesheet
+from apps.timesheets.models import Timesheet, TimesheetItem
 
 
 class TimesheetsTests(TestCase):
@@ -30,10 +30,10 @@ class TimesheetsTests(TestCase):
 
         timesheet_item = self.timesheet.timesheetitem_set.first()
         assert timesheet_item is not None, "Timesheet item should not be None"
-        self.assertEqual(timesheet_item.item_type, "standard")
+        self.assertEqual(timesheet_item.item_type, TimesheetItem.ItemType.STANDARD)
         self.assertEqual(str(timesheet_item.date), "2025-01-01")
         self.assertEqual(timesheet_item.worked_hours, 8.0)
-        self.assertEqual(timesheet_item.description, "")
+        self.assertEqual(timesheet_item.description, "dummy description")
 
     def test_name(self):
         """Test the name property."""
@@ -51,7 +51,9 @@ class TimesheetsTests(TestCase):
     def test_timesheet_item_str(self):
         """Test the string representation."""
         timesheet_item = self.timesheet.timesheetitem_set.first()
-        self.assertEqual(str(timesheet_item), "2025-01-01 - 8.0 hours ()")
+        self.assertEqual(str(timesheet_item), "2025-01-01 - Standard - 8.0 hours (dummy description)")
+        timesheet_item = self.timesheet.timesheetitem_set.last()
+        self.assertEqual(str(timesheet_item), "2025-01-03 - Night - 2.0 hours")
 
     def test_timesheet_unique_together(self):
         """Test the unique together constraint."""
@@ -76,3 +78,28 @@ class TimesheetsTests(TestCase):
                 status=Timesheet.Status.DRAFT,
                 project_id=self.timesheet.project.pk,
             )
+
+    def test_timesheet_overview(self):
+        """Test the timesheet overview generation."""
+        overview = self.timesheet.get_overview()
+        expected_summary_overview = (
+            "Totals for Dummy Project - Dummy User - 01/2025:\n"
+            "- 16.0 hours (Standard)\n"
+            "- 8.0 hours (On call)\n"
+            "- 2.0 hours (Night)"
+        )
+        self.assertEqual(overview, expected_summary_overview)
+
+        detailed_overview = self.timesheet.get_overview(include_details=True)
+        expected_detailed_overview = (
+            "Detailed Timesheet Overview for Dummy Project - Dummy User - 01/2025:\n"
+            "2025-01-01 - Standard - 8.0 hours (dummy description)\n"
+            "2025-01-01 - On call - 8.0 hours\n"
+            "2025-01-02 - Standard - 8.0 hours\n"
+            "2025-01-03 - Night - 2.0 hours\n\n"
+            "Totals for Dummy Project - Dummy User - 01/2025:\n"
+            "- 16.0 hours (Standard)\n"
+            "- 8.0 hours (On call)\n"
+            "- 2.0 hours (Night)"
+        )
+        self.assertEqual(detailed_overview, expected_detailed_overview)

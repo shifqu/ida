@@ -112,7 +112,7 @@ class CallbackData(models.Model):
 class BaseItemTypeRule(models.Model):
     """Represent an abstract base rule to infer the item type of a timesheet item."""
 
-    item_type = models.CharField(max_length=50, choices=TimesheetItem.ItemType.choices, verbose_name=_("item type"))
+    item_type = models.IntegerField(choices=TimesheetItem.ItemType.choices, verbose_name=_("item type"))
 
     class Meta:
         """Make the model abstract."""
