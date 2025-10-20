@@ -57,18 +57,16 @@ class Rate(models.Model):
         def get_item_type_display(self) -> str: ...  # noqa: D102
         def get_rate_type_display(self) -> str: ...  # noqa: D102
 
-    class RateType(models.TextChoices):
+    class RateType(models.IntegerChoices):
         """Define the rate types."""
 
-        DAILY = "daily", _("Daily")
-        HOURLY = "hourly", _("Hourly")
-        MONTHLY = "monthly", _("Monthly")
+        DAILY = 1, _("Daily")
+        HOURLY = 2, _("Hourly")
+        MONTHLY = 3, _("Monthly")
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE, verbose_name=_("project"))
-    item_type = models.CharField(verbose_name=_("item type"), max_length=50, choices=TimesheetItem.ItemType.choices)
-    rate_type = models.CharField(
-        verbose_name=_("rate type"), max_length=20, choices=RateType.choices, default=RateType.HOURLY
-    )
+    item_type = models.IntegerField(verbose_name=_("item type"), choices=TimesheetItem.ItemType.choices)
+    rate_type = models.IntegerField(verbose_name=_("rate type"), choices=RateType.choices, default=RateType.HOURLY)
     rate = models.DecimalField(max_digits=10, decimal_places=2)
     vat_percentage = models.DecimalField(
         verbose_name=_("VAT"),
@@ -87,4 +85,6 @@ class Rate(models.Model):
 
     def __str__(self):
         """Return a string representation of the rate."""
-        return f"{self.project.name} - {self.item_type}: {self.rate} x {self.vat_percentage}% ({self.rate_type})"
+        item_type = self.get_item_type_display()
+        rate_type = self.get_rate_type_display()
+        return f"{self.project.name} - {item_type}: {self.rate} x {self.vat_percentage}% ({rate_type})"

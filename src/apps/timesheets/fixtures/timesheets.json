@@ -14,10 +14,10 @@
         "pk": 1,
         "fields": {
             "timesheet": 1,
-            "item_type": "standard",
+            "item_type": 1,
             "date": "2025-01-01",
             "worked_hours": 8.0,
-            "description": ""
+            "description": "dummy description"
         }
     },
     {
@@ -25,7 +25,7 @@
         "pk": 2,
         "fields": {
             "timesheet": 1,
-            "item_type": "standard",
+            "item_type": 1,
             "date": "2025-01-02",
             "worked_hours": 8.0,
             "description": ""
@@ -36,7 +36,7 @@
         "pk": 3,
         "fields": {
             "timesheet": 1,
-            "item_type": "on_call",
+            "item_type": 2,
             "date": "2025-01-01",
             "worked_hours": 8.0,
             "description": ""
@@ -47,7 +47,7 @@
         "pk": 4,
         "fields": {
             "timesheet": 1,
-            "item_type": "night",
+            "item_type": 3,
             "date": "2025-01-03",
             "worked_hours": 2.0,
             "description": ""

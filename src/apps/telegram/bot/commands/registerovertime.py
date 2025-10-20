@@ -27,7 +27,7 @@ class OvertimeData(CommandDataWithConfirm):
     start_time: datetime | None = None
     end_time: datetime | None = None
     description: str | None = None
-    item_type: str | None = None
+    item_type: int | None = None
 
     @classmethod
     def fromdict(cls, data: dict):
@@ -41,7 +41,7 @@ class OvertimeData(CommandDataWithConfirm):
 
     def get_item_type_label(self):
         """Get the item type label."""
-        if self.item_type == "infer":
+        if not self.item_type:
             return "Inferred"
         return TimesheetItem.ItemType(self.item_type).label
 
@@ -239,7 +239,7 @@ class RegisterOvertime(CommandWithConfirm[OvertimeData]):
             keyboard.append(row)
 
         # Add the infer item type
-        step_data_infer = replace(step_data, item_type="infer")
+        step_data_infer = replace(step_data, item_type=0)
         keyboard.append(
             [
                 {
@@ -360,7 +360,7 @@ class RegisterOvertime(CommandWithConfirm[OvertimeData]):
         day_end_time: datetime,
         current_date: date,
     ):
-        if not step_data.item_type or step_data.item_type == "infer":
+        if not step_data.item_type:
             return False
         worked_hours = (day_end_time - day_start_time).total_seconds() / 3600
         timesheet_key = (day_start_time.month, day_start_time.year, step_data.project_id)

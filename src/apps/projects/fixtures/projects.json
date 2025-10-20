@@ -20,8 +20,8 @@
         "pk": 1,
         "fields": {
             "project": 1,
-            "item_type": "standard",
-            "rate_type": "daily",
+            "item_type": 1,
+            "rate_type": 1,
             "rate": "500.00",
             "vat_percentage": "21.00"
         }
@@ -31,8 +31,8 @@
         "pk": 2,
         "fields": {
             "project": 1,
-            "item_type": "on_call",
-            "rate_type": "hourly",
+            "item_type": 2,
+            "rate_type": 2,
             "rate": "0.5",
             "vat_percentage": "21.00"
         }
@@ -42,8 +42,8 @@
         "pk": 3,
         "fields": {
             "project": 1,
-            "item_type": "night",
-            "rate_type": "hourly",
+            "item_type": 3,
+            "rate_type": 2,
             "rate": "93.75",
             "vat_percentage": "21.00"
         }
@@ -53,8 +53,8 @@
         "pk": 4,
         "fields": {
             "project": 1,
-            "item_type": "saturday",
-            "rate_type": "hourly",
+            "item_type": 4,
+            "rate_type": 2,
             "rate": "93.75",
             "vat_percentage": "21.00"
         }
@@ -64,8 +64,8 @@
         "pk": 5,
         "fields": {
             "project": 1,
-            "item_type": "sunday",
-            "rate_type": "hourly",
+            "item_type": 5,
+            "rate_type": 2,
             "rate": "125.00",
             "vat_percentage": "21.00"
         }
