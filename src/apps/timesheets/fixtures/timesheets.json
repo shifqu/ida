@@ -52,5 +52,16 @@
             "worked_hours": 2.0,
             "description": ""
         }
+    },
+    {
+        "model": "timesheets.timesheetitem",
+        "pk": 5,
+        "fields": {
+            "timesheet": 1,
+            "item_type": 1,
+            "date": "2025-01-06",
+            "worked_hours": 0.0,
+            "description": "holiday epiphany"
+        }
     }
 ]
