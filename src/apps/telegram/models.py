@@ -86,6 +86,7 @@ class CallbackData(models.Model):
     token = models.UUIDField(verbose_name=_("token"), default=uuid.uuid4, unique=True, db_index=True)
     command = models.CharField(verbose_name=_("command"), max_length=255)
     step = models.CharField(verbose_name=_("step"), max_length=255)
+    action = models.CharField(verbose_name=_("action"), max_length=99, help_text=_("Name of a function on the command"))
     data = models.JSONField(verbose_name=_("callback data"), default=dict, encoder=DjangoJSONEncoder)
     created_at = models.DateTimeField(verbose_name=_("created at"), auto_now_add=True)
 
