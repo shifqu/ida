@@ -42,7 +42,7 @@ class TimesheetsTests(TestCase):
     def test_get_missing_days(self):
         """Test the get_missing_days method."""
         missing_days = self.timesheet.get_missing_days()
-        self.assertEqual(len(missing_days), 21)
+        self.assertEqual(len(missing_days), 20)
 
     def test_str(self):
         """Test the string representation."""
@@ -52,7 +52,7 @@ class TimesheetsTests(TestCase):
         """Test the string representation."""
         timesheet_item = self.timesheet.timesheetitem_set.first()
         self.assertEqual(str(timesheet_item), "2025-01-01 - Standard - 8.0 hours (dummy description)")
-        timesheet_item = self.timesheet.timesheetitem_set.last()
+        timesheet_item = self.timesheet.timesheetitem_set.filter(item_type=TimesheetItem.ItemType.NIGHT).first()
         self.assertEqual(str(timesheet_item), "2025-01-03 - Night - 2.0 hours")
 
     def test_timesheet_unique_together(self):
@@ -94,8 +94,9 @@ class TimesheetsTests(TestCase):
         expected_detailed_overview = (
             "Detailed Timesheet Overview for Dummy Project - Dummy User - 01/2025:\n"
             "2025-01-01 - Standard - 8.0 hours (dummy description)\n"
-            "2025-01-01 - On call - 8.0 hours\n"
             "2025-01-02 - Standard - 8.0 hours\n"
+            "2025-01-06 - Standard - 0.0 hours (holiday epiphany)\n"
+            "2025-01-01 - On call - 8.0 hours\n"
             "2025-01-03 - Night - 2.0 hours\n\n"
             "Totals for Dummy Project - Dummy User - 01/2025:\n"
             "- 16.0 hours (Standard)\n"
@@ -103,3 +104,9 @@ class TimesheetsTests(TestCase):
             "- 2.0 hours (Night)"
         )
         self.assertEqual(detailed_overview, expected_detailed_overview)
+
+    def test_timesheet_holidays_overview(self):
+        """Test the timesheet holidays overview generation."""
+        overview = self.timesheet.get_holidays_overview()
+        expected_summary_overview = "Holidays Overview for Dummy Project - Dummy User - 01/2025:\n2025-01-06"
+        self.assertEqual(overview, expected_summary_overview)
