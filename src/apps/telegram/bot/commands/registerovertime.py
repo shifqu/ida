@@ -2,7 +2,6 @@
 
 import calendar
 from collections import defaultdict
-from dataclasses import dataclass, replace
 from datetime import date, datetime, timedelta
 
 from django.core.exceptions import ValidationError
@@ -11,112 +10,101 @@ from django.utils import timezone
 from django.utils.translation import gettext
 
 from apps.projects.models import Project
-from apps.telegram.bot.commands.base import CommandDataWithConfirm, CommandWithConfirm
+from apps.telegram.bot.commands.common import Confirm
+from apps.telegram.bot.commands.core import Command, Step
 from apps.telegram.bot.core import DO_NOTHING, Bot
 from apps.telegram.bot.types import TelegramUpdate
 from apps.telegram.models import TimeRangeItemTypeRule, WeekdayItemTypeRule
 from apps.timesheets.models import Timesheet, TimesheetItem
 
 
-@dataclass
-class OvertimeData(CommandDataWithConfirm):
-    """Represent the data for the register overtime command."""
-
-    project_id: int | None = None
-    project_name: str | None = None
-    start_time: datetime | None = None
-    end_time: datetime | None = None
-    description: str | None = None
-    item_type: int | None = None
-
-    @classmethod
-    def fromdict(cls, data: dict):
-        """Create an instance from a dictionary."""
-        instance = super().fromdict(data)
-        if instance.start_time and isinstance(instance.start_time, str):
-            instance.start_time = datetime.fromisoformat(instance.start_time)
-        if instance.end_time and isinstance(instance.end_time, str):
-            instance.end_time = datetime.fromisoformat(instance.end_time)
-        return instance
-
-    def get_item_type_label(self):
-        """Get the item type label."""
-        if not self.item_type:
-            return "Inferred"
-        return TimesheetItem.ItemType(self.item_type).label
-
-
-class RegisterOvertime(CommandWithConfirm[OvertimeData]):
+class RegisterOvertime(Command):
     """Represent the register overtime command."""
 
-    name = "/registerovertime"
-    data_class = OvertimeData
+    command = "/registerovertime"
+    description = "Register overtime for a specific day on a specific project."
 
-    def _start_command(self, telegram_update: TelegramUpdate):
-        """Start the command."""
-        self._show_project_selection(telegram_update)
+    @property
+    def steps(self) -> list[Step]:
+        """Return the steps of the command."""
+        return [
+            SelectProject(self),
+            SelectDate(self, key="start_date", allow_previous=True),
+            WaitForTime(self, key="start_time", date_key="start_date"),
+            CombineDateTime(self, date_key="start_date", time_key="start_time"),
+            SelectDate(self, key="end_date", unique_id="SelectEndDate"),
+            WaitForTime(self, key="end_time", date_key="end_date", unique_id="WaitForEndTime"),
+            CombineDateTime(self, date_key="end_date", time_key="end_time", unique_id="CombineEndDateTime"),
+            SelectDescription(self),
+            SelectItemType(self, allow_previous=True),
+            Confirm(self, allow_previous=True),
+            InsertTimesheetItems(self),
+        ]
 
-    def _show_project_selection(self, telegram_update: TelegramUpdate):
-        """Show the project selection for the command.
 
-        If only one project is available, it will be selected automatically and this step is skipped.
-        """
+class SelectProject(Step):
+    """Represent the project selection step in a Telegram bot command."""
+
+    def handle(self, telegram_update: TelegramUpdate):
+        """Show the project selection to the user."""
         today = timezone.now().date()
-        projects = Project.objects.filter(start_date__lte=today, end_date__gte=today, users=self.settings.user)
+        projects = Project.objects.filter(start_date__lte=today, end_date__gte=today, users=self.command.settings.user)
         if not projects:
             Bot.send_message(
-                "You have no active projects assigned. Please contact your administrator.",
-                self.settings.chat_id,
+                "No active projects found. Please contact your administrator.",
+                self.command.settings.chat_id,
                 message_id=telegram_update.message_id,
             )
-            return
+            return self.command.finish(self.name, telegram_update)
 
-        data = self.data_class()
+        data = self.get_callback_data(telegram_update)
         if len(projects) == 1:
-            data.project_id = projects[0].pk
-            data.project_name = str(projects[0])
-            telegram_update.callback_data = self.create_callback("_show_date_selection", **data.asdict())
-            self._show_date_selection(telegram_update)
-            return
+            data["project_id"] = projects[0].pk
+            data["project_name"] = str(projects[0])
+            telegram_update.callback_data = self.next_step_callback(**data)
+            return self.command.next_step(self.name, telegram_update)
 
         keyboard = []
         for project in projects:
-            data.project_id = project.pk
-            data.project_name = str(project)
-            keyboard.append(
-                [
-                    {
-                        "text": str(project),
-                        "callback_data": self.create_callback("_show_date_selection", **data.asdict()),
-                    }
-                ]
-            )
+            data["project_id"] = project.pk
+            data["project_name"] = str(project)
+            keyboard.append([{"text": str(project), "callback_data": self.next_step_callback(**data)}])
+
+        self.maybe_add_previous_button(keyboard, **data)
 
         Bot.send_message(
-            "Please select a project:",
-            self.settings.chat_id,
+            "Select a project:",
+            self.command.settings.chat_id,
             reply_markup={"inline_keyboard": keyboard},
             message_id=telegram_update.message_id,
         )
 
-    def _show_date_selection(self, telegram_update: TelegramUpdate):
-        """Display a calendar to pick a date."""
-        data = self.get_command_data(telegram_update.callback_data)
-        now = timezone.now()
-        key, month, year = self._get_key_month_year(data, now)
 
-        displayed_now = now.replace(month=month, year=year)
+class SelectDate(Step):
+    """Represent the date selection step in a Telegram bot command."""
+
+    def __init__(self, command: Command, key: str, allow_previous: bool = False, unique_id: str | None = None):
+        """Initialize the date selection step."""
+        self.key = key
+        super().__init__(command, allow_previous=allow_previous, unique_id=unique_id)
+
+    def handle(self, telegram_update: TelegramUpdate):
+        """Display a calendar to pick a date."""
+        data = self.get_callback_data(telegram_update)
+        now = timezone.now()
+        month, year = self._get_month_year(data, now)
+
+        displayed_now = now.replace(month=month, year=year).date()
         previous_month, previous_year = self._get_previous_month_year(displayed_now)
         next_month, next_year = self._get_next_month_year(displayed_now)
 
-        data_dict = data.asdict()
-        data_previous = {**data_dict, key: displayed_now.replace(month=previous_month, year=previous_year)}
-        data_next = {**data_dict, key: displayed_now.replace(month=next_month, year=next_year)}
+        data_previous = {**data, self.key: displayed_now.replace(month=previous_month, year=previous_year)}
+        data_next = {**data, self.key: displayed_now.replace(month=next_month, year=next_year)}
         keyboard = []
         header = [
-            {"text": "<<", "callback_data": self.create_callback("_show_date_selection", **data_previous)},
+            {"text": "<<", "callback_data": self.current_step_callback(**data_previous)},
             {"text": f"{str(displayed_now.month).zfill(2)}/{displayed_now.year}", "callback_data": DO_NOTHING},
-            {"text": ">>", "callback_data": self.create_callback("_show_date_selection", **data_next)},
+            {"text": ">>", "callback_data": self.current_step_callback(**data_next)},
         ]
         keyboard.append(header)
 
@@ -133,325 +121,86 @@ class RegisterOvertime(CommandWithConfirm[OvertimeData]):
                 text = str(day).zfill(2)
                 if selected_date == now.date():
                     text = f"({text})"
-                data_dict = {**data_dict, key: datetime.combine(selected_date, datetime.min.time())}
-                row.append(
-                    {
-                        "text": text,
-                        "callback_data": self.create_callback("_handle_date_selection", **data_dict),
-                    }
-                )
+                data_dict = {**data, self.key: selected_date}
+                row.append({"text": text, "callback_data": self.next_step_callback(**data_dict)})
             keyboard.append(row)
-        reply_markup = {"inline_keyboard": keyboard}
 
+        self.maybe_add_previous_button(keyboard, **data)
+
+        reply_markup = {"inline_keyboard": keyboard}
         Bot.send_message(
-            "Please select a day:",
-            self.settings.chat_id,
+            f"Select the {self.key}:",
+            self.command.settings.chat_id,
             reply_markup=reply_markup,
             message_id=telegram_update.message_id,
         )
 
-    def _get_key_month_year(self, data: OvertimeData, now: datetime):
-        if data.end_time:
-            key = "end_time"
-            month = data.end_time.month
-            year = data.end_time.year
-        elif data.start_time:
-            key = "start_time"
-            month = data.start_time.month
-            year = data.start_time.year
+    def _get_month_year(self, data: dict, now: datetime):
+        if data.get(self.key):
+            iso_date = date.fromisoformat(data[self.key])
+            month = iso_date.month
+            year = iso_date.year
         else:
-            key = "start_time"
             month = now.month
             year = now.year
-        return key, month, year
+        return month, year
 
-    def _handle_date_selection(self, telegram_update: TelegramUpdate):
-        step_data = self.get_command_data(telegram_update.callback_data)
-        if step_data.end_time:
-            key = "end"
-            date_to_display = step_data.end_time.date()
-        elif step_data.start_time:
-            key = "start"
-            date_to_display = step_data.start_time.date()
-        else:
-            Bot.send_message(
-                "No start or end time set in step data.", self.settings.chat_id, message_id=telegram_update.message_id
-            )
-            raise ValueError("No start or end time set in step data.")
-        self.settings.data["waiting_for"] = self.create_callback("_handle_time_input", **step_data.asdict())
-        self.settings.save()
+    def _get_next_month_year(self, displayed_now: date):
+        next_month = displayed_now.month + 1
+        next_year = displayed_now.year
+        if displayed_now.month == 12:
+            next_month = 1
+            next_year += 1
+        return next_month, next_year
+
+    def _get_previous_month_year(self, displayed_now: date):
+        previous_month = displayed_now.month - 1
+        previous_year = displayed_now.year
+        if displayed_now.month == 1:
+            previous_month = 12
+            previous_year = displayed_now.year - 1
+        return previous_month, previous_year
+
+
+class WaitForTime(Step):
+    """Represent the wait for time input step in a Telegram bot command."""
+
+    def __init__(self, command: Command, key: str, date_key: str, unique_id: str | None = None):
+        """Initialize the wait for time input step."""
+        self.key = key
+        self.date_key = date_key
+        super().__init__(command, allow_previous=False, unique_id=unique_id)
+
+    def handle(self, telegram_update: TelegramUpdate):
+        """Prompt the user to input a time."""
+        data = self.get_callback_data(telegram_update)
+        self.add_waiting_for(self.key, data)
         Bot.send_message(
-            f"Ok. What's the {key} time on {date_to_display}?",
-            self.settings.chat_id,
+            f"Enter the {self.key} time (HH:MM) for {data[self.date_key]}:",
+            self.command.settings.chat_id,
             message_id=telegram_update.message_id,
         )
 
-    def _handle_time_input(self, telegram_update: TelegramUpdate):
-        time_str = telegram_update.message_text.strip()
-        time = self._validate_time_format(time_str)
 
-        step_data = self.get_command_data(self.settings.data["waiting_for"])
-        if step_data.end_time:
-            step_data.end_time = datetime.combine(step_data.end_time.date(), time)
-            telegram_update.callback_data = self.create_callback("_show_description_input", **step_data.asdict())
-            return self._show_description_input(telegram_update)
+class CombineDateTime(Step):
+    """Represent the combine date and time step in a Telegram bot command."""
 
-        if step_data.start_time:
-            step_data.start_time = datetime.combine(step_data.start_time.date(), time)
-            step_data.end_time = step_data.start_time
+    def __init__(self, command: Command, date_key: str, time_key: str, unique_id: str | None = None):
+        """Initialize the combine date and time step."""
+        self.date_key = date_key
+        self.time_key = time_key
+        super().__init__(command, allow_previous=False, unique_id=unique_id)
 
-            telegram_update.callback_data = self.create_callback("_show_date_selection", **step_data.asdict())
-            return self._show_date_selection(telegram_update)
-
-        Bot.send_message(
-            "No start or end time set in step data.", self.settings.chat_id, message_id=telegram_update.message_id
-        )
-        raise ValueError("No start or end time set in step data.")
-
-    def _show_description_input(self, telegram_update: TelegramUpdate):
-        callback = self.get_callback(telegram_update.callback_data)
-        callback_str = self.create_callback("_handle_description_input", **callback.data)
-        self.settings.data["waiting_for"] = callback_str
-        self.settings.save()
-
-        keyboard = [[{"text": "No description.", "callback_data": callback_str}]]
-        Bot.send_message(
-            "Ok. Please send me the description.",
-            self.settings.chat_id,
-            reply_markup={"inline_keyboard": keyboard},
-            message_id=telegram_update.message_id,
-        )
-
-    def _handle_description_input(self, telegram_update: TelegramUpdate):
-        description = telegram_update.message_text.strip()
-        step_data = self.get_command_data(self.settings.data["waiting_for"])
-        step_data.description = description
-
-        keyboard = []
-        for item_type in TimesheetItem.ItemType:
-            step_data.item_type = item_type.value
-            row = [
-                {
-                    "text": str(item_type.label),
-                    "callback_data": self.create_callback("_handle_item_type_selection", **step_data.asdict()),
-                }
-            ]
-            keyboard.append(row)
-
-        # Add the infer item type
-        step_data_infer = replace(step_data, item_type=0)
-        keyboard.append(
-            [
-                {
-                    "text": step_data_infer.get_item_type_label(),
-                    "callback_data": self.create_callback("_handle_item_type_selection", **step_data_infer.asdict()),
-                }
-            ]
-        )
-
-        Bot.send_message(
-            "Select the item type:",
-            self.settings.chat_id,
-            reply_markup={"inline_keyboard": keyboard},
-            message_id=telegram_update.message_id,
-        )
-
-    def _handle_item_type_selection(self, telegram_update: TelegramUpdate):
-        step_data = self.get_command_data(telegram_update.callback_data)
-        item_type_label = step_data.get_item_type_label()
-        msg = (
-            "Would you like to register time for the following details:\n"
-            f"Project Name: {step_data.project_name}\n"
-            f"Start: {step_data.start_time}\n"
-            f"End: {step_data.end_time}\n"
-            f"Description: {step_data.description}\n"
-            f"Item Type: {item_type_label}"
-        )
-        self._show_confirmation(step_data, msg, telegram_update)
-
-    def _finish_command(self, telegram_update: TelegramUpdate):
-        step_data = self.get_command_data(telegram_update.callback_data)
-        if step_data.confirmation:
-            msg = self._try_insert_items(step_data)
-        else:
-            msg = "Command canceled."
-
-        Bot.send_message(msg, self.settings.chat_id, message_id=telegram_update.message_id)
-        return step_data.correlation_key
-
-    def _try_insert_items(self, step_data: OvertimeData):
-        try:
-            self._insert_items(step_data)
-        except ValidationError:
-            return (
-                "The timesheet you are trying to register items for is in an invalid state. Contact your administrator."
-            )
-
-        item_type_label = step_data.get_item_type_label()
-        return f"{item_type_label} registered from {step_data.start_time} to {step_data.end_time} with description: {step_data.description}."
-
-    def _insert_items(self, step_data: OvertimeData):
-        """Insert the items into the timesheet.
-
-        Create a timesheet item for each day in the duration between start and end time (inclusive).
-        """
-        items_to_create = self._prepare_item_batches(step_data)
-        with transaction.atomic():
-            timesheets: dict[tuple[int, int, int], Timesheet] = {}
-            for timesheet_key in items_to_create.keys():
-                month, year, project_id = timesheet_key
-                timesheet, _created = Timesheet.objects.get_or_create(
-                    user=self.settings.user,
-                    month=month,
-                    year=year,
-                    project_id=project_id,
-                    status=Timesheet.Status.DRAFT,
-                )
-                timesheets[timesheet_key] = timesheet
-
-            timesheet_items = []
-            for key, items in items_to_create.items():
-                timesheet = timesheets[key]
-                for item in items:
-                    item.timesheet = timesheet
-                timesheet_items.extend(items)
-
-            TimesheetItem.objects.bulk_create(timesheet_items)
-
-    def _prepare_item_batches(self, step_data: OvertimeData):
-        assert step_data.start_time and step_data.end_time and step_data.project_id, (
-            "Start time, end time and project_id must be set to insert items."
-        )
-        current_date = step_data.start_time.date()
-        end_date = step_data.end_time.date()
-
-        items_to_create: defaultdict[tuple[int, int, int], list[TimesheetItem]] = defaultdict(list)
-        while current_date <= end_date:
-            day_start_time = self._get_day_start_time(current_date, step_data.start_time)
-            day_end_time = self._get_day_end_time(current_date, step_data.end_time)
-            if self._add_non_inferred_item(step_data, items_to_create, day_start_time, day_end_time, current_date):
-                current_date = self._get_next_day(current_date)
-                continue
-
-            if self._add_weekday_item(step_data, items_to_create, day_start_time, day_end_time, current_date):
-                current_date = self._get_next_day(current_date)
-                continue
-
-            self._add_timerange_items(step_data, items_to_create, day_start_time, day_end_time, current_date)
-            current_date = self._get_next_day(current_date)
-        return items_to_create
-
-    def _get_day_end_time(self, current_date: date, end_time: datetime):
-        next_day_midnight = datetime.combine(current_date + timedelta(days=1), datetime.min.time())
-        return min(end_time, next_day_midnight)
-
-    def _get_day_start_time(self, current_date: date, start_time: datetime):
-        day_start_time = datetime.combine(current_date, datetime.min.time())
-        return max(day_start_time, start_time)
-
-    def _get_next_day(self, current_date: date):
-        return current_date + timedelta(days=1)
-
-    def _add_non_inferred_item(
-        self,
-        step_data: OvertimeData,
-        items_to_create: defaultdict[tuple, list],
-        day_start_time: datetime,
-        day_end_time: datetime,
-        current_date: date,
-    ):
-        if not step_data.item_type:
-            return False
-        worked_hours = (day_end_time - day_start_time).total_seconds() / 3600
-        timesheet_key = (day_start_time.month, day_start_time.year, step_data.project_id)
-        items_to_create[timesheet_key].append(
-            TimesheetItem(
-                date=current_date,
-                worked_hours=worked_hours,
-                description=step_data.description,
-                item_type=step_data.item_type,
-            )
-        )
-        return True
-
-    def _add_weekday_item(
-        self,
-        step_data: OvertimeData,
-        items_to_create: defaultdict[tuple, list],
-        day_start_time: datetime,
-        day_end_time: datetime,
-        current_date: date,
-    ):
-        weekday = day_start_time.weekday()
-        matching_rule = WeekdayItemTypeRule.objects.filter(weekday=weekday).first()
-        if not matching_rule:
-            return False
-        worked_hours = (day_end_time - day_start_time).total_seconds() / 3600
-        timesheet_key = (day_start_time.month, day_start_time.year, step_data.project_id)
-        items_to_create[timesheet_key].append(
-            TimesheetItem(
-                date=current_date,
-                worked_hours=worked_hours,
-                description=step_data.description,
-                item_type=matching_rule.item_type,
-            )
-        )
-        return True
-
-    def _add_timerange_items(
-        self,
-        step_data: OvertimeData,
-        items_to_create: defaultdict[tuple, list],
-        day_start_time: datetime,
-        day_end_time: datetime,
-        current_date: date,
-    ):
-        rules = TimeRangeItemTypeRule.objects.all()
-        for rule in rules:
-            rule_start = datetime.combine(current_date, rule.start_time)
-            rule_end = datetime.combine(current_date, rule.end_time)
-            if rule_end <= rule_start:
-                # Evening segment (current day)
-                seg_start = max(day_start_time, rule_start)
-                seg_end = min(day_end_time, datetime.combine(current_date + timedelta(days=1), datetime.min.time()))
-                if seg_start < seg_end:
-                    worked_hours = (seg_end - seg_start).total_seconds() / 3600
-                    items_to_create[(current_date.month, current_date.year, step_data.project_id)].append(
-                        TimesheetItem(
-                            date=current_date,
-                            worked_hours=worked_hours,
-                            description=step_data.description,
-                            item_type=rule.item_type,
-                        )
-                    )
-                # Morning segment (current day)
-                morning_start = datetime.combine(current_date, datetime.min.time())
-                morning_end = datetime.combine(current_date, rule.end_time)
-                seg_start = max(day_start_time, morning_start)
-                seg_end = min(day_end_time, morning_end)
-                if seg_start < seg_end:
-                    worked_hours = (seg_end - seg_start).total_seconds() / 3600
-                    items_to_create[(current_date.month, current_date.year, step_data.project_id)].append(
-                        TimesheetItem(
-                            date=current_date,
-                            worked_hours=worked_hours,
-                            description=step_data.description,
-                            item_type=rule.item_type,
-                        )
-                    )
-            else:
-                seg_start = max(day_start_time, rule_start)
-                seg_end = min(day_end_time, rule_end)
-                if seg_start < seg_end:
-                    worked_hours = (seg_end - seg_start).total_seconds() / 3600
-                    items_to_create[(current_date.month, current_date.year, step_data.project_id)].append(
-                        TimesheetItem(
-                            date=current_date,
-                            worked_hours=worked_hours,
-                            description=step_data.description,
-                            item_type=rule.item_type,
-                        )
-                    )
+    def handle(self, telegram_update: TelegramUpdate):
+        """Combine the date and time into the time_key and move on to the next step."""
+        data = self.get_callback_data(telegram_update)
+        date_part = date.fromisoformat(data[self.date_key])
+        time_part = self._validate_time_format(data[self.time_key])
+        combined_datetime = datetime.combine(date_part, time_part)
+        data[self.time_key] = combined_datetime.isoformat()
+        data.pop(self.date_key)
+        telegram_update.callback_data = self.next_step_callback(**data)
+        return self.command.next_step(self.name, telegram_update)
 
     def _validate_time_format(self, time_str: str):
         """Validate and return the time format HH:MM or send an error message.
@@ -471,21 +220,232 @@ class RegisterOvertime(CommandWithConfirm[OvertimeData]):
         try:
             return datetime.strptime(normalized_time_str, "%H:%M").time()
         except ValueError as exc:
-            Bot.send_message("Invalid time format. Please use HH:MM.", self.settings.chat_id)
+            Bot.send_message("Invalid time format. Please use HH:MM.", self.command.settings.chat_id)
             raise exc
 
-    def _get_next_month_year(self, displayed_now: date):
-        next_month = displayed_now.month + 1
-        next_year = displayed_now.year
-        if displayed_now.month == 12:
-            next_month = 1
-            next_year += 1
-        return next_month, next_year
 
-    def _get_previous_month_year(self, displayed_now: date):
-        previous_month = displayed_now.month - 1
-        previous_year = displayed_now.year
-        if displayed_now.month == 1:
-            previous_month = 12
-            previous_year = displayed_now.year - 1
-        return previous_month, previous_year
+class SelectDescription(Step):
+    """Represent the description selection step in a Telegram bot command."""
+
+    def handle(self, telegram_update: TelegramUpdate):
+        """Prompt the user to input a description or select no description."""
+        data = self.get_callback_data(telegram_update)
+        self.add_waiting_for("description", data)
+        data_dict = dict(data, description="")
+        keyboard = [[{"text": "No description.", "callback_data": self.next_step_callback(**data_dict)}]]
+        Bot.send_message(
+            "Send the description (or select 'No description'):",
+            self.command.settings.chat_id,
+            reply_markup={"inline_keyboard": keyboard},
+            message_id=telegram_update.message_id,
+        )
+
+
+class SelectItemType(Step):
+    """Represent the item type selection step in a Telegram bot command."""
+
+    def handle(self, telegram_update: TelegramUpdate):
+        """Show the item type selection to the user."""
+        data = self.get_callback_data(telegram_update)
+        keyboard = []
+        for item_type in TimesheetItem.ItemType:
+            data_item = dict(data, item_type=item_type.value, item_type_label=item_type.label)
+            keyboard.append(
+                [
+                    {
+                        "text": str(item_type.label),  # Needs str cast for lazy translation objects
+                        "callback_data": self.next_step_callback(**data_item),
+                    }
+                ]
+            )
+
+        # Add the infer item type
+        data_infer = dict(data, item_type=0, item_type_label="Inferred")
+        keyboard.append(
+            [
+                {
+                    "text": "Inferred",
+                    "callback_data": self.next_step_callback(**data_infer),
+                }
+            ]
+        )
+
+        self.maybe_add_previous_button(keyboard, **data)
+
+        Bot.send_message(
+            "Select the item type:",
+            self.command.settings.chat_id,
+            reply_markup={"inline_keyboard": keyboard},
+            message_id=telegram_update.message_id,
+        )
+
+
+class InsertTimesheetItems(Step):
+    """Represent the step to insert timesheet items."""
+
+    def handle(self, telegram_update: TelegramUpdate):
+        """Insert the timesheet items and go to the next step."""
+        data = self.get_callback_data(telegram_update)
+        msg = self._try_insert_items(data)
+        Bot.send_message(msg, self.command.settings.chat_id, message_id=telegram_update.message_id)
+        self.command.next_step(self.name, telegram_update)
+
+    def _try_insert_items(self, data: dict):
+        try:
+            self._insert_items(data)
+        except ValidationError:
+            return (
+                "The timesheet you are trying to register items for is in an invalid state. Contact your administrator."
+            )
+
+        item_type_label = data["item_type_label"]
+        start_time = data["start_time"]
+        end_time = data["end_time"]
+        description = data["description"]
+        return f"{item_type_label} registered from {start_time} to {end_time} with description: {description}."
+
+    def _insert_items(self, data: dict):
+        """Insert the items into the timesheet.
+
+        Create a timesheet item for each day in the duration between start and end time (inclusive).
+        """
+        items_to_create = self._prepare_item_batches(data)
+        with transaction.atomic():
+            timesheets = self._get_or_create_timesheets(items_to_create)
+            timesheet_items = self._assign_timesheet_to_items(items_to_create, timesheets)
+            TimesheetItem.objects.bulk_create(timesheet_items)
+
+    def _assign_timesheet_to_items(
+        self, items_to_create: defaultdict[tuple, list[TimesheetItem]], timesheets: dict[tuple, Timesheet]
+    ):
+        timesheet_items = []
+        for key, items in items_to_create.items():
+            timesheet = timesheets[key]
+            for item in items:
+                item.timesheet = timesheet
+            timesheet_items.extend(items)
+        return timesheet_items
+
+    def _get_or_create_timesheets(self, items_to_create: defaultdict[tuple, list]):
+        timesheets: dict[tuple[int, int, int], Timesheet] = {}
+        for timesheet_key in items_to_create.keys():
+            month, year, project_id = timesheet_key
+            timesheet, _created = Timesheet.objects.get_or_create(
+                user=self.command.settings.user,
+                month=month,
+                year=year,
+                project_id=project_id,
+                status=Timesheet.Status.DRAFT,
+            )
+            timesheets[timesheet_key] = timesheet
+        return timesheets
+
+    def _prepare_item_batches(self, data: dict):
+        start_time = datetime.fromisoformat(data["start_time"])
+        end_time = datetime.fromisoformat(data["end_time"])
+        current_date = start_time.date()
+        end_date = end_time.date()
+
+        items_to_create: defaultdict[tuple[int, int, int], list[TimesheetItem]] = defaultdict(list)
+        while current_date <= end_date:
+            day_start_time = self._get_day_start_time(current_date, start_time)
+            day_end_time = self._get_day_end_time(current_date, end_time)
+            if self._add_non_inferred_item(data, items_to_create, day_start_time, day_end_time, current_date):
+                current_date += timedelta(days=1)
+                continue
+
+            if self._add_weekday_item(data, items_to_create, day_start_time, day_end_time, current_date):
+                current_date += timedelta(days=1)
+                continue
+
+            self._add_timerange_items(data, items_to_create, day_start_time, day_end_time, current_date)
+            current_date += timedelta(days=1)
+        return items_to_create
+
+    def _get_day_end_time(self, current_date: date, end_time: datetime):
+        next_day_midnight = datetime.combine(current_date + timedelta(days=1), datetime.min.time())
+        return min(end_time, next_day_midnight)
+
+    def _get_day_start_time(self, current_date: date, start_time: datetime):
+        day_start_time = datetime.combine(current_date, datetime.min.time())
+        return max(day_start_time, start_time)
+
+    def _add_non_inferred_item(
+        self,
+        data: dict,
+        items_to_create: defaultdict[tuple, list],
+        day_start_time: datetime,
+        day_end_time: datetime,
+        current_date: date,
+    ):
+        item_type = data["item_type"]
+        if not item_type:
+            return False
+        self._add_item(data, items_to_create, day_start_time, day_end_time, current_date, item_type)
+        return True
+
+    def _add_weekday_item(
+        self,
+        data: dict,
+        items_to_create: defaultdict[tuple, list],
+        day_start_time: datetime,
+        day_end_time: datetime,
+        current_date: date,
+    ):
+        weekday = day_start_time.weekday()
+        matching_rule = WeekdayItemTypeRule.objects.filter(weekday=weekday).first()
+        if not matching_rule:
+            return False
+        self._add_item(data, items_to_create, day_start_time, day_end_time, current_date, matching_rule.item_type)
+        return True
+
+    def _add_timerange_items(
+        self,
+        data: dict,
+        items_to_create: defaultdict[tuple, list],
+        day_start_time: datetime,
+        day_end_time: datetime,
+        current_date: date,
+    ):
+        rules = TimeRangeItemTypeRule.objects.all()
+        for rule in rules:
+            rule_start = datetime.combine(current_date, rule.start_time)
+            rule_end = datetime.combine(current_date, rule.end_time)
+            if rule_end <= rule_start:
+                # Evening segment (current day)
+                seg_start = max(day_start_time, rule_start)
+                seg_end = min(day_end_time, datetime.combine(current_date + timedelta(days=1), datetime.min.time()))
+                if seg_start < seg_end:
+                    self._add_item(data, items_to_create, seg_start, seg_end, current_date, rule.item_type)
+                # Morning segment (current day)
+                morning_start = datetime.combine(current_date, datetime.min.time())
+                morning_end = datetime.combine(current_date, rule.end_time)
+                seg_start = max(day_start_time, morning_start)
+                seg_end = min(day_end_time, morning_end)
+                if seg_start < seg_end:
+                    self._add_item(data, items_to_create, seg_start, seg_end, current_date, rule.item_type)
+            else:
+                seg_start = max(day_start_time, rule_start)
+                seg_end = min(day_end_time, rule_end)
+                if seg_start < seg_end:
+                    self._add_item(data, items_to_create, seg_start, seg_end, current_date, rule.item_type)
+
+    def _add_item(
+        self,
+        data: dict,
+        items_to_create: defaultdict[tuple, list],
+        start_time: datetime,
+        end_time: datetime,
+        current_date: date,
+        item_type: int,
+    ):
+        worked_hours = (end_time - start_time).total_seconds() / 3600
+        timesheet_key = (current_date.month, current_date.year, int(data["project_id"]))
+        items_to_create[timesheet_key].append(
+            TimesheetItem(
+                date=current_date,
+                worked_hours=worked_hours,
+                description=data["description"],
+                item_type=item_type,
+            )
+        )
