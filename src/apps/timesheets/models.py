@@ -121,8 +121,8 @@ class Timesheet(models.Model):
 
         Example output:
         Detailed Timesheet Overview for Project X - John Doe - 05/2024:
-        - 2025-05-01 - Night - 2.0 hours (example description)
         - 2025-05-02 - Standard - 8.0 hours (example std description)
+        - 2025-05-01 - Night - 2.0 hours (example description)
         ...
         Totals for Project X - John Doe - 05/2024:
         - 140 hours (Standard)
@@ -133,7 +133,7 @@ class Timesheet(models.Model):
         - 0 hours (Other)
         """
         detail_lines = [f"Detailed Timesheet Overview for {self}:"]
-        items = self.timesheetitem_set.all().order_by("date", "item_type")
+        items = self.timesheetitem_set.all().order_by("item_type", "date")
         total_hours_by_type = defaultdict(float)
         for item in items:
             detail_lines.append(str(item))
@@ -150,6 +150,23 @@ class Timesheet(models.Model):
 
         details = "\n".join(detail_lines)
         return "\n\n".join([details, overview])
+
+    def get_holidays_overview(self) -> str:
+        """Return an overview of holidays in the timesheet.
+
+        Example output:
+        Holidays Overview for Project X - John Doe - 05/2024:
+        - 2025-05-01
+        - 2025-05-08
+        ...
+        """
+        holiday_lines = [f"Holidays Overview for {self}:"]
+        filter_kwargs = {"item_type": TimesheetItem.ItemType.STANDARD, "worked_hours": 0.0}
+        items = self.timesheetitem_set.filter(**filter_kwargs).order_by("date")
+        for item in items:
+            holiday_lines.append(item.date.isoformat())
+
+        return "\n".join(holiday_lines)
 
 
 class TimesheetItem(models.Model):

@@ -3,7 +3,7 @@
 import requests
 from django.conf import settings
 
-from apps.telegram.bot.commands.utils import get_command_cls
+from apps.telegram.bot.commands.utils import get_command_cls, get_command_list
 from apps.telegram.bot.types import TelegramUpdate
 from apps.telegram.models import CallbackData, TelegramSettings
 
@@ -37,8 +37,8 @@ class Bot:
             cls._start_command_or_send_help(telegram_update, telegram_settings)
         elif telegram_update.is_callback_query():
             cls._call_command_step(telegram_update.callback_data, telegram_settings, telegram_update)
-        elif telegram_settings.data.get("waiting_for"):
-            token = telegram_settings.data["waiting_for"]
+        elif telegram_settings.data.get("_waiting_for"):
+            token = telegram_settings.data["_waiting_for"]
             cls._call_command_step(token, telegram_settings, telegram_update)
         else:
             cls.send_help(telegram_update.chat_id)
@@ -46,14 +46,12 @@ class Bot:
     @classmethod
     def send_help(cls, chat_id: int):
         """Send a help message to the user."""
+        commands_text = "\n".join(f"{cmd.command} - {cmd.description}" for cmd in get_command_list())
         help_text = (
-            "I am IDA, I can help you register hours and manage timesheeting/invoicing.\n"
-            "\n"
+            "I am IDA, I can help you register hours and manage timesheeting/invoicing."
+            "\n\n"
             "Currently available commands:\n"
-            "/registerwork - Register work hours\n"
-            "/registerovertime - Register overtime hours\n"
-            "/completetimesheet - Mark a timesheet as completed\n"
-            "/editwork - Edit previously registered work hours\n"
+            f"{commands_text}"
         )
         cls.send_message(help_text, chat_id)
 
@@ -117,4 +115,4 @@ class Bot:
 
         command_cls = get_command_cls(data.command)
         command = command_cls(telegram_settings)
-        getattr(command, data.step)(telegram_update)
+        getattr(command, data.action)(data.step, telegram_update)
