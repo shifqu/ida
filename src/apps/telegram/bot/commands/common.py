@@ -16,7 +16,7 @@ class SelectTimesheet(Step):
     def __init__(
         self,
         command: Command,
-        allow_previous: bool = False,
+        steps_back: int = 0,
         filter_kwargs: dict | None = None,
         order_by: tuple | None = None,
         unique_id: str | None = None,
@@ -24,7 +24,7 @@ class SelectTimesheet(Step):
         """Initialize the timesheet selection step."""
         self.filter_kwargs = filter_kwargs or dict(user=command.settings.user, status=Timesheet.Status.DRAFT)
         self.order_by = order_by or ("-year", "-month")
-        super().__init__(command, allow_previous=allow_previous, unique_id=unique_id)
+        super().__init__(command, steps_back=steps_back, unique_id=unique_id)
 
     def handle(self, telegram_update: TelegramUpdate):
         """Show the timesheet selection to the user."""
@@ -64,13 +64,13 @@ class Confirm(Step):
     def __init__(
         self,
         command: Command,
-        allow_previous: bool = False,
+        steps_back: int = 0,
         unique_id: str | None = None,
         data_transform_func: Callable[[dict], str] = prettyprint,
     ):
         """Initialize the confirmation step."""
         self.data_transform_func = data_transform_func
-        super().__init__(command, allow_previous=allow_previous, unique_id=unique_id)
+        super().__init__(command, steps_back=steps_back, unique_id=unique_id)
 
     def handle(self, telegram_update: TelegramUpdate):
         """Show the confirmation step."""

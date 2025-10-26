@@ -16,7 +16,7 @@ class CompleteTimesheet(Command):
     @property
     def steps(self) -> list[Step]:
         """Return the steps of the command."""
-        return [SelectTimesheet(self), Confirm(self, allow_previous=True), MarkTimesheetAsCompleted(self)]
+        return [SelectTimesheet(self), Confirm(self, steps_back=1), MarkTimesheetAsCompleted(self)]
 
 
 class MarkTimesheetAsCompleted(Step):

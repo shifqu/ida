@@ -18,7 +18,7 @@ class RegisterWork(Command):
     @property
     def steps(self) -> list[Step]:
         """Return the steps of the command."""
-        return [SelectMissingDay(self), SelectWorkedHours(self, allow_previous=True), RegisterWorkedHours(self)]
+        return [SelectMissingDay(self), SelectWorkedHours(self, steps_back=1), RegisterWorkedHours(self)]
 
 
 class SelectMissingDay(SelectDay):

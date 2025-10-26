@@ -87,9 +87,14 @@ class TelegramTestCase(TestCase):
             self._send_text("/registerovertime")
             self._click_on_text("(01)", bot_post)
             self._send_text("1630")
+            self._click_on_text("⬅️ Previous step", bot_post)  # Force to select date and time again
             self._click_on_text("(01)", bot_post)
-            self._send_text("1830")
-            self._send_text("test")
+            self._send_text("1830")  # Changing start time due to previous step back
+            self._click_on_text("(01)", bot_post)
+            self._send_text("2030")
+            self._send_text("test description")
+            self._click_on_text("⬅️ Previous step", bot_post)  # Force to select/send description again
+            self._send_text("dummy description")
             self._click_on_text("Night", bot_post)
             self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
             self._click_on_text("✅ Ok", bot_post)

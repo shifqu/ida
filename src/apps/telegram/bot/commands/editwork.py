@@ -17,7 +17,7 @@ class EditWork(Command):
     @property
     def steps(self) -> list[Step]:
         """Return the steps of the command."""
-        return [SelectExistingDay(self), SelectWorkedHours(self, allow_previous=True), EditWorkedHours(self)]
+        return [SelectExistingDay(self), SelectWorkedHours(self, steps_back=1), EditWorkedHours(self)]
 
 
 class SelectExistingDay(SelectDay):
