@@ -29,15 +29,15 @@ class RegisterOvertime(Command):
         """Return the steps of the command."""
         return [
             SelectProject(self),
-            SelectDate(self, key="start_date", allow_previous=True),
+            SelectDate(self, key="start_date", steps_back=1),
             WaitForTime(self, key="start_time", date_key="start_date"),
             CombineDateTime(self, date_key="start_date", time_key="start_time"),
-            SelectDate(self, key="end_date", unique_id="SelectEndDate"),
+            SelectDate(self, key="end_date", unique_id="SelectEndDate", steps_back=3),  # back to SelectDate
             WaitForTime(self, key="end_time", date_key="end_date", unique_id="WaitForEndTime"),
             CombineDateTime(self, date_key="end_date", time_key="end_time", unique_id="CombineEndDateTime"),
-            SelectDescription(self),
-            SelectItemType(self, allow_previous=True),
-            Confirm(self, allow_previous=True),
+            SelectDescription(self, steps_back=3),  # back to SelectEndDate
+            SelectItemType(self, steps_back=1),
+            Confirm(self, steps_back=1),
             InsertTimesheetItems(self),
         ]
 
@@ -83,10 +83,10 @@ class SelectProject(Step):
 class SelectDate(Step):
     """Represent the date selection step in a Telegram bot command."""
 
-    def __init__(self, command: Command, key: str, allow_previous: bool = False, unique_id: str | None = None):
+    def __init__(self, command: Command, key: str, steps_back: int = 0, unique_id: str | None = None):
         """Initialize the date selection step."""
         self.key = key
-        super().__init__(command, allow_previous=allow_previous, unique_id=unique_id)
+        super().__init__(command, steps_back=steps_back, unique_id=unique_id)
 
     def handle(self, telegram_update: TelegramUpdate):
         """Display a calendar to pick a date."""
@@ -169,7 +169,7 @@ class WaitForTime(Step):
         """Initialize the wait for time input step."""
         self.key = key
         self.date_key = date_key
-        super().__init__(command, allow_previous=False, unique_id=unique_id)
+        super().__init__(command, steps_back=0, unique_id=unique_id)
 
     def handle(self, telegram_update: TelegramUpdate):
         """Prompt the user to input a time."""
@@ -189,7 +189,7 @@ class CombineDateTime(Step):
         """Initialize the combine date and time step."""
         self.date_key = date_key
         self.time_key = time_key
-        super().__init__(command, allow_previous=False, unique_id=unique_id)
+        super().__init__(command, steps_back=0, unique_id=unique_id)
 
     def handle(self, telegram_update: TelegramUpdate):
         """Combine the date and time into the time_key and move on to the next step."""

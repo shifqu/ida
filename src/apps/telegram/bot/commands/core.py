@@ -51,7 +51,9 @@ class Command:
 
     def previous_step(self, current_step_name: str, telegram_update: TelegramUpdate):
         """Return to the previous step in the command."""
-        previous_index = self._steps_to_str().index(current_step_name) - 1
+        data = self.get_callback_data(telegram_update.callback_data)
+        steps_back = int(data.get("_steps_back", 1))
+        previous_index = self._steps_to_str().index(current_step_name) - steps_back
         if previous_index >= 0:
             previous_step = self.steps[previous_index]
             return previous_step.handle(telegram_update)
@@ -111,10 +113,10 @@ class Command:
 class Step:
     """Represent a step in a Telegram bot command."""
 
-    def __init__(self, command: Command, allow_previous: bool = False, unique_id: str | None = None):
+    def __init__(self, command: Command, steps_back: int = 0, unique_id: str | None = None):
         """Initialize the step."""
         self.command = command
-        self.allow_previous = allow_previous
+        self.steps_back = steps_back
         self.unique_id = unique_id
 
     def handle(self, telegram_update: TelegramUpdate):
@@ -143,8 +145,9 @@ class Step:
 
     def maybe_add_previous_button(self, keyboard: list, **data):
         """Add a previous button to the provided keyboard if allowed."""
-        if not self.allow_previous:
+        if not self.steps_back:
             return
+        data["_steps_back"] = self.steps_back
         keyboard.append([{"text": "⬅️ Previous step", "callback_data": self.previous_step_callback(**data)}])
 
     def get_callback_data(self, telegram_update: TelegramUpdate) -> dict[str, Any]:

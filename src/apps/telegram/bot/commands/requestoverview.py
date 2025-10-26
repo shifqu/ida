@@ -21,8 +21,8 @@ class RequestOverview(Command):
         """Return the steps of the command."""
         return [
             SelectTimesheet(self, filter_kwargs={"user": self.settings.user}),
-            SelectOverviewType(self, allow_previous=True),
-            ShowOverview(self, allow_previous=True),
+            SelectOverviewType(self, steps_back=1),
+            ShowOverview(self, steps_back=1),
         ]
 
 
