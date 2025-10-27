@@ -3,8 +3,8 @@
 import requests
 from django.conf import settings
 
-from apps.telegram.bot.commands.utils import get_command_cls, get_command_list
-from apps.telegram.bot.types import TelegramUpdate
+from apps.telegram.bot._types import TelegramUpdate
+from apps.telegram.bot.commands import get_command_cls, get_command_list
 from apps.telegram.models import CallbackData, TelegramSettings
 
 DO_NOTHING = "noop"

@@ -8,7 +8,7 @@ from django.http import HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from apps.telegram import models
-from apps.telegram.bot.core import Bot
+from apps.telegram.bot import Bot
 
 
 @csrf_exempt

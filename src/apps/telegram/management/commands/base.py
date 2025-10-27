@@ -7,7 +7,7 @@ This module's command-class does not create an actual CLI command, but can be us
 from django.core.management.base import BaseCommand
 from django.utils import translation
 
-from apps.telegram.bot.core import Bot
+from apps.telegram.bot import Bot
 from apps.telegram.models import TelegramSettings
 
 
