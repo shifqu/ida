@@ -10,8 +10,8 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.projects.models import Project
-from apps.telegram.bot.commands.registerovertime import InsertTimesheetItems
-from apps.telegram.bot.commands.utils import get_command_cls
+from apps.telegram.bot.commands import get_command_cls
+from apps.telegram.bot.steps import InsertTimesheetItems
 from apps.telegram.models import TelegramSettings, TimeRangeItemTypeRule, WeekdayItemTypeRule
 from apps.timesheets.models import Timesheet, TimesheetItem
 from apps.users.models import IdaUser
@@ -44,7 +44,7 @@ class TelegramTestCase(TestCase):
 
     def test_telegram_send_help(self):
         """Test the telegram send help command."""
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         self._send_text("dummy text")
         self.assertEqual(bot_post.call_count, 1)
         self.assertEqual(bot_post.call_args.args[0], "sendMessage")
@@ -53,7 +53,7 @@ class TelegramTestCase(TestCase):
     def test_telegram_registerwork(self):
         """Test the telegram registerwork command."""
         existing_timesheet_items = self.timesheet.timesheetitem_set.count()
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         self._send_text("/registerwork")
         self._click_on_text("➡️ Next", bot_post)
         self._click_on_text("⬅️ Back", bot_post)
@@ -69,7 +69,7 @@ class TelegramTestCase(TestCase):
         existing_timesheet_items = self.timesheet.timesheetitem_set.count()
         timesheet_item = TimesheetItem.objects.get(timesheet=self.timesheet, date=datetime(2025, 1, 2).date())
         self.assertEqual(timesheet_item.worked_hours, 8.0)
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         self._send_text("/editwork")
         self._click_on_text("Dummy Project: 2025-01-02 (8.0h)", bot_post)
         self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
@@ -83,7 +83,7 @@ class TelegramTestCase(TestCase):
         fixed_now = datetime(2025, 1, 1, 0, 0, 0, tzinfo=timezone.utc)
         with patch("django.utils.timezone.now", return_value=fixed_now):
             existing_timesheet_items = self.timesheet.timesheetitem_set.count()
-            bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+            bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
             self._send_text("/registerovertime")
             self._click_on_text("(01)", bot_post)
             self._send_text("1630")
@@ -102,7 +102,7 @@ class TelegramTestCase(TestCase):
 
     def test_telegram_complete_timesheet(self):
         """Test the telegram complete timesheet command."""
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         year = 2024  # The fixture defines a timesheet for 2025 already
         timesheet_1 = Timesheet.objects.create(user=self.user, project=self.project, month=1, year=year)
         timesheet_2 = Timesheet.objects.create(user=self.user, project=self.project, month=2, year=2025)
@@ -140,7 +140,7 @@ class TelegramTestCase(TestCase):
 
     def test_startregisterwork(self):
         """Test the start register work command."""
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         out = StringIO()
 
         call_command("startregisterwork", stdout=out, force=True)
@@ -210,7 +210,7 @@ class TelegramTestCase(TestCase):
 
     def test_request_overview_summary(self):
         """Test the request overview command in summary mode."""
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         self._send_text("/requestoverview")
         self._click_on_text("Summary Overview", bot_post)
         expected_overview = (
@@ -223,7 +223,7 @@ class TelegramTestCase(TestCase):
 
     def test_request_overview_detailed(self):
         """Test the request overview command in detailed mode."""
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         self._send_text("/requestoverview")
         self._click_on_text("Detailed Overview", bot_post)
         expected_overview = (
@@ -243,7 +243,7 @@ class TelegramTestCase(TestCase):
 
     def test_request_overview_holidays(self):
         """Test the request overview command in holidays mode."""
-        bot_post = patch("apps.telegram.bot.core.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
         self._send_text("/requestoverview")
         self._click_on_text("Holidays Overview", bot_post)
         expected_overview = "Holidays Overview for Dummy Project - Dummy User - 01/2025:\n2025-01-06"
