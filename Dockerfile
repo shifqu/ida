@@ -14,7 +14,7 @@ RUN apk add --no-cache gettext
 COPY requirements/ /app/requirements/
 
 # Upgrade pip, install pip-tools, and install Python dependencies
-RUN pip install --upgrade pip pip-tools && \
+RUN pip install --upgrade pip==25.2 pip-tools && \
     pip-sync requirements/main.txt
 
 # Set up entrypoint
