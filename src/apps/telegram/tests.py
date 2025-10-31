@@ -100,6 +100,26 @@ class TelegramTestCase(TestCase):
             self._click_on_text("✅ Ok", bot_post)
             self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items + 1)
 
+    def test_telegram_registerovertime_select_previous_month(self):
+        """Test selecting the previous month for the telegram registerovertime command."""
+        fixed_now = datetime(2025, 3, 31, 0, 0, 0, tzinfo=timezone.utc)
+        with patch("django.utils.timezone.now", return_value=fixed_now):
+            existing_timesheets = Timesheet.objects.count()
+            bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
+            self._send_text("/registerovertime")
+            self._click_on_text("<<", bot_post)
+            self._click_on_text("01", bot_post)
+            self._send_text("1630")
+            self._click_on_text("01", bot_post)
+            self._send_text("2030")
+            self._send_text("test description")
+            self._click_on_text("Night", bot_post)
+            self.assertEqual(Timesheet.objects.count(), existing_timesheets)
+            self._click_on_text("✅ Ok", bot_post)
+            self.assertEqual(Timesheet.objects.count(), existing_timesheets + 1)
+            timesheet_2025_02 = Timesheet.objects.get(month=2, year=2025)
+            self.assertEqual(timesheet_2025_02.timesheetitem_set.count(), 1)
+
     def test_telegram_complete_timesheet(self):
         """Test the telegram complete timesheet command."""
         bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
