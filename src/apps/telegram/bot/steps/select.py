@@ -82,12 +82,12 @@ class SelectDate(Step):
         )
 
     def _get_display_date(self, data: dict, now: datetime):
-        if self.initial_date_key and data.get(self.initial_date_key):
-            iso_date = datetime.fromisoformat(data[self.initial_date_key]).date()
+        if data.get(self.key):
+            iso_date = datetime.fromisoformat(data[self.key])
             month = iso_date.month
             year = iso_date.year
-        elif data.get(self.key):
-            iso_date = datetime.fromisoformat(data[self.key])
+        elif self.initial_date_key and data.get(self.initial_date_key):
+            iso_date = datetime.fromisoformat(data[self.initial_date_key]).date()
             month = iso_date.month
             year = iso_date.year
         else:
