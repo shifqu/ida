@@ -25,27 +25,31 @@ if TYPE_CHECKING:
 class SelectDate(Step):
     """Represent the date selection step in a Telegram bot command."""
 
-    def __init__(self, command: "Command", key: str, steps_back: int = 0, unique_id: str | None = None):
+    def __init__(
+        self,
+        command: "Command",
+        key: str,
+        initial_date_key: str = "",
+        steps_back: int = 0,
+        unique_id: str | None = None,
+    ):
         """Initialize the date selection step."""
         self.key = key
+        self.initial_date_key = initial_date_key
         super().__init__(command, steps_back=steps_back, unique_id=unique_id)
 
     def handle(self, telegram_update: "TelegramUpdate"):
         """Display a calendar to pick a date."""
         data = self.get_callback_data(telegram_update)
         now = timezone.now()
-        month, year = self._get_month_year(data, now)
+        display_date = self._get_display_date(data, now)
 
-        displayed_now = now.replace(month=month, year=year).date()
-        previous_month, previous_year = self._get_previous_month_year(displayed_now)
-        next_month, next_year = self._get_next_month_year(displayed_now)
-
-        data_previous = {**data, self.key: displayed_now.replace(month=previous_month, year=previous_year)}
-        data_next = {**data, self.key: displayed_now.replace(month=next_month, year=next_year)}
+        data_previous = {**data, self.key: self._get_previous_display_date(display_date)}
+        data_next = {**data, self.key: self._get_next_display_date(display_date)}
         keyboard = []
         header = [
             {"text": "<<", "callback_data": self.current_step_callback(**data_previous)},
-            {"text": f"{str(displayed_now.month).zfill(2)}/{displayed_now.year}", "callback_data": DO_NOTHING},
+            {"text": f"{str(display_date.month).zfill(2)}/{display_date.year}", "callback_data": DO_NOTHING},
             {"text": ">>", "callback_data": self.current_step_callback(**data_next)},
         ]
         keyboard.append(header)
@@ -53,13 +57,13 @@ class SelectDate(Step):
         days_of_week = [{"text": gettext(day), "callback_data": DO_NOTHING} for day in calendar.day_abbr]
         keyboard.append(days_of_week)
 
-        for week in calendar.monthcalendar(displayed_now.year, displayed_now.month):
+        for week in calendar.monthcalendar(display_date.year, display_date.month):
             row = []
             for day in week:
                 if not day:
                     row.append({"text": " ", "callback_data": DO_NOTHING})
                     continue
-                selected_date = date(displayed_now.year, displayed_now.month, day)
+                selected_date = date(display_date.year, display_date.month, day)
                 text = str(day).zfill(2)
                 if selected_date == now.date():
                     text = f"({text})"
@@ -77,31 +81,35 @@ class SelectDate(Step):
             message_id=telegram_update.message_id,
         )
 
-    def _get_month_year(self, data: dict, now: datetime):
-        if data.get(self.key):
-            iso_date = date.fromisoformat(data[self.key])
+    def _get_display_date(self, data: dict, now: datetime):
+        if self.initial_date_key and data.get(self.initial_date_key):
+            iso_date = datetime.fromisoformat(data[self.initial_date_key]).date()
+            month = iso_date.month
+            year = iso_date.year
+        elif data.get(self.key):
+            iso_date = datetime.fromisoformat(data[self.key])
             month = iso_date.month
             year = iso_date.year
         else:
             month = now.month
             year = now.year
-        return month, year
+        return date(year, month, 1)
 
-    def _get_next_month_year(self, displayed_now: date):
-        next_month = displayed_now.month + 1
-        next_year = displayed_now.year
-        if displayed_now.month == 12:
+    def _get_next_display_date(self, displayed_date: date):
+        next_month = displayed_date.month + 1
+        next_year = displayed_date.year
+        if displayed_date.month == 12:
             next_month = 1
             next_year += 1
-        return next_month, next_year
+        return displayed_date.replace(year=next_year, month=next_month)
 
-    def _get_previous_month_year(self, displayed_now: date):
-        previous_month = displayed_now.month - 1
-        previous_year = displayed_now.year
-        if displayed_now.month == 1:
+    def _get_previous_display_date(self, displayed_date: date):
+        previous_month = displayed_date.month - 1
+        previous_year = displayed_date.year
+        if displayed_date.month == 1:
             previous_month = 12
-            previous_year = displayed_now.year - 1
-        return previous_month, previous_year
+            previous_year = displayed_date.year - 1
+        return displayed_date.replace(year=previous_year, month=previous_month)
 
 
 class SelectDay(Step):
