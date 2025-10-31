@@ -28,7 +28,7 @@ class RegisterOvertime(Command):
             SelectDate(self, key="start_date", steps_back=1),
             WaitForTime(self, key="start_time", date_key="start_date"),
             CombineDateTime(self, date_key="start_date", time_key="start_time"),
-            SelectDate(self, key="end_date", unique_id="SelectEndDate", steps_back=3),  # back to SelectDate
+            SelectDate(self, key="end_date", initial_date_key="start_time", unique_id="SelectEndDate", steps_back=3),
             WaitForTime(self, key="end_time", date_key="end_date", unique_id="WaitForEndTime"),
             CombineDateTime(self, date_key="end_date", time_key="end_time", unique_id="CombineEndDateTime"),
             WaitForDescription(self, steps_back=3),  # back to SelectEndDate
