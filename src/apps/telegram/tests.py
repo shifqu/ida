@@ -12,8 +12,8 @@ from django.urls import reverse
 from apps.projects.models import Project
 from apps.telegram.bot.commands import get_command_cls
 from apps.telegram.bot.steps import InsertTimesheetItems
-from apps.telegram.models import TelegramSettings, TimeRangeItemTypeRule, WeekdayItemTypeRule
-from apps.timesheets.models import Timesheet, TimesheetItem
+from apps.telegram.models import TelegramSettings
+from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 from apps.users.models import IdaUser
 
 
