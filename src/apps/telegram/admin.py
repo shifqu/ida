@@ -2,7 +2,7 @@
 
 from django.contrib import admin
 
-from apps.telegram.models import CallbackData, Message, TelegramSettings, TimeRangeItemTypeRule, WeekdayItemTypeRule
+from apps.telegram.models import CallbackData, Message, TelegramSettings
 
 
 class TelegramSettingInline(admin.TabularInline):
@@ -50,15 +50,5 @@ class MessageAdmin(admin.ModelAdmin):
         return False
 
 
-class WeekdayItemTypeRuleAdmin(admin.ModelAdmin):
-    """Represent the WeekdayItemTypeRule admin."""
-
-
-class TimeRangeItemTypeRuleAdmin(admin.ModelAdmin):
-    """Represent the TimeRangeItemTypeRule admin."""
-
-
 admin.site.register(CallbackData, CallbackDataAdmin)
 admin.site.register(Message, MessageAdmin)
-admin.site.register(WeekdayItemTypeRule, WeekdayItemTypeRuleAdmin)
-admin.site.register(TimeRangeItemTypeRule, TimeRangeItemTypeRuleAdmin)

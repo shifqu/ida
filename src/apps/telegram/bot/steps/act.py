@@ -9,8 +9,7 @@ from django.db import transaction
 
 from apps.telegram.bot import Bot
 from apps.telegram.bot.steps import Step
-from apps.telegram.models import TimeRangeItemTypeRule, WeekdayItemTypeRule
-from apps.timesheets.models import Timesheet, TimesheetItem
+from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 
 if TYPE_CHECKING:
     from apps.telegram.bot import TelegramUpdate

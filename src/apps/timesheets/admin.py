@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models.query import QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from apps.timesheets.models import Timesheet, TimesheetItem
+from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 
 
 @admin.action(permissions=["change"], description=_("Mark the selected timesheets as completed"))
@@ -33,4 +33,14 @@ class TimesheetAdmin(admin.ModelAdmin):
     actions = [mark_timesheets_as_completed]
 
 
+class WeekdayItemTypeRuleAdmin(admin.ModelAdmin):
+    """Represent the WeekdayItemTypeRule admin."""
+
+
+class TimeRangeItemTypeRuleAdmin(admin.ModelAdmin):
+    """Represent the TimeRangeItemTypeRule admin."""
+
+
 admin.site.register(Timesheet, TimesheetAdmin)
+admin.site.register(WeekdayItemTypeRule, WeekdayItemTypeRuleAdmin)
+admin.site.register(TimeRangeItemTypeRule, TimeRangeItemTypeRuleAdmin)
