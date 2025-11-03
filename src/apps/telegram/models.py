@@ -3,6 +3,7 @@
 import uuid
 from typing import TYPE_CHECKING, Any
 
+from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -50,12 +51,12 @@ class TelegramSettings(models.Model):
     """Represent telegram settings."""
 
     if TYPE_CHECKING:
-        from apps.users.models import IdaUser
+        from django.contrib.auth.base_user import AbstractBaseUser
 
-        user: models.OneToOneField[IdaUser]
+        user: models.OneToOneField[AbstractBaseUser]
         data: models.JSONField[dict[str, str]]
 
-    user = models.OneToOneField("users.IdaUser", on_delete=models.CASCADE, verbose_name=_("user"))
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("user"))
     chat_id = models.IntegerField(verbose_name=_("chat id"), unique=True)
     data = models.JSONField(verbose_name=_("data"), default=dict, blank=True, encoder=DjangoJSONEncoder)
     updated_at = models.DateTimeField(verbose_name=_("updated at"), auto_now=True)
@@ -68,7 +69,7 @@ class TelegramSettings(models.Model):
 
     def __str__(self):
         """Return a string representation of the telegram setting."""
-        return f"{self.user.username} ({self.chat_id})"
+        return f"{self.user.get_username()} ({self.chat_id})"
 
 
 class CallbackData(models.Model):
