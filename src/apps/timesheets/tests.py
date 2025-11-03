@@ -1,7 +1,11 @@
 """Timesheets app tests."""
 
+from io import StringIO
+from unittest.mock import MagicMock, patch
+
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.core.management import call_command
 from django.test import TestCase
 
 from apps.projects.models import Project
@@ -11,7 +15,7 @@ from apps.timesheets.models import Timesheet, TimesheetItem
 class TimesheetsTests(TestCase):
     """Timesheets model tests."""
 
-    fixtures = ["companies", "relations", "users", "timesheets", "projects"]
+    fixtures = ["companies", "relations", "users", "timesheets", "projects", "telegramsettings"]
 
     @classmethod
     def setUpTestData(cls):
@@ -110,3 +114,22 @@ class TimesheetsTests(TestCase):
         overview = self.timesheet.get_holidays_overview()
         expected_summary_overview = "Holidays Overview for Dummy Project - Dummy User - 01/2025:\n2025-01-06"
         self.assertEqual(overview, expected_summary_overview)
+
+    def test_startregisterwork(self):
+        """Test the start register work command."""
+        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
+        out = StringIO()
+
+        call_command("startregisterwork", stdout=out, force=True)
+        self.assertEqual(bot_post.call_count, 1)
+        self.assertEqual(bot_post.call_args.args[0], "sendMessage")
+        self.assertIn("Started the command for", out.getvalue())
+
+        # Confirm timesheets and run command again, this should result in "no missing days"
+        self.timesheet.status = Timesheet.Status.COMPLETED
+        self.timesheet.save()
+        bot_post.reset_mock()
+        out = StringIO()
+        call_command("startregisterwork", stdout=out, force=True)
+        self.assertTrue(bot_post.called)
+        self.assertIn("No days found. Unable to complete", bot_post.call_args[1]["payload"]["text"])
