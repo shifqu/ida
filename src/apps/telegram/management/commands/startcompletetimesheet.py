@@ -2,7 +2,7 @@
 
 from django.utils import timezone
 
-from apps.telegram.management.commands.base import TelegramCommand
+from apps.telegram.management.commands._base import TelegramCommand
 
 
 class Command(TelegramCommand):
