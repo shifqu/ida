@@ -2,13 +2,14 @@
 
 from django.contrib import admin
 
-from apps.telegram.models import CallbackData, Message, TelegramSettings
+from apps.telegram.models import CallbackData, Message
+from apps.telegram.utils import get_telegram_settings_model
 
 
 class TelegramSettingInline(admin.TabularInline):
     """Represent a telegram setting inline in the admin."""
 
-    model = TelegramSettings
+    model = get_telegram_settings_model()
 
 
 user_inlines = [TelegramSettingInline]

@@ -9,7 +9,8 @@ from django.core.management.base import BaseCommand
 from django.utils.translation import override
 
 from apps.telegram.bot import Bot
-from apps.telegram.models import TelegramSettings
+from apps.telegram.conf import settings as app_settings
+from apps.telegram.utils import get_telegram_settings_model
 
 
 class TelegramCommand(BaseCommand):
@@ -39,7 +40,7 @@ class TelegramCommand(BaseCommand):
         if not options["force"] and not self.should_run():
             return
 
-        for telegram_settings in TelegramSettings.objects.filter(user__is_active=True):
+        for telegram_settings in get_telegram_settings_model().objects.filter(user__is_active=True):
             user_language = get_user_language(telegram_settings.user)
             with override(user_language, deactivate=True):
                 update = {"message": {"chat": {"id": telegram_settings.chat_id}, "text": self.command_text}}
@@ -59,9 +60,7 @@ def get_user_language(user) -> str:
 
     The attribute names to look for can be configured in the TELEGRAM.USER_LANGUAGE_ATTRS setting.
     """
-    telegram_conf = getattr(settings, "TELEGRAM", {})
-    attrs = telegram_conf.get("USER_LANGUAGE_ATTRS", ("language", "lang", "preferred_language"))
-    for attr in attrs:
+    for attr in app_settings.USER_LANGUAGE_ATTRS:
         value = getattr(user, attr, "")
         if value:
             return value
