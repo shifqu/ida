@@ -47,7 +47,7 @@ class Message(models.Model):
         verbose_name_plural = _("messages")
 
 
-class TelegramSettings(models.Model):
+class AbstractTelegramSettings(models.Model):
     """Represent telegram settings."""
 
     if TYPE_CHECKING:
@@ -64,12 +64,22 @@ class TelegramSettings(models.Model):
     class Meta:
         """Set meta options."""
 
-        verbose_name = _("telegram setting")
-        verbose_name_plural = _("telegram settings")
+        abstract = True
 
     def __str__(self):
         """Return a string representation of the telegram setting."""
         return f"{self.user.get_username()} ({self.chat_id})"
+
+
+class TelegramSettings(AbstractTelegramSettings):
+    """Concrete implementation of AbstractTelegramSettings."""
+
+    class Meta:  # type: ignore[reportIncompatibleVariableOverride]
+        """Set meta options."""
+
+        verbose_name = _("telegram setting")
+        verbose_name_plural = _("telegram settings")
+        swappable = "TELEGRAM_SETTINGS_MODEL"
 
 
 class CallbackData(models.Model):

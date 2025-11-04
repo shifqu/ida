@@ -1,11 +1,17 @@
 """Telegram bot core module."""
 
+from typing import TYPE_CHECKING
+
 import requests
-from django.conf import settings
 
 from apps.telegram.bot._types import TelegramUpdate
 from apps.telegram.bot.commands import get_command_cls, get_command_list
-from apps.telegram.models import CallbackData, TelegramSettings
+from apps.telegram.conf import settings
+from apps.telegram.models import CallbackData
+from apps.telegram.utils import get_telegram_settings_model
+
+if TYPE_CHECKING:
+    from apps.telegram.models import AbstractTelegramSettings
 
 DO_NOTHING = "noop"
 
@@ -23,15 +29,15 @@ class Bot:
             This token is not the CallbackData token but a token used to validate the webhook.
             This enables us to differentiate original telegram requests from spam
         """
-        if not settings.TELEGRAM["WEBHOOK_TOKEN"]:
+        if not settings.WEBHOOK_TOKEN:
             return True
-        return token == settings.TELEGRAM["WEBHOOK_TOKEN"]
+        return token == settings.WEBHOOK_TOKEN
 
     @classmethod
     def handle(cls, update: dict):
         """Handle the update."""
         telegram_update = TelegramUpdate(update)
-        telegram_settings = TelegramSettings.objects.get(chat_id=telegram_update.chat_id)
+        telegram_settings = get_telegram_settings_model().objects.get(chat_id=telegram_update.chat_id)
 
         if telegram_update.is_command():
             cls._start_command_or_send_help(telegram_update, telegram_settings)
@@ -85,11 +91,13 @@ class Bot:
     @staticmethod
     def _construct_endpoint(name: str):
         """Construct the endpoint for the given command."""
-        root_url = settings.TELEGRAM["BOT_URL"].rstrip("/")
+        root_url = settings.BOT_URL.rstrip("/")
         return f"{root_url}/{name}"
 
     @classmethod
-    def _start_command_or_send_help(cls, telegram_update: TelegramUpdate, telegram_settings: TelegramSettings):
+    def _start_command_or_send_help(
+        cls, telegram_update: TelegramUpdate, telegram_settings: "AbstractTelegramSettings"
+    ):
         """Start a command or send help message."""
         command_name = telegram_update.message_text.split(maxsplit=1)[0]
         try:
@@ -100,7 +108,9 @@ class Bot:
         command_cls(telegram_settings).start(telegram_update)
 
     @classmethod
-    def _call_command_step(cls, token: str, telegram_settings: TelegramSettings, telegram_update: TelegramUpdate):
+    def _call_command_step(
+        cls, token: str, telegram_settings: "AbstractTelegramSettings", telegram_update: TelegramUpdate
+    ):
         """Call a command's step from the provided data."""
         if token == DO_NOTHING:
             return

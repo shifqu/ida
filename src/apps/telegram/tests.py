@@ -3,14 +3,14 @@
 from datetime import datetime, timezone
 from unittest.mock import MagicMock, patch
 
-from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse
 
 from apps.projects.models import Project
 from apps.telegram.bot.commands import get_command_cls
 from apps.telegram.bot.steps import InsertTimesheetItems
-from apps.telegram.models import TelegramSettings
+from apps.telegram.conf import settings
+from apps.telegram.utils import get_telegram_settings_model
 from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 from apps.users.models import IdaUser
 
@@ -24,7 +24,7 @@ class TelegramTestCase(TestCase):
     def setUpTestData(cls):
         """Set up test data."""
         cls.user = IdaUser.objects.get(pk=1)
-        cls.telegram_setting = TelegramSettings.objects.get(pk=1)
+        cls.telegram_setting = get_telegram_settings_model().objects.get(pk=1)
         cls.project = Project.objects.get(pk=1)
         cls.timesheet = Timesheet.objects.get(pk=1)
         cls.url = reverse("webhook")
@@ -265,7 +265,7 @@ class TelegramTestCase(TestCase):
         response = self.client.post(
             self.url,
             data=data,
-            headers={"X-Telegram-Bot-Api-Secret-Token": settings.TELEGRAM["WEBHOOK_TOKEN"]},
+            headers={"X-Telegram-Bot-Api-Secret-Token": settings.WEBHOOK_TOKEN},
             content_type="application/json",
         )
         if verify:

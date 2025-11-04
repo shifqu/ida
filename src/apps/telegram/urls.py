@@ -1,10 +1,10 @@
 """URL configuration for telegram app."""
 
-from django.conf import settings
 from django.urls import path
 
 from apps.telegram import views
+from apps.telegram.conf import settings
 
 urlpatterns = [
-    path(settings.TELEGRAM["WEBHOOK_URL"], views.webhook, name="webhook"),
+    path(settings.WEBHOOK_URL, views.webhook, name="webhook"),
 ]

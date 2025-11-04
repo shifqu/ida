@@ -4,11 +4,12 @@ import logging
 import uuid
 from typing import TYPE_CHECKING, Any
 
-from apps.telegram.models import CallbackData, TelegramSettings
+from apps.telegram.models import CallbackData
 
 if TYPE_CHECKING:
     from apps.telegram.bot import TelegramUpdate
     from apps.telegram.bot.steps import Step
+    from apps.telegram.models import AbstractTelegramSettings
 
 
 class Command:
@@ -22,7 +23,7 @@ class Command:
         """Return the steps of the command."""
         raise NotImplementedError("Subclasses must implement this method")
 
-    def __init__(self, settings: TelegramSettings):
+    def __init__(self, settings: "AbstractTelegramSettings"):
         """Initialize the command."""
         self.settings = settings
 

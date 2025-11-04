@@ -4,6 +4,8 @@ import requests
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
+from apps.telegram.conf import settings as app_settings
+
 
 class Command(BaseCommand):
     """Set a telegram webhook."""
@@ -17,13 +19,13 @@ class Command(BaseCommand):
 
         References: https://core.telegram.org/bots/api#setwebhook
         """
-        root_url = settings.TELEGRAM["BOT_URL"].rstrip("/")
+        root_url = app_settings.BOT_URL.rstrip("/")
         endpoint = f"{root_url}/setWebhook"
-        parts = [settings.DOMAIN_NAME, settings.TELEGRAM["ROOT_URL"], settings.TELEGRAM["WEBHOOK_URL"]]
+        parts = [settings.DOMAIN_NAME, app_settings.ROOT_URL, app_settings.WEBHOOK_URL]
         url = "/".join(part.strip("/") for part in parts if part)
         args = {"url": url}
-        if settings.TELEGRAM["WEBHOOK_TOKEN"]:
-            args["secret_token"] = settings.TELEGRAM["WEBHOOK_TOKEN"]
+        if app_settings.WEBHOOK_TOKEN:
+            args["secret_token"] = app_settings.WEBHOOK_TOKEN
         response = requests.post(endpoint, json=args, timeout=5)
         response_json: dict = response.json()
         if not response_json.get("ok"):
