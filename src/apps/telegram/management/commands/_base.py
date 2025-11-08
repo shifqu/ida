@@ -8,7 +8,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.utils.translation import override
 
-from apps.telegram.bot import Bot
+from apps.telegram.bot.bot import handle_update
 from apps.telegram.conf import settings as app_settings
 from apps.telegram.utils import get_telegram_settings_model
 
@@ -44,7 +44,7 @@ class TelegramCommand(BaseCommand):
             user_language = get_user_language(telegram_settings.user)
             with override(user_language, deactivate=True):
                 update = {"message": {"chat": {"id": telegram_settings.chat_id}, "text": self.command_text}}
-                Bot.handle(update=update)
+                handle_update(update=update)
             self.stdout.write(self.style.SUCCESS(f"Started the command for {telegram_settings.user}."))
 
     def should_run(self) -> bool:

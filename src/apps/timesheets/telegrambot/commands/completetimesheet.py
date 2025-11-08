@@ -1,13 +1,12 @@
 """Complete timesheet command for the Telegram bot."""
 
-from apps.telegram.bot.commands import Command
-from apps.telegram.bot.steps import Confirm, MarkTimesheetAsCompleted, SelectTimesheet, Step
+from apps.telegram.bot.base import BaseCommand, Step
+from apps.timesheets.telegrambot.steps import Confirm, MarkTimesheetAsCompleted, SelectTimesheet
 
 
-class CompleteTimesheet(Command):
+class Command(BaseCommand):
     """Represent the complete timesheet command."""
 
-    command = "/completetimesheet"
     description = "Mark a timesheet as completed"
 
     @property

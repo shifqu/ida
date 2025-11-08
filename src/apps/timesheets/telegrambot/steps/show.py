@@ -2,13 +2,13 @@
 
 from typing import TYPE_CHECKING
 
-from apps.telegram.bot import Bot
-from apps.telegram.bot.steps import Step
-from apps.telegram.bot.steps._types import OverviewType
+from apps.telegram.bot.base import Step
+from apps.telegram.bot.bot import send_message
 from apps.timesheets.models import Timesheet
+from apps.timesheets.telegrambot.steps._types import OverviewType
 
 if TYPE_CHECKING:
-    from apps.telegram.bot import TelegramUpdate
+    from apps.telegram.bot.base import TelegramUpdate
 
 
 class ShowOverview(Step):
@@ -24,7 +24,7 @@ class ShowOverview(Step):
             timesheet = Timesheet.objects.get(pk=timesheet_id, user=self.command.settings.user)
         except Timesheet.DoesNotExist:
             error_message = "The selected timesheet does not exist."
-            Bot.send_message(error_message, self.command.settings.chat_id, message_id=telegram_update.message_id)
+            send_message(error_message, self.command.settings.chat_id, message_id=telegram_update.message_id)
             return self.command.finish(self.name, telegram_update)
 
         if overview_type == OverviewType.HOLIDAYS.value:
@@ -35,8 +35,8 @@ class ShowOverview(Step):
             overview_text = timesheet.get_overview(include_details=True)
         else:
             error_message = "Invalid overview type selected."
-            Bot.send_message(error_message, self.command.settings.chat_id, message_id=telegram_update.message_id)
+            send_message(error_message, self.command.settings.chat_id, message_id=telegram_update.message_id)
             return self.command.finish(self.name, telegram_update)
 
-        Bot.send_message(overview_text, self.command.settings.chat_id, message_id=telegram_update.message_id)
+        send_message(overview_text, self.command.settings.chat_id, message_id=telegram_update.message_id)
         self.command.next_step(self.name, telegram_update)

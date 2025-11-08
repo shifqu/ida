@@ -1,23 +1,21 @@
 """Register overtime command for the Telegram bot."""
 
-from apps.telegram.bot.commands import Command
-from apps.telegram.bot.steps import (
+from apps.telegram.bot.base import BaseCommand, Step
+from apps.timesheets.telegrambot.steps import (
     CombineDateTime,
     Confirm,
     InsertTimesheetItems,
     SelectDate,
     SelectItemType,
     SelectProject,
-    Step,
     WaitForDescription,
     WaitForTime,
 )
 
 
-class RegisterOvertime(Command):
+class Command(BaseCommand):
     """Represent the register overtime command."""
 
-    command = "/registerovertime"
     description = "Register overtime for a specific day on a specific project."
 
     @property

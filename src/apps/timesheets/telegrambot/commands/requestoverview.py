@@ -1,13 +1,12 @@
 """Request Overview command for the Telegram bot."""
 
-from apps.telegram.bot.commands import Command
-from apps.telegram.bot.steps import SelectOverviewType, SelectTimesheet, ShowOverview, Step
+from apps.telegram.bot.base import BaseCommand, Step
+from apps.timesheets.telegrambot.steps import SelectOverviewType, SelectTimesheet, ShowOverview
 
 
-class RequestOverview(Command):
+class Command(BaseCommand):
     """Represent the request overview command."""
 
-    command = "/requestoverview"
     description = "Request an overview of a timesheet and its items."
 
     @property

@@ -3,13 +3,14 @@
 from django.core.checks import Error, register
 from django.core.exceptions import ImproperlyConfigured
 
+from apps.telegram.bot.discovery import get_commands
 from apps.telegram.conf import settings
 from apps.telegram.models import AbstractTelegramSettings
 from apps.telegram.utils import get_telegram_settings_model
 
 
 @register()
-def telegram_required_settings(app_configs, **kwargs):  # noqa: ARG001  # pylint: disable=unused-argument
+def check_telegram_required_settings(app_configs, **kwargs):  # noqa: ARG001  # pylint: disable=unused-argument
     """Check that all required TELEGRAM settings are present."""
     errors = []
     missing = settings.missing_settings()
@@ -26,7 +27,7 @@ def telegram_required_settings(app_configs, **kwargs):  # noqa: ARG001  # pylint
 
 @register()
 def check_swappable_telegram_settings(app_configs, **kwargs):  # noqa: ARG001  # pylint: disable=unused-argument
-    """Validate that TELEGRAM_SETTINGS_MODEL resolves correctly and is a subclass of AbstractTelegramSettings."""
+    """Check that TELEGRAM_SETTINGS_MODEL resolves correctly and is a subclass of AbstractTelegramSettings."""
     errors = []
 
     try:
@@ -59,4 +60,24 @@ def check_swappable_telegram_settings(app_configs, **kwargs):  # noqa: ARG001  #
             )
         )
 
+    return errors
+
+
+@register()
+def check_get_commands(app_configs, **kwargs):  # noqa: ARG001  # pylint: disable=unused-argument
+    """Check that get_commands() can load all command classes without errors.
+
+    Since get_commands() is cached, this check also serves to warm the cache.
+    """
+    errors = []
+    try:
+        get_commands()
+    except Exception as exc:
+        errors.append(
+            Error(
+                f"Error loading commands: {exc!r}",
+                hint="Ensure the command modules are defined correctly.",
+                id="telegram.E005",
+            )
+        )
     return errors
