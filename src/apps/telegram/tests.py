@@ -7,9 +7,9 @@ from django.test import TestCase
 from django.urls import reverse
 
 from apps.projects.models import Project
-from apps.telegram.bot.discovery import get_commands, load_command_class
+from apps.telegram.bot import get_commands, load_command_class
 from apps.telegram.conf import settings
-from apps.telegram.utils import get_telegram_settings_model
+from apps.telegram.resolver import get_telegram_settings_model
 from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 from apps.timesheets.telegrambot.steps import InsertTimesheetItems
 from apps.users.models import IdaUser

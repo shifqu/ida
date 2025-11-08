@@ -3,7 +3,7 @@
 from django.contrib import admin
 
 from apps.telegram.models import CallbackData, Message
-from apps.telegram.utils import get_telegram_settings_model
+from apps.telegram.resolver import get_telegram_settings_model
 
 
 class TelegramSettingInline(admin.TabularInline):

@@ -10,7 +10,7 @@ from django.utils.translation import override
 
 from apps.telegram.bot.bot import handle_update
 from apps.telegram.conf import settings as app_settings
-from apps.telegram.utils import get_telegram_settings_model
+from apps.telegram.resolver import get_telegram_settings_model
 
 
 class TelegramCommand(BaseCommand):

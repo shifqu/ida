@@ -1,4 +1,4 @@
-"""Telegram utility functions."""
+"""Telegram resolver functions."""
 
 from typing import cast
 
