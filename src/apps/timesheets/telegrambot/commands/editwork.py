@@ -1,13 +1,12 @@
 """Edit work command for the Telegram bot."""
 
-from apps.telegram.bot.commands import Command
-from apps.telegram.bot.steps import EditWorkedHours, SelectExistingDay, SelectWorkedHours, Step
+from apps.telegram.bot.base import BaseCommand, Step
+from apps.timesheets.telegrambot.steps import EditWorkedHours, SelectExistingDay, SelectWorkedHours
 
 
-class EditWork(Command):
+class Command(BaseCommand):
     """Represent the edit work command."""
 
-    command = "/editwork"
     description = "Edit previously registered working hours"
 
     @property

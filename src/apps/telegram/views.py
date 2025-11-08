@@ -8,20 +8,20 @@ from django.http import HttpRequest, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from apps.telegram import models
-from apps.telegram.bot import Bot
+from apps.telegram.bot import bot
 
 
 @csrf_exempt
 @login_not_required
 def webhook(request: HttpRequest):
     """Handle incoming messages."""
-    if not Bot.validate_token(request.headers.get("X-Telegram-Bot-Api-Secret-Token")):
+    if not bot.is_valid_token(request.headers.get("X-Telegram-Bot-Api-Secret-Token")):
         return JsonResponse({"status": "error", "message": "Invalid token."}, status=403)
     update = json.loads(request.body)
     message = models.Message(raw_message=update)
     status = "ok"
     try:
-        Bot.handle(update)
+        bot.handle_update(update)
     except Exception as exc:
         message.error = str(exc)
         status = "error"

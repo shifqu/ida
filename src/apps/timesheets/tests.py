@@ -117,7 +117,7 @@ class TimesheetsTests(TestCase):
 
     def test_startregisterwork(self):
         """Test the start register work command."""
-        bot_post = patch("apps.telegram.bot.Bot.post", MagicMock()).start()
+        bot_post = patch("apps.telegram.bot.bot.post", MagicMock()).start()
         out = StringIO()
 
         call_command("startregisterwork", stdout=out, force=True)

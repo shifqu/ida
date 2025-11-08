@@ -1,13 +1,12 @@
 """Register work command for the Telegram bot."""
 
-from apps.telegram.bot.commands import Command
-from apps.telegram.bot.steps import RegisterWorkedHours, SelectMissingDay, SelectWorkedHours, Step
+from apps.telegram.bot.base import BaseCommand, Step
+from apps.timesheets.telegrambot.steps import RegisterWorkedHours, SelectMissingDay, SelectWorkedHours
 
 
-class RegisterWork(Command):
+class Command(BaseCommand):
     """Represent the register work command."""
 
-    command = "/registerwork"
     description = "Register working hours for a specific day on a specific project."
 
     @property

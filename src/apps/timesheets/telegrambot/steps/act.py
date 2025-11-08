@@ -1,5 +1,7 @@
 """Steps that handle actions in the Telegram bot."""
 
+from __future__ import annotations
+
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from typing import TYPE_CHECKING
@@ -7,19 +9,18 @@ from typing import TYPE_CHECKING
 from django.core.exceptions import ValidationError
 from django.db import transaction
 
-from apps.telegram.bot import Bot
-from apps.telegram.bot.steps import Step
+from apps.telegram.bot.base import Step
+from apps.telegram.bot.bot import send_message
 from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 
 if TYPE_CHECKING:
-    from apps.telegram.bot import TelegramUpdate
-    from apps.telegram.bot.commands import Command
+    from apps.telegram.bot.base import BaseCommand, TelegramUpdate
 
 
 class CombineDateTime(Step):
     """Represent the combine date and time step in a Telegram bot command."""
 
-    def __init__(self, command: "Command", date_key: str, time_key: str, unique_id: str | None = None):
+    def __init__(self, command: BaseCommand, date_key: str, time_key: str, unique_id: str | None = None):
         """Initialize the combine date and time step."""
         self.date_key = date_key
         self.time_key = time_key
@@ -54,7 +55,7 @@ class CombineDateTime(Step):
         try:
             return datetime.strptime(normalized_time_str, "%H:%M").time()
         except ValueError as exc:
-            Bot.send_message("Invalid time format. Please use HH:MM.", self.command.settings.chat_id)
+            send_message("Invalid time format. Please use HH:MM.", self.command.settings.chat_id)
             raise exc
 
 
@@ -65,7 +66,7 @@ class EditWorkedHours(Step):
         """Confirm if the editing of work was successful or not."""
         data = self.get_callback_data(telegram_update)
         msg = self._try_editwork(data)
-        Bot.send_message(msg, self.command.settings.chat_id, message_id=telegram_update.message_id)
+        send_message(msg, self.command.settings.chat_id, message_id=telegram_update.message_id)
         return self.command.next_step(self.name, telegram_update)
 
     def _try_editwork(self, data: dict):
@@ -92,7 +93,7 @@ class InsertTimesheetItems(Step):
         """Insert the timesheet items and go to the next step."""
         data = self.get_callback_data(telegram_update)
         msg = self._try_insert_items(data)
-        Bot.send_message(msg, self.command.settings.chat_id, message_id=telegram_update.message_id)
+        send_message(msg, self.command.settings.chat_id, message_id=telegram_update.message_id)
         self.command.next_step(self.name, telegram_update)
 
     def _try_insert_items(self, data: dict):
@@ -265,7 +266,7 @@ class MarkTimesheetAsCompleted(Step):
         timesheet = Timesheet.objects.get(pk=data["timesheet_id"])
         timesheet.mark_as_completed()
 
-        Bot.send_message(
+        send_message(
             f"Successfully marked the timesheet {timesheet} as completed.",
             self.command.settings.chat_id,
             message_id=telegram_update.message_id,
@@ -280,7 +281,7 @@ class RegisterWorkedHours(Step):
         """Confirm if the registraiton of work was successful or not."""
         data = self.get_callback_data(telegram_update)
         msg = self._try_registerwork(data)
-        Bot.send_message(msg, self.command.settings.chat_id, message_id=telegram_update.message_id)
+        send_message(msg, self.command.settings.chat_id, message_id=telegram_update.message_id)
 
     def _try_registerwork(self, data: dict):
         try:

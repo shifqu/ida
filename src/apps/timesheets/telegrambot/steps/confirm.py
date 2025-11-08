@@ -1,14 +1,15 @@
 """Steps that handle confirmation of commands in the Telegram bot."""
 
+from __future__ import annotations
+
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
-from apps.telegram.bot import Bot
-from apps.telegram.bot.steps import Step
+from apps.telegram.bot.base import Step
+from apps.telegram.bot.bot import send_message
 
 if TYPE_CHECKING:
-    from apps.telegram.bot import TelegramUpdate
-    from apps.telegram.bot.commands import Command
+    from apps.telegram.bot.base import BaseCommand, TelegramUpdate
 
 
 def prettyprint(data: dict):
@@ -21,7 +22,7 @@ class Confirm(Step):
 
     def __init__(
         self,
-        command: "Command",
+        command: BaseCommand,
         steps_back: int = 0,
         unique_id: str | None = None,
         data_transform_func: Callable[[dict], str] = prettyprint,
@@ -45,8 +46,8 @@ class Confirm(Step):
 
         self.maybe_add_previous_button(keyboard, **data)
 
-        message = f"{self.command.name} with the following data?\n{self.data_transform_func(data)}"
-        Bot.send_message(
+        message = f"{self.command.get_name()} with the following data?\n{self.data_transform_func(data)}"
+        send_message(
             message,
             self.command.settings.chat_id,
             reply_markup={"inline_keyboard": keyboard},

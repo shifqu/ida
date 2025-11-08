@@ -1,15 +1,14 @@
-"""Bot steps for the Telegram app."""
+"""Bot steps for the timesheets app."""
 
-from apps.telegram.bot.steps._core import Step
-from apps.telegram.bot.steps.act import (
+from apps.timesheets.telegrambot.steps.act import (
     CombineDateTime,
     EditWorkedHours,
     InsertTimesheetItems,
     MarkTimesheetAsCompleted,
     RegisterWorkedHours,
 )
-from apps.telegram.bot.steps.confirm import Confirm
-from apps.telegram.bot.steps.select import (
+from apps.timesheets.telegrambot.steps.confirm import Confirm
+from apps.timesheets.telegrambot.steps.select import (
     SelectDate,
     SelectDay,
     SelectExistingDay,
@@ -20,11 +19,10 @@ from apps.telegram.bot.steps.select import (
     SelectTimesheet,
     SelectWorkedHours,
 )
-from apps.telegram.bot.steps.show import ShowOverview
-from apps.telegram.bot.steps.wait import WaitForDescription, WaitForTime
+from apps.timesheets.telegrambot.steps.show import ShowOverview
+from apps.timesheets.telegrambot.steps.wait import WaitForDescription, WaitForTime
 
 __all__ = [
-    "Step",
     "CombineDateTime",
     "EditWorkedHours",
     "InsertTimesheetItems",

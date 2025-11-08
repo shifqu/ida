@@ -3,6 +3,8 @@
 This is usually done by showing inline keyboards with options to choose from.
 """
 
+from __future__ import annotations
+
 import calendar
 import logging
 from datetime import date, datetime
@@ -12,14 +14,13 @@ from django.utils import timezone
 from django.utils.translation import gettext
 
 from apps.projects.models import Project
-from apps.telegram.bot import DO_NOTHING, Bot
-from apps.telegram.bot.steps import Step
-from apps.telegram.bot.steps._types import OverviewType
+from apps.telegram.bot.base import Step
+from apps.telegram.bot.bot import DO_NOTHING, send_message
 from apps.timesheets.models import Timesheet, TimesheetItem
+from apps.timesheets.telegrambot.steps._types import OverviewType
 
 if TYPE_CHECKING:
-    from apps.telegram.bot import TelegramUpdate
-    from apps.telegram.bot.commands import Command
+    from apps.telegram.bot.base import BaseCommand, TelegramUpdate
 
 
 class SelectDate(Step):
@@ -27,7 +28,7 @@ class SelectDate(Step):
 
     def __init__(
         self,
-        command: "Command",
+        command: BaseCommand,
         key: str,
         initial_date_key: str = "",
         steps_back: int = 0,
@@ -74,7 +75,7 @@ class SelectDate(Step):
         self.maybe_add_previous_button(keyboard, **data)
 
         reply_markup = {"inline_keyboard": keyboard}
-        Bot.send_message(
+        send_message(
             f"Select the {self.key}:",
             self.command.settings.chat_id,
             reply_markup=reply_markup,
@@ -119,8 +120,8 @@ class SelectDay(Step):
         """Show the day selection to the user."""
         days = self.get_days()
         if not days:
-            msg = f"No days found. Unable to complete {self.command.name}."
-            Bot.send_message(msg, telegram_update.chat_id)
+            msg = f"No days found. Unable to complete {self.command.get_name()}."
+            send_message(msg, telegram_update.chat_id)
             return self.command.finish(self.name, telegram_update)
 
         data = self.get_callback_data(telegram_update)
@@ -135,7 +136,7 @@ class SelectDay(Step):
         self.maybe_add_previous_button(keyboard, **data)
 
         reply_markup = {"inline_keyboard": keyboard}
-        Bot.send_message(
+        send_message(
             "Select a day:",
             self.command.settings.chat_id,
             reply_markup=reply_markup,
@@ -224,7 +225,7 @@ class SelectItemType(Step):
 
         self.maybe_add_previous_button(keyboard, **data)
 
-        Bot.send_message(
+        send_message(
             "Select the item type:",
             self.command.settings.chat_id,
             reply_markup={"inline_keyboard": keyboard},
@@ -279,7 +280,7 @@ class SelectOverviewType(Step):
         ]
         self.maybe_add_previous_button(keyboard, **data)
 
-        Bot.send_message(
+        send_message(
             "Which type of overview would you like to see?",
             self.command.settings.chat_id,
             reply_markup={"inline_keyboard": keyboard},
@@ -295,7 +296,7 @@ class SelectProject(Step):
         today = timezone.now().date()
         projects = Project.objects.filter(start_date__lte=today, end_date__gte=today, users=self.command.settings.user)
         if not projects:
-            Bot.send_message(
+            send_message(
                 "No active projects found. Please contact your administrator.",
                 self.command.settings.chat_id,
                 message_id=telegram_update.message_id,
@@ -317,7 +318,7 @@ class SelectProject(Step):
 
         self.maybe_add_previous_button(keyboard, **data)
 
-        Bot.send_message(
+        send_message(
             "Select a project:",
             self.command.settings.chat_id,
             reply_markup={"inline_keyboard": keyboard},
@@ -330,7 +331,7 @@ class SelectTimesheet(Step):
 
     def __init__(
         self,
-        command: "Command",
+        command: BaseCommand,
         steps_back: int = 0,
         filter_kwargs: dict | None = None,
         order_by: tuple | None = None,
@@ -347,7 +348,7 @@ class SelectTimesheet(Step):
         timesheets = Timesheet.objects.filter(**self.filter_kwargs).order_by(*self.order_by)
         if not timesheets:
             error_message = "No timesheets found."
-            Bot.send_message(error_message, self.command.settings.chat_id, message_id=telegram_update.message_id)
+            send_message(error_message, self.command.settings.chat_id, message_id=telegram_update.message_id)
             return self.command.finish(self.name, telegram_update)
 
         data = self.get_callback_data(telegram_update)
@@ -365,7 +366,7 @@ class SelectTimesheet(Step):
 
         self.maybe_add_previous_button(keyboard, **data)
 
-        Bot.send_message(
+        send_message(
             "Select a timesheet:",
             self.command.settings.chat_id,
             reply_markup={"inline_keyboard": keyboard},
@@ -388,7 +389,7 @@ class SelectWorkedHours(Step):
         self.maybe_add_previous_button(keyboard, **data)
 
         reply_markup = {"inline_keyboard": keyboard}
-        Bot.send_message(
+        send_message(
             f"How many hours did you work on {data['start_date']} for {data['project_name']}:",
             self.command.settings.chat_id,
             reply_markup=reply_markup,
