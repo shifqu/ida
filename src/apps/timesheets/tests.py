@@ -8,11 +8,11 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.test import TestCase
+from django_telegram_app.bot import get_commands, load_command_class
+from django_telegram_app.bot.testing.testcases import TelegramBotTestCase
+from django_telegram_app.resolver import get_telegram_settings_model
 
 from apps.projects.models import Project
-from apps.telegram.bot import get_commands, load_command_class
-from apps.telegram.bot.testing import TelegramBotTestCase
-from apps.telegram.resolver import get_telegram_settings_model
 from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 from apps.timesheets.telegrambot.steps import InsertTimesheetItems
 

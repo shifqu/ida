@@ -12,9 +12,10 @@ class IdaUser(AbstractUser):
     """Extend the default user model."""
 
     if TYPE_CHECKING:
+        from django_telegram_app.models import TelegramSettings
+
         from apps.companies.models import Company
         from apps.projects.models import Project
-        from apps.telegram.models import TelegramSettings
 
         company: models.ForeignKey[Company | None]
         telegramsettings: models.OneToOneField[TelegramSettings | None]

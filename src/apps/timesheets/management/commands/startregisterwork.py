@@ -1,8 +1,7 @@
 """Django command to start a RegisterWork command for active users with a chat_id."""
 
 from django.utils import timezone
-
-from apps.telegram.management.commands._base import TelegramCommand
+from django_telegram_app.management.base import TelegramCommand
 
 
 class Command(TelegramCommand):
