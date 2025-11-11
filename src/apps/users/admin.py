@@ -14,7 +14,7 @@ class IdaUserAdmin(UserAdmin):
     model = IdaUser
     fieldsets = UserAdmin.fieldsets + ((_("Ida data"), {"fields": ("language", "company")}),)  # type: ignore[reportOperatorIssue]
     add_fieldsets = UserAdmin.add_fieldsets + ((_("Ida data"), {"fields": ("language", "company")}),)
-    inlines = get_inlines()
+    inlines = get_inlines(extra={"django_telegram_app.admin": "TelegramSettingInline"})
 
 
 admin.site.register(IdaUser, IdaUserAdmin)

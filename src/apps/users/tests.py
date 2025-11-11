@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from apps.companies.models import Company
 from apps.users.models import IdaUser
+from apps.users.utils import get_inlines
 
 
 class UsersTestCase(TestCase):
@@ -40,3 +41,8 @@ class UsersTestCase(TestCase):
         self.assertTrue(admin_user.is_active)
         self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
+
+    def test_get_inlines(self):
+        """Test getting inlines for user admin."""
+        inlines = get_inlines()
+        self.assertIsInstance(inlines, list)
