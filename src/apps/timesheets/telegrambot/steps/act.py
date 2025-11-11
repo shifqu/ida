@@ -8,13 +8,13 @@ from typing import TYPE_CHECKING
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
+from django_telegram_app.bot.base import Step
+from django_telegram_app.bot.bot import send_message
 
-from apps.telegram.bot.base import Step
-from apps.telegram.bot.bot import send_message
 from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 
 if TYPE_CHECKING:
-    from apps.telegram.bot.base import BaseCommand, TelegramUpdate
+    from django_telegram_app.bot.base import BaseCommand, TelegramUpdate
 
 
 class CombineDateTime(Step):

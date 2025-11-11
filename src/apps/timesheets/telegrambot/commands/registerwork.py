@@ -1,6 +1,7 @@
 """Register work command for the Telegram bot."""
 
-from apps.telegram.bot.base import BaseCommand, Step
+from django_telegram_app.bot.base import BaseCommand, Step
+
 from apps.timesheets.telegrambot.steps import RegisterWorkedHours, SelectMissingDay, SelectWorkedHours
 
 

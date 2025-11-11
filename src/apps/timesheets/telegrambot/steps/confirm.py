@@ -5,11 +5,11 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
-from apps.telegram.bot.base import Step
-from apps.telegram.bot.bot import send_message
+from django_telegram_app.bot.base import Step
+from django_telegram_app.bot.bot import send_message
 
 if TYPE_CHECKING:
-    from apps.telegram.bot.base import BaseCommand, TelegramUpdate
+    from django_telegram_app.bot.base import BaseCommand, TelegramUpdate
 
 
 def prettyprint(data: dict):
