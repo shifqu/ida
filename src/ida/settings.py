@@ -46,9 +46,9 @@ INSTALLED_APPS = [
     "apps.relations",
     "apps.invoices",
     "apps.users",
-    "apps.telegram",
     "apps.timesheets",
     "apps.projects",
+    "django_telegram_app",
 ]
 
 MIDDLEWARE = [
