@@ -1,4 +1,4 @@
 django>=5,<6
 gunicorn
 reportlab
-requests
+django-telegram-app @ git+https://github.com/shifqu/django-telegram-app.git

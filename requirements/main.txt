@@ -13,6 +13,10 @@ charset-normalizer==3.4.3
     #   reportlab
     #   requests
 django==5.2.5
+    # via
+    #   django-telegram-app
+    #   ida (pyproject.toml)
+django-telegram-app @ git+https://github.com/shifqu/django-telegram-app.git
     # via ida (pyproject.toml)
 gunicorn==23.0.0
     # via ida (pyproject.toml)
@@ -25,7 +29,7 @@ pillow==11.3.0
 reportlab==4.4.3
     # via ida (pyproject.toml)
 requests==2.32.4
-    # via ida (pyproject.toml)
+    # via django-telegram-app
 sqlparse==0.5.3
     # via django
 urllib3==2.5.0

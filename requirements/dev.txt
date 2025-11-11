@@ -19,6 +19,10 @@ coverage==7.10.2
 dill==0.4.0
     # via pylint
 django==5.2.5
+    # via
+    #   django-telegram-app
+    #   ida (pyproject.toml)
+django-telegram-app @ git+https://github.com/shifqu/django-telegram-app.git
     # via ida (pyproject.toml)
 django-types==0.22.0
     # via ida (pyproject.toml)
@@ -47,7 +51,7 @@ python-dotenv==1.1.1
 reportlab==4.4.3
     # via ida (pyproject.toml)
 requests==2.32.4
-    # via ida (pyproject.toml)
+    # via django-telegram-app
 ruff==0.12.8
     # via ida (pyproject.toml)
 sqlparse==0.5.3
