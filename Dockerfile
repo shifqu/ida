@@ -8,7 +8,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Install gettext because it is required for django's compilemessages
-RUN apk add --no-cache gettext 
+# Install git because django-telegram-app is currently installed from a git repository
+RUN apk add --no-cache gettext git
 
 # Copy only requirements files first for better caching
 COPY requirements/ /app/requirements/
