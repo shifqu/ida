@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import json
 from pathlib import Path
 
-import env
+import envyronment as env
 from django.utils.translation import gettext_noop
 
 from ida import utils
