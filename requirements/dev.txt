@@ -26,6 +26,8 @@ django-telegram-app==0.1.4
     # via ida (pyproject.toml)
 django-types==0.22.0
     # via ida (pyproject.toml)
+envyronment==0.1.1
+    # via ida (pyproject.toml)
 gunicorn==23.0.0
     # via ida (pyproject.toml)
 idna==3.11
