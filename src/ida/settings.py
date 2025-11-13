@@ -15,8 +15,6 @@ from pathlib import Path
 import envyronment as env
 from django.utils.translation import gettext_noop
 
-from ida import utils
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = BASE_DIR.parent
@@ -28,7 +26,7 @@ ROOT_DIR = BASE_DIR.parent
 SECRET_KEY = env.read("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.read("DJANGO_DEBUG", True, astype=utils.strtobool)
+DEBUG = env.read("DJANGO_DEBUG", True, astype=env.to_bool)
 
 ALLOWED_HOSTS = env.read("DJANGO_ALLOWED_HOSTS", [], astype=json.loads)
 
@@ -160,7 +158,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_BACKEND = env.read("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
 EMAIL_HOST = env.read("DJANGO_EMAIL_HOST", "localhost")
 EMAIL_PORT = env.read("DJANGO_EMAIL_PORT", 25, astype=int)
-EMAIL_USE_TLS = env.read("DJANGO_EMAIL_USE_TLS", False, astype=utils.strtobool)
+EMAIL_USE_TLS = env.read("DJANGO_EMAIL_USE_TLS", False, astype=env.to_bool)
 EMAIL_HOST_USER = env.read("DJANGO_EMAIL_HOST_USER", "")
 EMAIL_HOST_PASSWORD = env.read("DJANGO_EMAIL_HOST_PASSWORD", "")
 
@@ -177,7 +175,9 @@ LOGGING = {
         "file": {
             "level": env.read("DJANGO_FILE_LOG_LEVEL", "INFO"),
             "class": "logging.FileHandler",
-            "filename": utils.existing_path(env.read("DJANGO_LOG_FILENAME", ROOT_DIR / "logs" / "ida.log")),
+            "filename": env.read(
+                "DJANGO_LOG_FILENAME", ROOT_DIR / "logs" / "ida.log", astype=env.to_filepath, convert_default=True
+            ),
         },
         "console": {
             "level": env.read("DJANGO_CONSOLE_LOG_LEVEL", "DEBUG"),
