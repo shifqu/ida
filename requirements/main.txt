@@ -6,17 +6,17 @@
 #
 asgiref==3.10.0
     # via django
-certifi==2025.10.5
+certifi==2025.11.12
     # via requests
 charset-normalizer==3.4.4
     # via
     #   reportlab
     #   requests
-django==5.2.7
+django==5.2.8
     # via
     #   django-telegram-app
     #   ida (pyproject.toml)
-django-telegram-app==0.1.3
+django-telegram-app==0.1.4
     # via ida (pyproject.toml)
 gunicorn==23.0.0
     # via ida (pyproject.toml)
