@@ -12,9 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import json
 from pathlib import Path
 
+import env
 from django.utils.translation import gettext_noop
 
-from ida import environ, utils
+from ida import utils
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,12 +25,12 @@ ROOT_DIR = BASE_DIR.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = environ.from_env("DJANGO_SECRET_KEY")
+SECRET_KEY = env.read("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = environ.from_env("DJANGO_DEBUG", True, astype=utils.strtobool)
+DEBUG = env.read("DJANGO_DEBUG", True, astype=utils.strtobool)
 
-ALLOWED_HOSTS = environ.from_env("DJANGO_ALLOWED_HOSTS", [], astype=json.loads)
+ALLOWED_HOSTS = env.read("DJANGO_ALLOWED_HOSTS", [], astype=json.loads)
 
 
 # Application definition
@@ -90,7 +91,7 @@ WSGI_APPLICATION = "ida.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": environ.from_env("DJANGO_DATABASE_NAME", default=ROOT_DIR / "db.sqlite3", astype=Path),
+        "NAME": env.read("DJANGO_DATABASE_NAME", ROOT_DIR / "db.sqlite3", astype=Path),
     }
 }
 
@@ -140,13 +141,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = environ.from_env("DJANGO_STATIC_ROOT", default=ROOT_DIR / "static", astype=Path)
+STATIC_ROOT = env.read("DJANGO_STATIC_ROOT", ROOT_DIR / "static", astype=Path)
 
 # Media files (user-uploaded files)
 # https://docs.djangoproject.com/en/5.1/topics/files/#managing-files
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = environ.from_env("DJANGO_MEDIA_ROOT", default=ROOT_DIR / "media", astype=Path)
+MEDIA_ROOT = env.read("DJANGO_MEDIA_ROOT", ROOT_DIR / "media", astype=Path)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -156,16 +157,16 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Email settings
 # https://docs.djangoproject.com/en/5.1/topics/email/#module-django.core.mail
 
-EMAIL_BACKEND = environ.from_env("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
-EMAIL_HOST = environ.from_env("DJANGO_EMAIL_HOST", default="localhost")
-EMAIL_PORT = environ.from_env("DJANGO_EMAIL_PORT", default=25, astype=int)
-EMAIL_USE_TLS = environ.from_env("DJANGO_EMAIL_USE_TLS", False, astype=utils.strtobool)
-EMAIL_HOST_USER = environ.from_env("DJANGO_EMAIL_HOST_USER", default="")
-EMAIL_HOST_PASSWORD = environ.from_env("DJANGO_EMAIL_HOST_PASSWORD", default="")
+EMAIL_BACKEND = env.read("DJANGO_EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = env.read("DJANGO_EMAIL_HOST", "localhost")
+EMAIL_PORT = env.read("DJANGO_EMAIL_PORT", 25, astype=int)
+EMAIL_USE_TLS = env.read("DJANGO_EMAIL_USE_TLS", False, astype=utils.strtobool)
+EMAIL_HOST_USER = env.read("DJANGO_EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = env.read("DJANGO_EMAIL_HOST_PASSWORD", "")
 
 # CSRF settings
 # https://docs.djangoproject.com/en/5.1/ref/settings/#csrf-trusted-origins
-CSRF_TRUSTED_ORIGINS = environ.from_env("DJANGO_CSRF_TRUSTED_ORIGINS", [], astype=json.loads)
+CSRF_TRUSTED_ORIGINS = env.read("DJANGO_CSRF_TRUSTED_ORIGINS", [], astype=json.loads)
 
 # Logging settings
 # https://docs.djangoproject.com/en/5.1/topics/logging/
@@ -174,21 +175,19 @@ LOGGING = {
     "disable_existing_loggers": False,
     "handlers": {
         "file": {
-            "level": environ.from_env("DJANGO_FILE_LOG_LEVEL", default="INFO"),
+            "level": env.read("DJANGO_FILE_LOG_LEVEL", "INFO"),
             "class": "logging.FileHandler",
-            "filename": utils.existing_path(
-                environ.from_env("DJANGO_LOG_FILENAME", default=ROOT_DIR / "logs" / "ida.log")
-            ),
+            "filename": utils.existing_path(env.read("DJANGO_LOG_FILENAME", ROOT_DIR / "logs" / "ida.log")),
         },
         "console": {
-            "level": environ.from_env("DJANGO_CONSOLE_LOG_LEVEL", default="DEBUG"),
+            "level": env.read("DJANGO_CONSOLE_LOG_LEVEL", "DEBUG"),
             "class": "logging.StreamHandler",
         },
     },
     "loggers": {
         "django": {
             "handlers": ["file", "console"],
-            "level": environ.from_env("DJANGO_LOG_LEVEL", default="DEBUG"),
+            "level": env.read("DJANGO_LOG_LEVEL", "DEBUG"),
             "propagate": True,
         },
     },
@@ -199,15 +198,15 @@ AUTH_USER_MODEL = "users.IdaUser"
 # Custom settings
 
 ADMIN = {
-    "SITE_HEADER": environ.from_env("ADMIN_SITE_HEADER", "IDA Administration"),
-    "ROOT_URL": environ.from_env("ADMIN_ROOT_URL", "admin/"),
+    "SITE_HEADER": env.read("ADMIN_SITE_HEADER", "IDA Administration"),
+    "ROOT_URL": env.read("ADMIN_ROOT_URL", "admin/"),
 }
 
 TELEGRAM = {
-    "BOT_URL": environ.from_env("TELEGRAM_BOT_URL"),
-    "WEBHOOK_TOKEN": environ.from_env("TELEGRAM_WEBHOOK_TOKEN"),
-    "ROOT_URL": environ.from_env("TELEGRAM_ROOT_URL", default="telegram/"),
-    "WEBHOOK_URL": environ.from_env("TELEGRAM_WEBHOOK_URL", default="webhook"),
+    "BOT_URL": env.read("TELEGRAM_BOT_URL"),
+    "WEBHOOK_TOKEN": env.read("TELEGRAM_WEBHOOK_TOKEN"),
+    "ROOT_URL": env.read("TELEGRAM_ROOT_URL", "telegram/"),
+    "WEBHOOK_URL": env.read("TELEGRAM_WEBHOOK_URL", "webhook"),
 }
 
-DOMAIN_NAME = environ.from_env("DJANGO_DOMAIN_NAME", "http://localhost:8000")
+DOMAIN_NAME = env.read("DJANGO_DOMAIN_NAME", "http://localhost:8000")
