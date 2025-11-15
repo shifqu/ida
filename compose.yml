@@ -18,6 +18,7 @@ services:
       - DJANGO_DATABASE_NAME=/db_data/db.sqlite3
       - DJANGO_LOG_FILENAME=/log_data/ida.log
       - DJANGO_DEBUG=0
+      - DJANGO_PROJECT_STATIC_DIR=/app/static
 
 volumes:
   ida_db_data:
