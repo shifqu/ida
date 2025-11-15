@@ -48,3 +48,9 @@ exclude = [ "**/migrations", "**/_reportlab.py", "**/tests.py"]
 typeCheckingMode = "standard"
 deprecateTypingAliases = true
 pythonVersion = "3.13"
+
+[tool.coverage.run]
+branch = true
+source = [
+  "src",
+]
