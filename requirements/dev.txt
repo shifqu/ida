@@ -22,7 +22,7 @@ django==5.2.8
     # via
     #   django-telegram-app
     #   ida (pyproject.toml)
-django-telegram-app==0.2.0
+django-telegram-app==0.3.0
     # via ida (pyproject.toml)
 django-types==0.22.0
     # via ida (pyproject.toml)
