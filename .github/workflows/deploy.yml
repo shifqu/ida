@@ -1,4 +1,4 @@
-name: "Deploy: I Do Accountancy"
+name: "Deploy"
 
 on:
   push:
