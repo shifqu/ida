@@ -50,7 +50,8 @@ WORKDIR /app
 RUN mkdir -p /db_data /static_data /media_data /log_data && \
     chown -R appuser:appuser /db_data /static_data /media_data /log_data /app
 
-# Copy application code
+# Copy static files and application code
+COPY --chown=appuser:appuser static/ /static_data
 COPY --chown=appuser:appuser src/ src/
 COPY --chown=appuser:appuser pyproject.toml pyproject.toml
 
