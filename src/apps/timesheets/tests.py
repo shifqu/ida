@@ -8,9 +8,9 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.core.management import call_command
 from django.test import TestCase
+from django_telegram_app import get_telegram_settings_model
 from django_telegram_app.bot import get_commands, load_command_class
 from django_telegram_app.bot.testing.testcases import TelegramBotTestCase
-from django_telegram_app.resolver import get_telegram_settings_model
 
 from apps.projects.models import Project
 from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
@@ -129,7 +129,6 @@ class TimesheetsTelegramBotTestCase(TelegramBotTestCase):
     @classmethod
     def setUpTestData(cls):
         """Set up the test data."""
-        super().setUpTestData()
         cls.timesheet = Timesheet.objects.get(pk=1)
         cls.user = get_user_model().objects.get(pk=1)
         cls.project = Project.objects.get(pk=1)

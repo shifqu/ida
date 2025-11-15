@@ -3,12 +3,14 @@
 from django.utils import timezone
 from django_telegram_app.management.base import BaseTelegramCommand
 
+from apps.timesheets.telegrambot.commands.completetimesheet import Command as CompleteTimesheetCommand
+
 
 class Command(BaseTelegramCommand):
     """Start the CompleteTimesheet command."""
 
     help = "Start the CompleteTimesheet command to let users complete their timesheets."
-    command_text = "/completetimesheet"
+    command = CompleteTimesheetCommand
 
     def should_run(self):
         """Only run the command if it's the last day of the month."""
