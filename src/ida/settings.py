@@ -139,7 +139,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = env.read("DJANGO_STATIC_ROOT", ROOT_DIR / "static", astype=Path)
+STATIC_ROOT = env.read("DJANGO_STATIC_ROOT", ROOT_DIR / "staticfiles", astype=Path)  # output for collectstatic
+STATICFILES_DIRS = [ROOT_DIR / "static"]
 
 # Media files (user-uploaded files)
 # https://docs.djangoproject.com/en/5.1/topics/files/#managing-files
