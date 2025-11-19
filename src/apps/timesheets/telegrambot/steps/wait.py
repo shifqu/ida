@@ -4,17 +4,20 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from django_telegram_app.bot.base import Step
 from django_telegram_app.bot.bot import send_message
 
+from apps.telegram.telegrambot.base import TelegramStep
+
 if TYPE_CHECKING:
-    from django_telegram_app.bot.base import BaseCommand, TelegramUpdate
+    from django_telegram_app.bot.base import TelegramUpdate
+
+    from apps.telegram.telegrambot.base import TelegramCommand
 
 
-class WaitForTime(Step):
+class WaitForTime(TelegramStep):
     """Represent the wait for time input step in a Telegram bot command."""
 
-    def __init__(self, command: BaseCommand, key: str, date_key: str, unique_id: str | None = None):
+    def __init__(self, command: TelegramCommand, key: str, date_key: str, unique_id: str | None = None):
         """Initialize the wait for time input step."""
         self.key = key
         self.date_key = date_key
@@ -31,7 +34,7 @@ class WaitForTime(Step):
         )
 
 
-class WaitForDescription(Step):
+class WaitForDescription(TelegramStep):
     """Represent the description selection step in a Telegram bot command."""
 
     def handle(self, telegram_update: "TelegramUpdate"):

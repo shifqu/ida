@@ -2,9 +2,9 @@
 
 from typing import TYPE_CHECKING
 
-from django_telegram_app.bot.base import Step
 from django_telegram_app.bot.bot import send_message
 
+from apps.telegram.telegrambot.base import TelegramStep
 from apps.timesheets.models import Timesheet
 from apps.timesheets.telegrambot.steps._types import OverviewType
 
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from django_telegram_app.bot.base import TelegramUpdate
 
 
-class ShowOverview(Step):
+class ShowOverview(TelegramStep):
     """Represent the show overview step in a Telegram bot command."""
 
     def handle(self, telegram_update: "TelegramUpdate"):

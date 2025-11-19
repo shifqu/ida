@@ -8,19 +8,21 @@ from typing import TYPE_CHECKING
 
 from django.core.exceptions import ValidationError
 from django.db import transaction
-from django_telegram_app.bot.base import Step
 from django_telegram_app.bot.bot import send_message
 
+from apps.telegram.telegrambot.base import TelegramStep
 from apps.timesheets.models import TimeRangeItemTypeRule, Timesheet, TimesheetItem, WeekdayItemTypeRule
 
 if TYPE_CHECKING:
-    from django_telegram_app.bot.base import BaseCommand, TelegramUpdate
+    from django_telegram_app.bot.base import TelegramUpdate
+
+    from apps.telegram.telegrambot.base import TelegramCommand
 
 
-class CombineDateTime(Step):
+class CombineDateTime(TelegramStep):
     """Represent the combine date and time step in a Telegram bot command."""
 
-    def __init__(self, command: BaseCommand, date_key: str, time_key: str, unique_id: str | None = None):
+    def __init__(self, command: TelegramCommand, date_key: str, time_key: str, unique_id: str | None = None):
         """Initialize the combine date and time step."""
         self.date_key = date_key
         self.time_key = time_key
@@ -59,7 +61,7 @@ class CombineDateTime(Step):
             raise exc
 
 
-class EditWorkedHours(Step):
+class EditWorkedHours(TelegramStep):
     """Represent the editing of work step in a Telegram bot command."""
 
     def handle(self, telegram_update: "TelegramUpdate"):
@@ -86,7 +88,7 @@ class EditWorkedHours(Step):
         timesheet_item.save()
 
 
-class InsertTimesheetItems(Step):
+class InsertTimesheetItems(TelegramStep):
     """Represent the step to insert timesheet items."""
 
     def handle(self, telegram_update: "TelegramUpdate"):
@@ -257,7 +259,7 @@ class InsertTimesheetItems(Step):
         )
 
 
-class MarkTimesheetAsCompleted(Step):
+class MarkTimesheetAsCompleted(TelegramStep):
     """Represent the step to mark the selected timesheet as completed."""
 
     def handle(self, telegram_update: "TelegramUpdate"):
@@ -274,7 +276,7 @@ class MarkTimesheetAsCompleted(Step):
         self.command.next_step(self.name, telegram_update)
 
 
-class RegisterWorkedHours(Step):
+class RegisterWorkedHours(TelegramStep):
     """Represent the registration of work step in a Telegram bot command."""
 
     def handle(self, telegram_update):
