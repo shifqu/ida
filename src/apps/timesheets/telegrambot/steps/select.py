@@ -12,23 +12,25 @@ from typing import TYPE_CHECKING
 
 from django.utils import timezone
 from django.utils.translation import gettext
-from django_telegram_app.bot.base import Step
 from django_telegram_app.bot.bot import DO_NOTHING, send_message
 
 from apps.projects.models import Project
+from apps.telegram.telegrambot.base import TelegramStep
 from apps.timesheets.models import Timesheet, TimesheetItem
 from apps.timesheets.telegrambot.steps._types import OverviewType
 
 if TYPE_CHECKING:
-    from django_telegram_app.bot.base import BaseCommand, TelegramUpdate
+    from django_telegram_app.bot.base import TelegramUpdate
+
+    from apps.telegram.telegrambot.base import TelegramCommand
 
 
-class SelectDate(Step):
+class SelectDate(TelegramStep):
     """Represent the date selection step in a Telegram bot command."""
 
     def __init__(
         self,
-        command: BaseCommand,
+        command: TelegramCommand,
         key: str,
         initial_date_key: str = "",
         steps_back: int = 0,
@@ -113,7 +115,7 @@ class SelectDate(Step):
         return displayed_date.replace(year=previous_year, month=previous_month)
 
 
-class SelectDay(Step):
+class SelectDay(TelegramStep):
     """Represent the day selection step in a Telegram bot command."""
 
     def handle(self, telegram_update: "TelegramUpdate"):
@@ -194,7 +196,7 @@ class SelectExistingDay(SelectDay):
         return keyboard
 
 
-class SelectItemType(Step):
+class SelectItemType(TelegramStep):
     """Represent the item type selection step in a Telegram bot command."""
 
     def handle(self, telegram_update: "TelegramUpdate"):
@@ -251,7 +253,7 @@ class SelectMissingDay(SelectDay):
         return keyboard
 
 
-class SelectOverviewType(Step):
+class SelectOverviewType(TelegramStep):
     """Represent the overview type selection step in a Telegram bot command."""
 
     def handle(self, telegram_update: "TelegramUpdate"):
@@ -288,7 +290,7 @@ class SelectOverviewType(Step):
         )
 
 
-class SelectProject(Step):
+class SelectProject(TelegramStep):
     """Represent the project selection step in a Telegram bot command."""
 
     def handle(self, telegram_update: "TelegramUpdate"):
@@ -326,12 +328,12 @@ class SelectProject(Step):
         )
 
 
-class SelectTimesheet(Step):
+class SelectTimesheet(TelegramStep):
     """Represent the timesheet selection step in a Telegram bot command."""
 
     def __init__(
         self,
-        command: BaseCommand,
+        command: TelegramCommand,
         steps_back: int = 0,
         filter_kwargs: dict | None = None,
         order_by: tuple | None = None,
@@ -374,7 +376,7 @@ class SelectTimesheet(Step):
         )
 
 
-class SelectWorkedHours(Step):
+class SelectWorkedHours(TelegramStep):
     """Represent the hours worked selection step in a Telegram bot command."""
 
     def handle(self, telegram_update):

@@ -5,11 +5,14 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
-from django_telegram_app.bot.base import Step
 from django_telegram_app.bot.bot import send_message
 
+from apps.telegram.telegrambot.base import TelegramStep
+
 if TYPE_CHECKING:
-    from django_telegram_app.bot.base import BaseCommand, TelegramUpdate
+    from django_telegram_app.bot.base import TelegramUpdate
+
+    from apps.telegram.telegrambot.base import TelegramCommand
 
 
 def prettyprint(data: dict):
@@ -17,12 +20,12 @@ def prettyprint(data: dict):
     return "\n".join([f"{k}={v}" for k, v in data.items()])
 
 
-class Confirm(Step):
+class Confirm(TelegramStep):
     """Represent the confirmation step in a Telegram bot command."""
 
     def __init__(
         self,
-        command: BaseCommand,
+        command: TelegramCommand,
         steps_back: int = 0,
         unique_id: str | None = None,
         data_transform_func: Callable[[dict], str] = prettyprint,

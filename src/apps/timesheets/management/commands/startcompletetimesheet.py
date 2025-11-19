@@ -1,12 +1,12 @@
 """Django command to start the CompleteTimesheet command for active users with a chat_id."""
 
 from django.utils import timezone
-from django_telegram_app.management.base import BaseTelegramCommand
 
+from apps.telegram.management.base import IdaBaseTelegramCommand
 from apps.timesheets.telegrambot.commands.completetimesheet import Command as CompleteTimesheetCommand
 
 
-class Command(BaseTelegramCommand):
+class Command(IdaBaseTelegramCommand):
     """Start the CompleteTimesheet command."""
 
     help = "Start the CompleteTimesheet command to let users complete their timesheets."

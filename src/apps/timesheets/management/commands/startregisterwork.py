@@ -1,12 +1,12 @@
 """Django command to start a RegisterWork command for active users with a chat_id."""
 
 from django.utils import timezone
-from django_telegram_app.management.base import BaseTelegramCommand
 
+from apps.telegram.management.base import IdaBaseTelegramCommand
 from apps.timesheets.telegrambot.commands.registerwork import Command as RegisterWorkCommand
 
 
-class Command(BaseTelegramCommand):
+class Command(IdaBaseTelegramCommand):
     """Start a RegisterWork command."""
 
     help = "Start a RegisterWork command to let users register their work hours."
