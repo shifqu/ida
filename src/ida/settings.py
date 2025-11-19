@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "apps.users",
     "apps.timesheets",
     "apps.projects",
+    "apps.telegram",
     "django_telegram_app",
 ]
 
@@ -208,6 +209,9 @@ TELEGRAM = {
     "WEBHOOK_TOKEN": env.read("TELEGRAM_WEBHOOK_TOKEN"),
     "ROOT_URL": env.read("TELEGRAM_ROOT_URL", "telegram/"),
     "WEBHOOK_URL": env.read("TELEGRAM_WEBHOOK_URL", "webhook"),
+    "REGISTER_DEFAULT_ADMIN": False,
 }
+
+TELEGRAM_SETTINGS_MODEL = "telegram.TelegramSettings"
 
 DOMAIN_NAME = env.read("DJANGO_DOMAIN_NAME", "http://localhost:8000")
