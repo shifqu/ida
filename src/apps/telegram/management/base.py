@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 
 from django.utils.translation import override
 from django_telegram_app.bot.bot import handle_update
-from django_telegram_app.management.base import BaseTelegramCommand
+from django_telegram_app.management.base import BaseManagementCommand
 
 from apps.telegram.models import TelegramSettings
 from apps.users.models import IdaUser
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from django_telegram_app.models import AbstractTelegramSettings
 
 
-class IdaBaseTelegramCommand(BaseTelegramCommand):
+class ManagementCommand(BaseManagementCommand):
     """Base command for telegram management commands."""
 
     def get_telegram_settings_filter(self):
