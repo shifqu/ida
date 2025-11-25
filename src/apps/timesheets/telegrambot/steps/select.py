@@ -47,13 +47,13 @@ class SelectDate(TelegramStep):
         now = timezone.now()
         display_date = self._get_display_date(data, now)
 
-        data_previous = {**data, self.key: self._get_previous_display_date(display_date)}
-        data_next = {**data, self.key: self._get_next_display_date(display_date)}
+        prev_kw = {self.key: self._get_previous_display_date(display_date)}
+        next_kw = {self.key: self._get_next_display_date(display_date)}
         keyboard = []
         header = [
-            {"text": "<<", "callback_data": self.current_step_callback(**data_previous)},
+            {"text": "<<", "callback_data": self.current_step_callback(data, **prev_kw)},
             {"text": f"{str(display_date.month).zfill(2)}/{display_date.year}", "callback_data": DO_NOTHING},
-            {"text": ">>", "callback_data": self.current_step_callback(**data_next)},
+            {"text": ">>", "callback_data": self.current_step_callback(data, **next_kw)},
         ]
         keyboard.append(header)
 
@@ -70,11 +70,11 @@ class SelectDate(TelegramStep):
                 text = str(day).zfill(2)
                 if selected_date == now.date():
                     text = f"({text})"
-                data_dict = {**data, self.key: selected_date}
-                row.append({"text": text, "callback_data": self.next_step_callback(**data_dict)})
+                kwargs = {self.key: selected_date}
+                row.append({"text": text, "callback_data": self.next_step_callback(data, **kwargs)})
             keyboard.append(row)
 
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         reply_markup = {"inline_keyboard": keyboard}
         send_message(
@@ -135,7 +135,7 @@ class SelectDay(TelegramStep):
 
         self._maybe_add_pagination_buttons(keyboard, days, data, current_page, end)
 
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         reply_markup = {"inline_keyboard": keyboard}
         send_message(
@@ -155,11 +155,11 @@ class SelectDay(TelegramStep):
 
     def _maybe_add_pagination_buttons(self, keyboard: list, days: list, data: dict, current_page: int, end: int):
         if current_page > 1:
-            data_back = dict(data, current_page=current_page - 1)
-            keyboard.append([{"text": "⬅️ Back", "callback_data": self.current_step_callback(**data_back)}])
+            callback_back = self.current_step_callback(data, current_page=current_page - 1)
+            keyboard.append([{"text": "⬅️ Back", "callback_data": callback_back}])
         if len(days) > end:
-            data_next = dict(data, current_page=current_page + 1)
-            keyboard.append([{"text": "➡️ Next", "callback_data": self.current_step_callback(**data_next)}])
+            callback_next = self.current_step_callback(data, current_page=current_page + 1)
+            keyboard.append([{"text": "➡️ Next", "callback_data": callback_next}])
 
 
 class SelectExistingDay(SelectDay):
@@ -182,16 +182,11 @@ class SelectExistingDay(SelectDay):
         """Get the keyboard for the given days and data."""
         keyboard = []
         for project, item in days[start:end]:
-            data_day = dict(
+            callback_next = self.next_step_callback(
                 data, start_date=item.date, project_id=project.pk, project_name=project.name, item_pk=item.pk
             )
             keyboard.append(
-                [
-                    {
-                        "text": f"{project}: {item.date} ({item.worked_hours}h)",
-                        "callback_data": self.next_step_callback(**data_day),
-                    }
-                ]
+                [{"text": f"{project}: {item.date} ({item.worked_hours}h)", "callback_data": callback_next}]
             )
         return keyboard
 
@@ -204,28 +199,21 @@ class SelectItemType(TelegramStep):
         data = self.get_callback_data(telegram_update)
         keyboard = []
         for item_type in TimesheetItem.ItemType:
-            data_item = dict(data, item_type=item_type.value, item_type_label=item_type.label)
-            keyboard.append(
-                [
-                    {
-                        "text": str(item_type.label),  # Needs str cast for lazy translation objects
-                        "callback_data": self.next_step_callback(**data_item),
-                    }
-                ]
-            )
+            item_label = str(item_type.label)  # Needs str cast for lazy translation objects
+            next_callback = self.next_step_callback(data, item_type=item_type.value, item_type_label=item_type.label)
+            keyboard.append([{"text": item_label, "callback_data": next_callback}])
 
         # Add the infer item type
-        data_infer = dict(data, item_type=0, item_type_label="Inferred")
         keyboard.append(
             [
                 {
                     "text": "Inferred",
-                    "callback_data": self.next_step_callback(**data_infer),
+                    "callback_data": self.next_step_callback(data, item_type=0, item_type_label="Inferred"),
                 }
             ]
         )
 
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         send_message(
             "Select the item type:",
@@ -248,8 +236,10 @@ class SelectMissingDay(SelectDay):
         """Get the keyboard for the given days and data."""
         keyboard = []
         for project, day in days[start:end]:
-            data_day = dict(data, start_date=day, project_id=project.pk, project_name=project.name)
-            keyboard.append([{"text": f"{project}: {day}", "callback_data": self.next_step_callback(**data_day)}])
+            callback_day = self.next_step_callback(
+                data, start_date=day, project_id=project.pk, project_name=project.name
+            )
+            keyboard.append([{"text": f"{project}: {day}", "callback_data": callback_day}])
         return keyboard
 
 
@@ -264,23 +254,23 @@ class SelectOverviewType(TelegramStep):
             [
                 {
                     "text": "Summary Overview",
-                    "callback_data": self.next_step_callback(**data, overview_type=OverviewType.SUMMARY.value),
+                    "callback_data": self.next_step_callback(data, overview_type=OverviewType.SUMMARY.value),
                 }
             ],
             [
                 {
                     "text": "Detailed Overview",
-                    "callback_data": self.next_step_callback(**data, overview_type=OverviewType.DETAILED.value),
+                    "callback_data": self.next_step_callback(data, overview_type=OverviewType.DETAILED.value),
                 }
             ],
             [
                 {
                     "text": "Holidays Overview",
-                    "callback_data": self.next_step_callback(**data, overview_type=OverviewType.HOLIDAYS.value),
+                    "callback_data": self.next_step_callback(data, overview_type=OverviewType.HOLIDAYS.value),
                 }
             ],
         ]
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         send_message(
             "Which type of overview would you like to see?",
@@ -307,18 +297,17 @@ class SelectProject(TelegramStep):
 
         data = self.get_callback_data(telegram_update)
         if len(projects) == 1:
-            data["project_id"] = projects[0].pk
-            data["project_name"] = str(projects[0])
-            telegram_update.callback_data = self.next_step_callback(**data)
+            project = projects[0]
+            callback_next = self.next_step_callback(data, project_id=project.pk, project_name=str(project))
+            telegram_update.callback_data = callback_next
             return self.command.next_step(self.name, telegram_update)
 
         keyboard = []
         for project in projects:
-            data["project_id"] = project.pk
-            data["project_name"] = str(project)
-            keyboard.append([{"text": str(project), "callback_data": self.next_step_callback(**data)}])
+            callback_next = self.next_step_callback(data, project_id=project.pk, project_name=str(project))
+            keyboard.append([{"text": str(project), "callback_data": callback_next}])
 
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         send_message(
             "Select a project:",
@@ -355,18 +344,17 @@ class SelectTimesheet(TelegramStep):
 
         data = self.get_callback_data(telegram_update)
         if len(timesheets) == 1:
-            data["timesheet_id"] = timesheets[0].pk
-            data["timesheet_name"] = str(timesheets[0])
-            telegram_update.callback_data = self.next_step_callback(**data)
+            timesheet = timesheets[0]
+            next_callback = self.next_step_callback(data, timesheet_id=timesheet.pk, timesheet_name=str(timesheet))
+            telegram_update.callback_data = next_callback
             return self.command.next_step(self.name, telegram_update)
 
         keyboard = []
         for timesheet in timesheets:
-            data["timesheet_id"] = timesheet.pk
-            data["timesheet_name"] = str(timesheet)
-            keyboard.append([{"text": str(timesheet), "callback_data": self.next_step_callback(**data)}])
+            next_callback = self.next_step_callback(data, timesheet_id=timesheet.pk, timesheet_name=str(timesheet))
+            keyboard.append([{"text": str(timesheet), "callback_data": next_callback}])
 
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         send_message(
             "Select a timesheet:",
@@ -385,10 +373,9 @@ class SelectWorkedHours(TelegramStep):
         options = {"Full day (8h)": 8, "Half day (4h)": 4, "Holiday (0h)": 0}
         keyboard = []
         for key, value in options.items():
-            data_duration = dict(data, duration=value)
-            keyboard.append([{"text": key, "callback_data": self.next_step_callback(**data_duration)}])
+            keyboard.append([{"text": key, "callback_data": self.next_step_callback(data, duration=value)}])
 
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         reply_markup = {"inline_keyboard": keyboard}
         send_message(
