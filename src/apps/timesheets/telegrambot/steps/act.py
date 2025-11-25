@@ -36,7 +36,7 @@ class CombineDateTime(TelegramStep):
         combined_datetime = datetime.combine(date_part, time_part)
         data[self.time_key] = combined_datetime.isoformat()
         data.pop(self.date_key)
-        telegram_update.callback_data = self.next_step_callback(**data)
+        telegram_update.callback_data = self.next_step_callback(data)
         return self.command.next_step(self.name, telegram_update)
 
     def _validate_time_format(self, time_str: str):

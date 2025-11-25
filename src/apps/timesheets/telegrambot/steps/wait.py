@@ -41,8 +41,7 @@ class WaitForDescription(TelegramStep):
         """Prompt the user to input a description or select no description."""
         data = self.get_callback_data(telegram_update)
         self.add_waiting_for("description", data)
-        data_dict = dict(data, description="")
-        keyboard = [[{"text": "No description.", "callback_data": self.next_step_callback(**data_dict)}]]
+        keyboard = [[{"text": "No description.", "callback_data": self.next_step_callback(data, description="")}]]
         send_message(
             "Send the description (or select 'No description'):",
             self.command.settings.chat_id,

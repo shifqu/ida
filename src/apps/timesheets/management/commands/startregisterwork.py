@@ -2,11 +2,11 @@
 
 from django.utils import timezone
 
-from apps.telegram.management.base import IdaBaseTelegramCommand
+from apps.telegram.management.base import ManagementCommand
 from apps.timesheets.telegrambot.commands.registerwork import Command as RegisterWorkCommand
 
 
-class Command(IdaBaseTelegramCommand):
+class Command(ManagementCommand):
     """Start a RegisterWork command."""
 
     help = "Start a RegisterWork command to let users register their work hours."

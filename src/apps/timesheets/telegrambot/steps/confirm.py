@@ -37,17 +37,15 @@ class Confirm(TelegramStep):
     def handle(self, telegram_update: "TelegramUpdate"):
         """Show the confirmation step."""
         data = self.get_callback_data(telegram_update)
-        data_confirmed = dict(data, confirmed=True)
-        confirmation_yes = self.next_step_callback(**data_confirmed)
-        data_declined = dict(data, confirmed=False)
-        confirmation_no = self.cancel_callback(**data_declined)
+        confirmation_yes = self.next_step_callback(data, confirmed=True)
+        confirmation_no = self.cancel_callback(data, confirmed=False)
 
         keyboard = [
             [{"text": "✅ Ok", "callback_data": confirmation_yes}],
             [{"text": "❌ Cancel", "callback_data": confirmation_no}],
         ]
 
-        self.maybe_add_previous_button(keyboard, **data)
+        self.maybe_add_previous_button(keyboard, data)
 
         message = f"{self.command.get_name()} with the following data?\n{self.data_transform_func(data)}"
         send_message(

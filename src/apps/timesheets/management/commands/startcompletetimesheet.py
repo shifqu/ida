@@ -2,11 +2,11 @@
 
 from django.utils import timezone
 
-from apps.telegram.management.base import IdaBaseTelegramCommand
+from apps.telegram.management.base import ManagementCommand
 from apps.timesheets.telegrambot.commands.completetimesheet import Command as CompleteTimesheetCommand
 
 
-class Command(IdaBaseTelegramCommand):
+class Command(ManagementCommand):
     """Start the CompleteTimesheet command."""
 
     help = "Start the CompleteTimesheet command to let users complete their timesheets."
