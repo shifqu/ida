@@ -213,5 +213,3 @@ TELEGRAM = {
 }
 
 TELEGRAM_SETTINGS_MODEL = "telegram.TelegramSettings"
-
-DOMAIN_NAME = env.read("DJANGO_DOMAIN_NAME", "http://localhost:8000")
