@@ -4,7 +4,7 @@
 #
 #    pip-compile --output-file=requirements/main.txt pyproject.toml
 #
-asgiref==3.10.0
+asgiref==3.11.0
     # via django
 certifi==2025.11.12
     # via requests
@@ -16,7 +16,7 @@ django==5.2.8
     # via
     #   django-telegram-app
     #   ida (pyproject.toml)
-django-telegram-app==0.3.0
+django-telegram-app==1.0.0
     # via ida (pyproject.toml)
 envyronment==0.4.0
     # via ida (pyproject.toml)
@@ -28,7 +28,7 @@ packaging==25.0
     # via gunicorn
 pillow==12.0.0
     # via reportlab
-reportlab==4.4.4
+reportlab==4.4.5
     # via ida (pyproject.toml)
 requests==2.32.5
     # via django-telegram-app
