@@ -224,11 +224,17 @@ class SelectItemType(TelegramStep):
 
 
 class SelectMissingDay(SelectDay):
-    """Represent the missing day selection step in a Telegram bot command."""
+    """Represent the missing day selection step in a Telegram bot command.
+
+    This shows only the days in the past that are missing from the timesheet.
+    """
 
     def get_days(self):
         """Get the missing days for the settings' user's project."""
-        draft_timesheets = Timesheet.objects.filter(status=Timesheet.Status.DRAFT, user=self.command.settings.user)
+        now = timezone.now().date()
+        draft_timesheets = Timesheet.objects.filter(
+            status=Timesheet.Status.DRAFT, user=self.command.settings.user, year__lte=now.year, month__lte=now.month
+        )
         missing = [(timesheet.project, date) for timesheet in draft_timesheets for date in timesheet.get_missing_days()]
         return sorted(missing, key=lambda x: x[1])
 
