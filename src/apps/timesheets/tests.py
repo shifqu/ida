@@ -126,6 +126,12 @@ class TimesheetsTelegramBotTestCase(TelegramBotTestCase):
 
     fixtures = ["companies", "relations", "users", "timesheets", "projects"]
 
+    @property
+    def available_button_texts(self) -> list[str]:
+        """Return the texts of the buttons available in the last bot message."""
+        inline_keyboard = self.fake_bot_post.call_args[1]["payload"]["reply_markup"]["inline_keyboard"]
+        return [item["text"] for row in inline_keyboard for item in row]
+
     @classmethod
     def setUpTestData(cls):
         """Set up the test data."""
@@ -136,16 +142,23 @@ class TimesheetsTelegramBotTestCase(TelegramBotTestCase):
 
     def test_telegram_registerwork(self):
         """Test the telegram registerwork command."""
-        existing_timesheet_items = self.timesheet.timesheetitem_set.count()
-        self.send_text("/registerwork")
-        self.click_on_text("➡️ Next")
-        self.click_on_text("⬅️ Back")
-        self.click_on_text("Dummy Project: 2025-01-03")
-        self.click_on_text("⬅️ Previous step")
-        self.click_on_text("Dummy Project: 2025-01-03")
-        self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
-        self.click_on_text("Full day (8h)")
-        self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items + 1)
+        Timesheet.objects.create(
+            user=self.user, project=self.project, year=2025, month=2, status=Timesheet.Status.DRAFT
+        )
+        fixed_now = datetime(2025, 1, 13, 0, 0, 0, tzinfo=timezone.utc)
+        with patch("django.utils.timezone.now", return_value=fixed_now):
+            existing_timesheet_items = self.timesheet.timesheetitem_set.count()
+            self.send_text("/registerwork")
+            self.click_on_text("➡️ Next")
+            self.assertIn("Dummy Project: 2025-01-13", self.available_button_texts)
+            self.assertNotIn("Dummy Project: 2025-01-14", self.available_button_texts)
+            self.click_on_text("⬅️ Back")
+            self.click_on_text("Dummy Project: 2025-01-03")
+            self.click_on_text("⬅️ Previous step")
+            self.click_on_text("Dummy Project: 2025-01-03")
+            self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items)
+            self.click_on_text("Full day (8h)")
+            self.assertEqual(self.timesheet.timesheetitem_set.count(), existing_timesheet_items + 1)
 
     def test_telegram_editwork(self):
         """Test the telegram editwork command."""
