@@ -1,16 +1,17 @@
 services:
   ida:
-    build:
-      context: .
-      target: production
+    image: ${APP_IMAGE}
     restart: unless-stopped
+
     volumes:
-      - ida_db_data:/db_data
-      - ida_static_data:/static_data
-      - ida_media_data:/media_data
-      - ida_log_data:/log_data
+      - ./data:/db_data
+      - /opt/platform/public/ida/static:/static_data
+      - /opt/platform/public/ida/media:/media_data
+      - ./logs:/log_data
+
     env_file:
-      - .dockerenv
+      - app.env
+
     environment:
       - DJANGO_ENVIRONMENT=production
       - DJANGO_STATIC_ROOT=/static_data
@@ -20,8 +21,11 @@ services:
       - DJANGO_DEBUG=0
       - DJANGO_PROJECT_STATIC_DIR=/app/static
 
-volumes:
-  ida_db_data:
-  ida_static_data:
-  ida_media_data:
-  ida_log_data:
+    networks:
+      web-proxy:
+        aliases:
+          - ida
+
+networks:
+  web-proxy:
+    external: true

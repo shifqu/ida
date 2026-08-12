@@ -8,15 +8,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Install gettext because it is required for django's compilemessages
-# Install git because django-telegram-app is currently installed from a git repository
-RUN apk add --no-cache gettext git
+RUN apk add --no-cache gettext
 
 # Copy only requirements files first for better caching
 COPY requirements/ /app/requirements/
 
 # Upgrade pip, install pip-tools, and install Python dependencies
-RUN pip install --upgrade pip pip-tools && \
-    pip-sync requirements/main.txt
+RUN pip install --upgrade pip && \
+    pip install -r requirements/main.txt
 
 # Set up entrypoint
 COPY docker/entrypoint.sh /entrypoint.sh
@@ -27,7 +26,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 FROM builder AS development
 
 # Install development dependencies
-RUN pip-sync requirements/dev.txt
+RUN pip install -r requirements/dev.txt
 
 # Run the application
 CMD ["manage", "runserver", "0.0.0.0:38080"]
@@ -37,11 +36,16 @@ FROM builder AS production
 
 # Create a non-privileged user
 ARG UID=10001
-RUN adduser \
+ARG GID=10001
+RUN addgroup \
+    -g "${GID}" \
+    appuser && \
+    adduser \
     -D \
     -H \
     -s "/sbin/nologin" \
     -u "${UID}" \
+    -G appuser \
     appuser
 
 WORKDIR /app
@@ -59,10 +63,10 @@ COPY --chown=appuser:appuser pyproject.toml pyproject.toml
 RUN cd src/apps && django-admin compilemessages
 
 # Install the application
-RUN pip install .
+RUN pip install . --no-deps
 
 # Switch to non-root user
-USER appuser
+USER ${UID}:${GID}
 
 # Run the application with Gunicorn
 CMD ["gunicorn", "ida.wsgi:application"]
