@@ -1,13 +1,13 @@
 services:
-  ida:
+  app:
     image: ${APP_IMAGE}
     restart: unless-stopped
 
     volumes:
       - ./data:/db_data
-      - /opt/platform/public/ida/static:/static_data
-      - /opt/platform/public/ida/media:/media_data
       - ./logs:/log_data
+      - ${PUBLIC_DIR}/static:/static_data
+      - ${PUBLIC_DIR}/media:/media_data
 
     env_file:
       - app.env
@@ -24,7 +24,7 @@ services:
     networks:
       web-proxy:
         aliases:
-          - ida
+          - "${APP_NAME}"
 
 networks:
   web-proxy:
