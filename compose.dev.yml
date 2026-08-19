@@ -1,5 +1,5 @@
 services:
-  ida:
+  app:
     build:
       target: development
     environment:
